@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 
 class AppTheme {
   static ThemeData lightTheme = ThemeData(
+    scaffoldBackgroundColor: Colors.white,
     primarySwatch: Colors.cyan,
     appBarTheme: const AppBarTheme(
       backgroundColor: Color.fromRGBO(37, 160, 237, 1),
@@ -18,6 +19,21 @@ class AppTheme {
         backgroundColor: const Color.fromRGBO(37, 160, 237, 1),
       ),
     ),
+    inputDecorationTheme: const InputDecorationTheme(
+        enabledBorder: OutlineInputBorder(
+          borderSide: BorderSide(
+            color: Color.fromRGBO(37, 160, 237, 1),
+          ),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderSide: BorderSide(
+            color: Color.fromRGBO(37, 160, 237, 1),
+          ),
+        ),
+        floatingLabelStyle: TextStyle(
+          color: Color.fromRGBO(37, 160, 237, 1),
+        ),
+        labelStyle: TextStyle(color: Color.fromARGB(255, 114, 114, 114))),
   );
   // Text field langsung di halaman
 }
