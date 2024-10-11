@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'theme.dart'; // import your theme file
-import 'register.dart'; // import the registration page
-import 'lookup.dart';
+import 'theme.dart';
+import 'register.dart';
+// yang lain nanti di import, dipanggil konstruktornya (lihat KPL)
 
 void main() {
   runApp(MyApp());
