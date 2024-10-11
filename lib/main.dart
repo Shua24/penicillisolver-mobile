@@ -1,44 +1,18 @@
 import 'package:flutter/material.dart';
-import 'theme.dart';
+import 'theme.dart'; // import your theme file
+import 'register.dart'; // import the registration page
 
 void main() {
-  runApp(const MyApp());
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme: AppTheme.lightTheme,
-      home: HomeScreen(),
+      theme: AppTheme.lightTheme, // Apply the theme
+      home:
+          RegistrationPage(), // Set the registration page as the initial route
     );
-  }
-}
-
-class HomeScreen extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          title: const Text('PenicilliSolver'),
-        ),
-        body: Center(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              const Text('A quick brown fox jumps over the lazy dog'),
-              const SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: () {
-                  const Text('');
-                },
-                child: const Text('Cari'),
-              )
-            ],
-          ),
-        ));
   }
 }
