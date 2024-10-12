@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
-
-void main() {
-  runApp(const MyApp());
-}
+import 'package:penicillisolver/theme.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -11,17 +8,20 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'PenicilliSolver',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
-        useMaterial3: true,
-      ),
-      home: const LoginScreen(), // Updated to LoginScreen
+      theme: AppTheme.lightTheme,
     );
   }
 }
 
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
+
+  @override
+  _LoginScreenState createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
+  bool _obscureText = true; // Initially hide password
 
   @override
   Widget build(BuildContext context) {
@@ -65,7 +65,7 @@ class LoginScreen extends StatelessWidget {
             const SizedBox(height: 20),
             // Password Input
             TextField(
-              obscureText: true,
+              obscureText: _obscureText, // Control visibility of password
               decoration: InputDecoration(
                 labelText: 'Kata Sandi',
                 border: OutlineInputBorder(
@@ -73,8 +73,14 @@ class LoginScreen extends StatelessWidget {
                 ),
                 prefixIcon: const Icon(Icons.lock),
                 suffixIcon: IconButton(
-                  onPressed: () {},
-                  icon: const Icon(Icons.visibility_off),
+                  onPressed: () {
+                    setState(() {
+                      _obscureText = !_obscureText; // Toggle password visibility
+                    });
+                  },
+                  icon: Icon(
+                    _obscureText ? Icons.visibility_off : Icons.visibility, // Change icon based on visibility
+                  ),
                 ),
               ),
             ),
@@ -95,16 +101,8 @@ class LoginScreen extends StatelessWidget {
               onPressed: () {
                 // Login functionality
               },
-              // style: ElevatedButton.styleFrom(
-              //   backgroundColor: Colors.grey,
-              //   padding: const EdgeInsets.symmetric(vertical: 15),
-              //   shape: RoundedRectangleBorder(
-              //     borderRadius: BorderRadius.circular(10),
-              //   ),
-              // ),
               child: const Text(
                 'Masuk',
-                // style: TextStyle(color: Colors.white, fontSize: 16),
               ),
             ),
             const SizedBox(height: 20),
@@ -124,7 +122,7 @@ class LoginScreen extends StatelessWidget {
               children: [
                 // Google Icon
                 IconButton(
-                  icon: Image.asset('assets/logo_google.png',  width: 40, height: 40,),
+                  icon: Image.asset('assets/logo_google.png', width: 40, height: 40),
                   iconSize: 20,
                   onPressed: () {
                     // Google login functionality
@@ -133,7 +131,7 @@ class LoginScreen extends StatelessWidget {
                 const SizedBox(width: 20),
                 // Facebook Icon
                 IconButton(
-                  icon: Image.asset('assets/logo_facebook.webp', width: 60, height: 60,),
+                  icon: Image.asset('assets/logo_facebook.webp', width: 60, height: 60),
                   iconSize: 20,
                   onPressed: () {
                     // Facebook login functionality
@@ -142,7 +140,7 @@ class LoginScreen extends StatelessWidget {
                 const SizedBox(width: 20),
                 // Twitter Icon
                 IconButton(
-                  icon: Image.asset('assets/logo_twitter.png', width: 40, height: 40,),
+                  icon: Image.asset('assets/logo_twitter.png', width: 40, height: 40),
                   iconSize: 20,
                   onPressed: () {
                     // Twitter login functionality
