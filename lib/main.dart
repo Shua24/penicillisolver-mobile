@@ -14,6 +14,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       theme: AppTheme.lightTheme, // Apply the theme
       home: RegistrationPage(),
+      title: 'PenicilliSolver',
     );
   }
 }

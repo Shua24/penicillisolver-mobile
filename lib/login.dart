@@ -36,11 +36,11 @@ class _LoginScreenState extends State<LoginScreen> {
             Center(
               child: Image.asset(
                 'assets/logo.png', // Change the path accordingly
-                width: 120,
-                height: 120,
+                width: 200,
+                height: 200,
               ),
             ),
-            const SizedBox(height: 30),
+            const SizedBox(height: 15),
             // Title
             const Center(
               child: Text(
@@ -75,11 +75,14 @@ class _LoginScreenState extends State<LoginScreen> {
                 suffixIcon: IconButton(
                   onPressed: () {
                     setState(() {
-                      _obscureText = !_obscureText; // Toggle password visibility
+                      _obscureText =
+                          !_obscureText; // Toggle password visibility
                     });
                   },
                   icon: Icon(
-                    _obscureText ? Icons.visibility_off : Icons.visibility, // Change icon based on visibility
+                    _obscureText
+                        ? Icons.visibility_off
+                        : Icons.visibility, // Change icon based on visibility
                   ),
                 ),
               ),
@@ -122,7 +125,8 @@ class _LoginScreenState extends State<LoginScreen> {
               children: [
                 // Google Icon
                 IconButton(
-                  icon: Image.asset('assets/logo_google.png', width: 40, height: 40),
+                  icon: Image.asset('assets/logo_google.png',
+                      width: 40, height: 40),
                   iconSize: 20,
                   onPressed: () {
                     // Google login functionality
@@ -131,7 +135,8 @@ class _LoginScreenState extends State<LoginScreen> {
                 const SizedBox(width: 20),
                 // Facebook Icon
                 IconButton(
-                  icon: Image.asset('assets/logo_facebook.webp', width: 60, height: 60),
+                  icon: Image.asset('assets/logo_facebook.webp',
+                      width: 60, height: 60),
                   iconSize: 20,
                   onPressed: () {
                     // Facebook login functionality
@@ -140,7 +145,8 @@ class _LoginScreenState extends State<LoginScreen> {
                 const SizedBox(width: 20),
                 // Twitter Icon
                 IconButton(
-                  icon: Image.asset('assets/logo_twitter.png', width: 40, height: 40),
+                  icon: Image.asset('assets/logo_twitter.png',
+                      width: 40, height: 40),
                   iconSize: 20,
                   onPressed: () {
                     // Twitter login functionality
