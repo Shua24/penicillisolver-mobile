@@ -1,6 +1,5 @@
-// ignore_for_file: camel_case_types, library_private_types_in_public_api, use_build_context_synchronously, dead_code
-
 import 'package:flutter/material.dart';
+import 'package:penicillisolver/login.dart';
 
 void main() {
   runApp(const Landing());
@@ -100,8 +99,6 @@ class _RegisterState extends State<Register> {
                 style: TextStyle(
                   fontSize: 30,
                   fontWeight: FontWeight.bold,
-                  fontFamily: 'Poppins',
-                  color: Colors.black,
                 ),
               ),
               const SizedBox(height: 15),
@@ -121,7 +118,7 @@ class _RegisterState extends State<Register> {
                 child: Text(
                   'Email',
                   style: TextStyle(
-                    color: Colors.cyan,
+                    color: Color.fromRGBO(37, 160, 237, 1),
                     fontSize: 16,
                   ),
                 ),
@@ -129,15 +126,44 @@ class _RegisterState extends State<Register> {
               const SizedBox(height: 5),
               TextField(
                 decoration: InputDecoration(
-                  hintText: 'email anda',
-                  hintStyle: const TextStyle(color: Colors.grey),
+                  hintText: 'Email anda',
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(5),
-                    borderSide: const BorderSide(color: Colors.cyan, width: 2),
+                    borderSide: const BorderSide(
+                        color: Color.fromRGBO(37, 160, 237, 1), width: 2),
                   ),
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(5),
-                    borderSide: const BorderSide(color: Colors.cyan, width: 2),
+                    borderSide: const BorderSide(
+                        color: Color.fromRGBO(37, 160, 237, 1), width: 2),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 15),
+
+              const Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  'Nomor SIP',
+                  style: TextStyle(
+                    color: Color.fromRGBO(37, 160, 237, 1),
+                    fontSize: 16,
+                  ),
+                ),
+              ),
+              const SizedBox(height: 5),
+              TextField(
+                decoration: InputDecoration(
+                  hintText: 'Nomor SIP',
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(5),
+                    borderSide: const BorderSide(
+                        color: Color.fromRGBO(37, 160, 237, 1), width: 2),
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(5),
+                    borderSide: const BorderSide(
+                        color: Color.fromRGBO(37, 160, 237, 1), width: 2),
                   ),
                 ),
               ),
@@ -149,7 +175,7 @@ class _RegisterState extends State<Register> {
                 child: Text(
                   'Kata Sandi',
                   style: TextStyle(
-                    color: Colors.cyan,
+                    color: Color.fromRGBO(37, 160, 237, 1),
                     fontSize: 16,
                   ),
                 ),
@@ -158,15 +184,14 @@ class _RegisterState extends State<Register> {
               TextField(
                 obscureText: _obscureText1,
                 decoration: InputDecoration(
-                  hintText: '',
-                  hintStyle: const TextStyle(color: Colors.grey),
+                  hintText: 'Kata Sandi Anda',
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(5),
-                    borderSide: const BorderSide(color: Colors.cyan, width: 2),
                   ),
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(5),
-                    borderSide: const BorderSide(color: Colors.cyan, width: 2),
+                    borderSide: const BorderSide(
+                        color: Color.fromRGBO(37, 160, 237, 1), width: 2),
                   ),
                   suffixIcon: IconButton(
                     icon: Icon(
@@ -189,7 +214,7 @@ class _RegisterState extends State<Register> {
                 child: Text(
                   'Konfirmasi Kata Sandi',
                   style: TextStyle(
-                    color: Colors.cyan,
+                    color: Color.fromRGBO(37, 160, 237, 1),
                     fontSize: 16,
                   ),
                 ),
@@ -202,11 +227,13 @@ class _RegisterState extends State<Register> {
                   hintStyle: const TextStyle(color: Colors.grey),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(5),
-                    borderSide: const BorderSide(color: Colors.cyan, width: 2),
+                    borderSide: const BorderSide(
+                        color: Color.fromRGBO(37, 160, 237, 1), width: 2),
                   ),
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(5),
-                    borderSide: const BorderSide(color: Colors.cyan, width: 2),
+                    borderSide: const BorderSide(
+                        color: Color.fromRGBO(37, 160, 237, 1), width: 2),
                   ),
                   suffixIcon: IconButton(
                     icon: Icon(
@@ -221,6 +248,7 @@ class _RegisterState extends State<Register> {
                   ),
                 ),
               ),
+
               const SizedBox(height: 20),
 
               // Pilihan Tim (Mikrobiologi, Dokter, PPI, PPRA)
@@ -229,20 +257,16 @@ class _RegisterState extends State<Register> {
                 child: Text(
                   'Daftar Sebagai Tim:',
                   style: TextStyle(
-                    color: Colors.cyan,
+                    color: Color.fromRGBO(37, 160, 237, 1),
                     fontSize: 16,
                   ),
                 ),
               ),
               const SizedBox(height: 1),
-              const Padding(padding: EdgeInsets.all(5)),
+              const Padding(
+                padding: EdgeInsets.all(5),
+              ),
               ToggleButtons(
-                borderColor: Colors.grey,
-                fillColor: Colors.teal,
-                borderWidth: 2,
-                selectedBorderColor: Colors.teal,
-                selectedColor: Colors.white,
-                borderRadius: BorderRadius.circular(5),
                 onPressed: (int index) {
                   setState(() {
                     for (int i = 0; i < isSelected.length; i++) {
@@ -281,13 +305,6 @@ class _RegisterState extends State<Register> {
                 onPressed: () {
                   // Aksi saat tombol "Daftar" diklik
                 },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.cyan,
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 150,
-                    vertical: 20,
-                  ),
-                ),
                 child: const Text('Daftar',
                     style: TextStyle(
                       fontSize: 18,
@@ -303,12 +320,12 @@ class _RegisterState extends State<Register> {
                   const SizedBox(width: 5),
                   GestureDetector(
                     onTap: () {
-                      // Aksi saat "Masuk" diklik
+                      // TODO: Route ke LoginScreen
                     },
                     child: const Text(
                       'Masuk',
                       style: TextStyle(
-                        color: Colors.cyan,
+                        color: Color.fromRGBO(37, 160, 237, 1),
                         fontWeight: FontWeight.bold,
                       ),
                     ),
@@ -327,8 +344,8 @@ class _RegisterState extends State<Register> {
                   IconButton(
                     icon: Image.asset(
                       'assets/google.png',
-                      width: 50,
-                      height: 50,
+                      width: 30,
+                      height: 30,
                     ),
                     iconSize: 1,
                     onPressed: () {},
@@ -338,8 +355,8 @@ class _RegisterState extends State<Register> {
                   IconButton(
                     icon: Image.asset(
                       'assets/fb.png',
-                      width: 50,
-                      height: 50,
+                      width: 30,
+                      height: 30,
                     ),
                     iconSize: 1,
                     onPressed: () {},
@@ -349,8 +366,8 @@ class _RegisterState extends State<Register> {
                   IconButton(
                     icon: Image.asset(
                       'assets/x.png',
-                      width: 50,
-                      height: 50,
+                      width: 30,
+                      height: 30,
                     ),
                     iconSize: 1,
                     onPressed: () {},
