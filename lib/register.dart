@@ -107,7 +107,8 @@ class _RegisterState extends State<Register> {
                   width: 200,
                   height: 150,
                   child: Image.asset(
-                      'assets/logo1.png'), // Ubah ke logo yang sesuai
+                    'assets/logo1.png',
+                  ), // Ubah ke logo yang sesuai
                 ),
               ),
               const SizedBox(height: 25),
@@ -130,9 +131,9 @@ class _RegisterState extends State<Register> {
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(5),
                     borderSide: const BorderSide(
-                        color: Color.fromRGBO(37, 160, 237, 1), width: 2),
+                        color: Color.fromRGBO(37, 160, 237, 1), width: 1),
                   ),
-                  enabledBorder: OutlineInputBorder(
+                  focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(5),
                     borderSide: const BorderSide(
                         color: Color.fromRGBO(37, 160, 237, 1), width: 2),
@@ -158,9 +159,9 @@ class _RegisterState extends State<Register> {
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(5),
                     borderSide: const BorderSide(
-                        color: Color.fromRGBO(37, 160, 237, 1), width: 2),
+                        color: Color.fromRGBO(37, 160, 237, 1), width: 1),
                   ),
-                  enabledBorder: OutlineInputBorder(
+                  focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(5),
                     borderSide: const BorderSide(
                         color: Color.fromRGBO(37, 160, 237, 1), width: 2),
@@ -188,7 +189,7 @@ class _RegisterState extends State<Register> {
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(5),
                   ),
-                  enabledBorder: OutlineInputBorder(
+                  focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(5),
                     borderSide: const BorderSide(
                         color: Color.fromRGBO(37, 160, 237, 1), width: 2),
@@ -223,14 +224,14 @@ class _RegisterState extends State<Register> {
               TextField(
                 obscureText: _obscureText2,
                 decoration: InputDecoration(
-                  hintText: '',
+                  hintText: 'Konfirmasi Kata Sandi',
                   hintStyle: const TextStyle(color: Colors.grey),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(5),
                     borderSide: const BorderSide(
                         color: Color.fromRGBO(37, 160, 237, 1), width: 2),
                   ),
-                  enabledBorder: OutlineInputBorder(
+                  focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(5),
                     borderSide: const BorderSide(
                         color: Color.fromRGBO(37, 160, 237, 1), width: 2),
