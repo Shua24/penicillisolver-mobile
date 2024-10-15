@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:penicillisolver/MainMenu.dart';
-import 'theme.dart';
+import 'package:penicillisolver/verifikasi.dart';
+import 'package:penicillisolver/verifikasiBerhasil.dart';
+import 'LoginBerhasil.dart'; // Pastikan ini diimpor jika dibutuhkan
+import 'lupa.dart'; // Pastikan ini diimpor
+import 'theme.dart'; // Pastikan ini diimpor jika dibutuhkan
 import 'register.dart';
 import 'login.dart';
-// import 'loading_page.dart'; // Pastikan ini diimpor jika ada
 
 void main() {
   runApp(const MyApp());
@@ -15,14 +17,24 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme: AppTheme.lightTheme, // Apply the theme
+      theme: AppTheme.lightTheme, // Terapkan tema
       title: 'PenicilliSolver',
-      initialRoute: '/', // Set the initial route
+      initialRoute: '/', // Setel rute awal
       routes: {
         '/': (context) => const Landing(), // Halaman awal
-        '/login': (context) => const LoginScreen(), // Rute ke Login
+        '/login': (context) => const LoginScreen(),
         '/register': (context) => const Register(),
-        '/MainMenu': (context) => const Selamat() // Rute ke Register
+        '/LoginBerhasil': (context) => const Selamat(),
+        '/lupa': (context) => const Lupa(),
+        '/verifikasi': (context) => const Verifikasi(),
+        '/verifikasiBerhasil': (context) =>
+            const Berhasil(), // Rute ke halaman Lupa Password
+      },
+      onUnknownRoute: (settings) {
+        return MaterialPageRoute(
+          builder: (context) =>
+              const Landing(), // Halaman default jika rute tidak dikenali
+        );
       },
     );
   }

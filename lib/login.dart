@@ -1,9 +1,11 @@
-// ignore_for_file: library_private_types_in_public_api
+// ignore_for_file: library_private_types_in_public_api, deprecated_member_use, use_build_context_synchronously
 
 import 'package:flutter/material.dart';
-import 'package:penicillisolver/MainMenu.dart';
+import 'package:penicillisolver/LoginBerhasil.dart';
+import 'package:penicillisolver/lupa.dart';
 import 'package:penicillisolver/register.dart';
-import 'package:url_launcher/url_launcher.dart'; // Tambahkan import ini untuk url_launcher
+import 'package:url_launcher/url_launcher.dart';
+// Tambahkan import ini untuk url_launcher
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -14,7 +16,6 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginState extends State<LoginScreen> {
   bool _obscureText1 = true; // Untuk Kata Sandi
-  final bool _obscureText2 = true; // Untuk Konfirmasi Kata Sandi
   List<bool> isSelected = [true, false, false, false]; // Untuk pilihan tim
 
   // Fungsi untuk membuka URL
@@ -29,11 +30,22 @@ class _LoginState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async {
-        // Ini akan menangani tombol back fisik Android
-        // Kembali ke halaman sebelumnya
-        return true; // Mengizinkan back action default
+        // Mengizinkan navigasi kembali
+        return true; // Kembali ke halaman sebelumnya
       },
       child: Scaffold(
+        appBar: AppBar(
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back), // Ikon untuk tombol kembali
+            onPressed: () {
+              // Mengarahkan ke halaman RegisterScreen
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => const Register()),
+              );
+            },
+          ),
+        ),
         body: SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.all(20.0),
@@ -145,9 +157,7 @@ class _LoginState extends State<LoginScreen> {
                     ),
                   ),
                 ),
-                const SizedBox(height: 15),
-
-                const SizedBox(height: 20),
+                const SizedBox(height: 35),
 
                 // Tombol Masuk
                 SizedBox(
@@ -158,9 +168,10 @@ class _LoginState extends State<LoginScreen> {
                       Future.delayed(const Duration(milliseconds: 500), () {
                         Navigator.of(context).pushReplacement(
                           MaterialPageRoute(
-                              builder: (context) => const MainMenu()),
+                              builder: (context) => const LoginBerhasil()),
                         );
-                      }); // Aksi ketika tombol ditekan
+                      });
+                      // Aksi ketika tombol ditekan
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor:
@@ -168,17 +179,49 @@ class _LoginState extends State<LoginScreen> {
                       foregroundColor:
                           Colors.white, // Mengatur warna teks tombol
                     ),
-                    child: const Text('Masuk'),
+                    child: const Text(
+                      'Masuk',
+                      style: TextStyle(fontSize: 20), // Mengatur ukuran teks
+                    ),
                   ),
                 ),
+                const SizedBox(height: 30),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Text(''),
+                    const SizedBox(width: 5),
+                    GestureDetector(
+                      onTap: () {
+                        Future.delayed(const Duration(milliseconds: 500), () {
+                          Navigator.of(context).pushReplacement(
+                            MaterialPageRoute(
+                                builder: (context) => const Lupa()),
+                          );
+                        });
+                      },
+                      child: const Text(
+                        'Lupa Kata Sandi ?',
+                        style: TextStyle(
+                          color: Color.fromRGBO(37, 160, 237, 1),
+                          fontWeight: FontWeight.bold,
+                          fontSize: 15,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
 
-                const SizedBox(height: 20),
-
+                const SizedBox(height: 30),
                 // Sudah punya akun / Login dengan
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const Text('Belum Punya Akun ?'),
+                    const Text(
+                      'Sudah Punya Akun ?',
+                      style: TextStyle(
+                          fontSize: 17), // Ukuran teks untuk pertanyaan
+                    ),
                     const SizedBox(width: 5),
                     GestureDetector(
                       onTap: () {
@@ -194,14 +237,20 @@ class _LoginState extends State<LoginScreen> {
                         style: TextStyle(
                           color: Color.fromRGBO(37, 160, 237, 1),
                           fontWeight: FontWeight.bold,
+                          fontSize: 17,
                         ),
                       ),
                     ),
                   ],
                 ),
-                const SizedBox(height: 10),
-                const Text('Atau lanjutkan dengan:'),
-                const SizedBox(height: 10),
+
+                const SizedBox(height: 30),
+                const Text(
+                  'Atau Lanjutkan Dengan :',
+                  style:
+                      TextStyle(fontSize: 16), // Ukuran teks untuk pertanyaan
+                ),
+                const SizedBox(height: 20),
 
                 // Tombol Sosial Media (Google, Facebook, Twitter)
                 Row(
@@ -211,8 +260,8 @@ class _LoginState extends State<LoginScreen> {
                     IconButton(
                       icon: Image.asset(
                         'assets/google.png',
-                        width: 30,
-                        height: 30,
+                        width: 50,
+                        height: 50,
                       ),
                       iconSize: 30,
                       onPressed: () {
@@ -224,8 +273,8 @@ class _LoginState extends State<LoginScreen> {
                     IconButton(
                       icon: Image.asset(
                         'assets/fb.png',
-                        width: 30,
-                        height: 30,
+                        width: 40,
+                        height: 40,
                       ),
                       iconSize: 30,
                       onPressed: () {
@@ -237,8 +286,8 @@ class _LoginState extends State<LoginScreen> {
                     IconButton(
                       icon: Image.asset(
                         'assets/x.png',
-                        width: 30,
-                        height: 30,
+                        width: 40,
+                        height: 40,
                       ),
                       iconSize: 30,
                       onPressed: () {

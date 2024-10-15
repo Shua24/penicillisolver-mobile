@@ -372,7 +372,10 @@ class _RegisterState extends State<Register> {
                         Colors.blue, // Mengatur warna latar belakang tombol
                     foregroundColor: Colors.white, // Mengatur warna teks tombol
                   ),
-                  child: const Text('Daftar'),
+                  child: const Text(
+                    'Daftar',
+                    style: TextStyle(fontSize: 20), // Mengatur ukuran teks
+                  ),
                 ),
               ),
 
@@ -382,31 +385,42 @@ class _RegisterState extends State<Register> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Text('Sudah Punya Akun ?'),
+                  const Text(
+                    'Sudah Punya Akun ?',
+                    style:
+                        TextStyle(fontSize: 17), // Ukuran teks untuk pertanyaan
+                  ),
                   const SizedBox(width: 5),
                   GestureDetector(
                     onTap: () {
+                      // Menavigasi ke LoginScreen setelah penundaan
                       Future.delayed(const Duration(milliseconds: 500), () {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) =>
-                                  const LoginScreen()), // ganti LoginPage dengan nama class di login.dart
+                            builder: (context) =>
+                                const LoginScreen(), // Navigasi ke LoginScreen
+                          ),
                         );
                       });
                     },
                     child: const Text(
                       'Masuk',
                       style: TextStyle(
-                        color: Color.fromRGBO(37, 160, 237, 1),
-                        fontWeight: FontWeight.bold,
+                        color: Color.fromRGBO(37, 160, 237, 1), // Warna teks
+                        fontWeight: FontWeight.bold, // Teks tebal
+                        fontSize: 17, // Ukuran teks
                       ),
                     ),
                   ),
                 ],
               ),
+
               const SizedBox(height: 10),
-              const Text('Atau lanjutkan dengan:'),
+              const Text(
+                'Atau Lanjutkan Dengan :',
+                style: TextStyle(fontSize: 15), // Ukuran teks untuk pertanyaan
+              ),
               const SizedBox(height: 10),
 
               // Tombol Sosial Media (Google, Facebook, Twitter)
@@ -417,8 +431,8 @@ class _RegisterState extends State<Register> {
                   IconButton(
                     icon: Image.asset(
                       'assets/google.png',
-                      width: 30,
-                      height: 30,
+                      width: 50,
+                      height: 50,
                     ),
                     iconSize: 30,
                     onPressed: () {
@@ -430,8 +444,8 @@ class _RegisterState extends State<Register> {
                   IconButton(
                     icon: Image.asset(
                       'assets/fb.png',
-                      width: 30,
-                      height: 30,
+                      width: 40,
+                      height: 40,
                     ),
                     iconSize: 30,
                     onPressed: () {
@@ -443,8 +457,8 @@ class _RegisterState extends State<Register> {
                   IconButton(
                       icon: Image.asset(
                         'assets/x.png',
-                        width: 30,
-                        height: 30,
+                        width: 40,
+                        height: 40,
                       ),
                       iconSize: 30,
                       onPressed: () {
