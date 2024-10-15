@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:penicillisolver/login.dart';
 
 void main() {
   runApp(const Selamat());
@@ -25,47 +24,102 @@ class MainMenu extends StatefulWidget {
 
 class _MainMenuState extends State<MainMenu> {
   @override
-  void initState() {
-    super.initState();
-    // Menunggu 5 detik sebelum berpindah halaman
-    Future.delayed(const Duration(seconds: 3), () {
-      Navigator.pushReplacement(
-        context,
-        PageRouteBuilder(
-          transitionDuration:
-              const Duration(milliseconds: 600), // Durasi transisi
-          pageBuilder: (context, animation, secondaryAnimation) =>
-              const LoginScreen(), // Pastikan class Register sudah ada
-          transitionsBuilder: (context, animation, secondaryAnimation, child) {
-            const begin = Offset(1.0, 0.0); // Mulai dari kanan
-            const end = Offset.zero;
-            const curve = Curves.ease;
-
-            var tween =
-                Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
-            var offsetAnimation = animation.drive(tween);
-
-            return SlideTransition(
-              position: offsetAnimation,
-              child: child,
-            );
-          },
-        ),
-      );
-    });
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
+      appBar: AppBar(
+        backgroundColor: Colors.cyan, // Warna biru muda di appbar
+        elevation: 0, // Hilangkan bayangan
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back, color: Colors.white),
+          onPressed: () {
+            // Aksi kembali
+          },
+        ),
+        title: const Text("Menu"),
+        actions: [
+          Padding(
+            padding: const EdgeInsets.only(right: 16.0),
+            child: CircleAvatar(
+              radius: 20,
+              // Ganti dengan gambar profile dari assets atau URL
+              backgroundImage: AssetImage('assets/profile.png'),
+            ),
+          ),
+        ],
+      ),
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 20.0),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,  // Menempatkan menu di tengah secara vertikal
           children: [
-            Image.asset('assets/josh.png'),
+            const Center(  // Pastikan Text ada di dalam Center widget
+              child: Padding(
+                padding: EdgeInsets.symmetric(vertical: 10.0),
+                child: Text(
+                  "Berikut Menu Mencari Antibiotik",
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+                  textAlign: TextAlign.center,  // Tambahkan textAlign
+                ),
+              ),
+            ),
+            const SizedBox(height: 20), // Jarak antara judul dan menu
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,  // Menempatkan item di tengah secara horizontal
+              children: [
+                _buildMenuButton(Icons.search, "Cari berdasarkan penyakit"),
+                const SizedBox(width: 20), // Menambah jarak antara dua tombol
+                _buildMenuButton(Icons.bug_report, "Cari berdasarkan bakteri"),
+              ],
+            ),
             const SizedBox(height: 20),
+            _buildMenuButton(Icons.refresh, "Tentang Pola Kuman", isWide: true),
           ],
         ),
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        selectedItemColor: Colors.cyan,
+        unselectedItemColor: Colors.grey,
+        items: const [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: "",
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.chat_bubble_outline),
+            label: "",
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.assignment_outlined),
+            label: "",
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.settings),
+            label: "",
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildMenuButton(IconData icon, String label, {bool isWide = false}) {
+    return Container(
+      width: isWide ? 200 : 120, // Lebih lebar jika diperlukan
+      height: 120,
+      decoration: BoxDecoration(
+        color: Colors.cyan[100],
+        borderRadius: BorderRadius.circular(10),
+      ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(icon, size: 50, color: Colors.cyan),
+          const SizedBox(height: 10),
+          Text(
+            label,
+            textAlign: TextAlign.center,
+            style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
+          ),
+        ],
       ),
     );
   }
