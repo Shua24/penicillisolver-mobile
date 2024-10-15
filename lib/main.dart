@@ -1,20 +1,27 @@
 import 'package:flutter/material.dart';
-import 'package:penicillisolver/login.dart';
 import 'theme.dart';
 import 'register.dart';
-// yang lain nanti di import, dipanggil konstruktornya (lihat KPL)
+import 'login.dart';
+// import 'loading_page.dart'; // Pastikan ini diimpor jika ada
 
 void main() {
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: AppTheme.lightTheme, // Apply the theme
-      home: const LoadingPage(),
       title: 'PenicilliSolver',
+      initialRoute: '/', // Set the initial route
+      routes: {
+        '/': (context) => const Landing(), // Halaman awal
+        '/login': (context) => const LoginScreen(), // Rute ke Login
+        '/register': (context) => const Register(), // Rute ke Register
+      },
     );
   }
 }

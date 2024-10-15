@@ -1,3 +1,5 @@
+// ignore_for_file: library_private_types_in_public_api, use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:penicillisolver/login.dart';
 
@@ -93,7 +95,7 @@ class _RegisterState extends State<Register> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              const SizedBox(height: 70),
+              const SizedBox(height: 50),
               const Text(
                 'Daftar',
                 style: TextStyle(
@@ -128,15 +130,23 @@ class _RegisterState extends State<Register> {
               TextField(
                 decoration: InputDecoration(
                   hintText: 'Email anda',
-                  border: OutlineInputBorder(
+                  hintStyle: const TextStyle(
+                      color: Color.fromARGB(255, 170, 170, 170)),
+                  enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(5),
                     borderSide: const BorderSide(
-                        color: Color.fromRGBO(37, 160, 237, 1), width: 1),
+                      color: Color.fromRGBO(
+                          37, 160, 237, 1), // Warna border saat tidak fokus
+                      width: 1,
+                    ),
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(5),
                     borderSide: const BorderSide(
-                        color: Color.fromRGBO(37, 160, 237, 1), width: 2),
+                      color: Color.fromRGBO(
+                          37, 160, 237, 1), // Warna border saat fokus
+                      width: 2,
+                    ),
                   ),
                 ),
               ),
@@ -156,15 +166,23 @@ class _RegisterState extends State<Register> {
               TextField(
                 decoration: InputDecoration(
                   hintText: 'Nomor SIP',
-                  border: OutlineInputBorder(
+                  hintStyle: const TextStyle(
+                      color: Color.fromARGB(255, 170, 170, 170)),
+                  enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(5),
                     borderSide: const BorderSide(
-                        color: Color.fromRGBO(37, 160, 237, 1), width: 1),
+                      color: Color.fromRGBO(
+                          37, 160, 237, 1), // Warna border saat tidak fokus
+                      width: 1,
+                    ),
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(5),
                     borderSide: const BorderSide(
-                        color: Color.fromRGBO(37, 160, 237, 1), width: 2),
+                      color: Color.fromRGBO(
+                          37, 160, 237, 1), // Warna border saat fokus
+                      width: 2,
+                    ),
                   ),
                 ),
               ),
@@ -186,13 +204,23 @@ class _RegisterState extends State<Register> {
                 obscureText: _obscureText1,
                 decoration: InputDecoration(
                   hintText: 'Kata Sandi Anda',
-                  border: OutlineInputBorder(
+                  hintStyle: const TextStyle(
+                      color: Color.fromARGB(255, 170, 170, 170)),
+                  enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(5),
+                    borderSide: const BorderSide(
+                      color: Color.fromRGBO(
+                          37, 160, 237, 1), // Warna border saat tidak fokus
+                      width: 1,
+                    ),
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(5),
                     borderSide: const BorderSide(
-                        color: Color.fromRGBO(37, 160, 237, 1), width: 2),
+                      color: Color.fromRGBO(
+                          37, 160, 237, 1), // Warna border saat fokus
+                      width: 2,
+                    ),
                   ),
                   suffixIcon: IconButton(
                     icon: Icon(
@@ -225,16 +253,24 @@ class _RegisterState extends State<Register> {
                 obscureText: _obscureText2,
                 decoration: InputDecoration(
                   hintText: 'Konfirmasi Kata Sandi',
-                  hintStyle: const TextStyle(color: Colors.grey),
-                  border: OutlineInputBorder(
+                  hintStyle: const TextStyle(
+                      color: Color.fromARGB(255, 170, 170, 170)),
+                  // Mengatur border luar
+                  enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(5),
                     borderSide: const BorderSide(
-                        color: Color.fromRGBO(37, 160, 237, 1), width: 2),
+                      color: Color.fromRGBO(
+                          37, 160, 237, 1), // Warna border saat tidak fokus
+                      width: 1,
+                    ),
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(5),
                     borderSide: const BorderSide(
-                        color: Color.fromRGBO(37, 160, 237, 1), width: 2),
+                      color: Color.fromRGBO(
+                          37, 160, 237, 1), // Warna border saat fokus
+                      width: 2,
+                    ),
                   ),
                   suffixIcon: IconButton(
                     icon: Icon(
@@ -248,6 +284,8 @@ class _RegisterState extends State<Register> {
                     },
                   ),
                 ),
+                style:
+                    const TextStyle(color: Colors.black), // Mengatur warna teks
               ),
 
               const SizedBox(height: 20),
@@ -276,6 +314,11 @@ class _RegisterState extends State<Register> {
                   });
                 },
                 isSelected: isSelected,
+
+                color: const Color.fromARGB(
+                    255, 0, 0, 0), // Warna teks yang tidak dipilih
+                selectedColor: Colors.white, // Warna teks yang dipilih
+                fillColor: Colors.blue, // Warna background ketika dipilih
                 children: const <Widget>[
                   Padding(
                     padding:
@@ -299,18 +342,26 @@ class _RegisterState extends State<Register> {
                   ),
                 ],
               ),
+
               const SizedBox(height: 30),
 
               // Tombol Daftar
-              ElevatedButton(
-                onPressed: () {
-                  // Aksi saat tombol "Daftar" diklik
-                },
-                child: const Text('Daftar',
-                    style: TextStyle(
-                      fontSize: 18,
-                    )),
+              SizedBox(
+                width: 400,
+                height: 50, // Mengatur lebar tombol
+                child: ElevatedButton(
+                  onPressed: () {
+                    // Aksi ketika tombol ditekan
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor:
+                        Colors.blue, // Mengatur warna latar belakang tombol
+                    foregroundColor: Colors.white, // Mengatur warna teks tombol
+                  ),
+                  child: const Text('Daftar'),
+                ),
               ),
+
               const SizedBox(height: 20),
 
               // Sudah punya akun / Login dengan
@@ -321,7 +372,14 @@ class _RegisterState extends State<Register> {
                   const SizedBox(width: 5),
                   GestureDetector(
                     onTap: () {
-                      // TODO: Route ke LoginScreen
+                      Future.delayed(const Duration(milliseconds: 500), () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  const LoginScreen()), // ganti LoginPage dengan nama class di login.dart
+                        );
+                      });
                     },
                     child: const Text(
                       'Masuk',

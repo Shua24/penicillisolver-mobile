@@ -8,7 +8,7 @@ class AppTheme {
     primarySwatch: Colors.blue,
     appBarTheme: const AppBarTheme(
       backgroundColor: Color.fromRGBO(37, 160, 237, 1),
-      titleTextStyle: const TextStyle(
+      titleTextStyle: TextStyle(
           fontSize: 30, fontWeight: FontWeight.bold, color: Colors.white),
     ),
     useMaterial3: true,

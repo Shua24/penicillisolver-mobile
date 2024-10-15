@@ -14,6 +14,8 @@ class MyApp extends StatelessWidget {
 }
 
 class AntibioticQuery extends StatelessWidget {
+  const AntibioticQuery({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -36,7 +38,7 @@ class AntibioticQuery extends StatelessWidget {
                 ),
               ),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
                 const Text('');
