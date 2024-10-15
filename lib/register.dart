@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:penicillisolver/login.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 void main() {
   runApp(const Landing());
@@ -85,6 +86,13 @@ class _RegisterState extends State<Register> {
   bool _obscureText1 = true; // Untuk Kata Sandi
   bool _obscureText2 = true; // Untuk Konfirmasi Kata Sandi
   List<bool> isSelected = [true, false, false, false]; // Untuk pilihan tim
+
+  Future<void> _launchURL(String url) async {
+    final Uri uri = Uri.parse(url); // Mengubah URL menjadi objek Uri
+    if (!await launchUrl(uri)) {
+      throw 'Could not launch $url';
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -351,6 +359,12 @@ class _RegisterState extends State<Register> {
                 height: 50, // Mengatur lebar tombol
                 child: ElevatedButton(
                   onPressed: () {
+                    Future.delayed(const Duration(milliseconds: 500), () {
+                      Navigator.of(context).pushReplacement(
+                        MaterialPageRoute(
+                            builder: (context) => const LoginScreen()),
+                      );
+                    });
                     // Aksi ketika tombol ditekan
                   },
                   style: ElevatedButton.styleFrom(
@@ -406,10 +420,12 @@ class _RegisterState extends State<Register> {
                       width: 30,
                       height: 30,
                     ),
-                    iconSize: 1,
-                    onPressed: () {},
+                    iconSize: 30,
+                    onPressed: () {
+                      _launchURL('https://www.google.com');
+                    },
                   ),
-                  const SizedBox(width: 1),
+                  const SizedBox(width: 10),
                   // Tombol Facebook
                   IconButton(
                     icon: Image.asset(
@@ -417,20 +433,23 @@ class _RegisterState extends State<Register> {
                       width: 30,
                       height: 30,
                     ),
-                    iconSize: 1,
-                    onPressed: () {},
+                    iconSize: 30,
+                    onPressed: () {
+                      _launchURL('https://www.facebook.com');
+                    },
                   ),
-                  const SizedBox(width: 1),
+                  const SizedBox(width: 10),
                   // Tombol Twitter
                   IconButton(
-                    icon: Image.asset(
-                      'assets/x.png',
-                      width: 30,
-                      height: 30,
-                    ),
-                    iconSize: 1,
-                    onPressed: () {},
-                  ),
+                      icon: Image.asset(
+                        'assets/x.png',
+                        width: 30,
+                        height: 30,
+                      ),
+                      iconSize: 30,
+                      onPressed: () {
+                        _launchURL('https://www.twitter.com');
+                      }),
                 ],
               ),
             ],

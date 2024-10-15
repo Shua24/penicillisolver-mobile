@@ -1,8 +1,9 @@
 // ignore_for_file: library_private_types_in_public_api
 
 import 'package:flutter/material.dart';
+import 'package:penicillisolver/MainMenu.dart';
 import 'package:penicillisolver/register.dart';
-import 'package:penicillisolver/theme.dart';
+import 'package:url_launcher/url_launcher.dart'; // Tambahkan import ini untuk url_launcher
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -15,6 +16,14 @@ class _LoginState extends State<LoginScreen> {
   bool _obscureText1 = true; // Untuk Kata Sandi
   final bool _obscureText2 = true; // Untuk Konfirmasi Kata Sandi
   List<bool> isSelected = [true, false, false, false]; // Untuk pilihan tim
+
+  // Fungsi untuk membuka URL
+  Future<void> _launchURL(String url) async {
+    final Uri uri = Uri.parse(url); // Mengubah URL menjadi objek Uri
+    if (!await launchUrl(uri)) {
+      throw 'Could not launch $url';
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -146,7 +155,12 @@ class _LoginState extends State<LoginScreen> {
                   height: 50, // Mengatur lebar tombol
                   child: ElevatedButton(
                     onPressed: () {
-                      // Aksi ketika tombol ditekan
+                      Future.delayed(const Duration(milliseconds: 500), () {
+                        Navigator.of(context).pushReplacement(
+                          MaterialPageRoute(
+                              builder: (context) => const MainMenu()),
+                        );
+                      }); // Aksi ketika tombol ditekan
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor:
@@ -171,8 +185,7 @@ class _LoginState extends State<LoginScreen> {
                         Future.delayed(const Duration(milliseconds: 500), () {
                           Navigator.of(context).pushReplacement(
                             MaterialPageRoute(
-                                builder: (context) =>
-                                    const Register()), // ganti LoginPage dengan nama class di login.dart
+                                builder: (context) => const Register()),
                           );
                         });
                       },
@@ -201,10 +214,12 @@ class _LoginState extends State<LoginScreen> {
                         width: 30,
                         height: 30,
                       ),
-                      iconSize: 1,
-                      onPressed: () {},
+                      iconSize: 30,
+                      onPressed: () {
+                        _launchURL('https://www.google.com');
+                      },
                     ),
-                    const SizedBox(width: 1),
+                    const SizedBox(width: 10),
                     // Tombol Facebook
                     IconButton(
                       icon: Image.asset(
@@ -212,10 +227,12 @@ class _LoginState extends State<LoginScreen> {
                         width: 30,
                         height: 30,
                       ),
-                      iconSize: 1,
-                      onPressed: () {},
+                      iconSize: 30,
+                      onPressed: () {
+                        _launchURL('https://www.facebook.com');
+                      },
                     ),
-                    const SizedBox(width: 1),
+                    const SizedBox(width: 10),
                     // Tombol Twitter
                     IconButton(
                       icon: Image.asset(
@@ -223,8 +240,10 @@ class _LoginState extends State<LoginScreen> {
                         width: 30,
                         height: 30,
                       ),
-                      iconSize: 1,
-                      onPressed: () {},
+                      iconSize: 30,
+                      onPressed: () {
+                        _launchURL('https://www.twitter.com');
+                      },
                     ),
                   ],
                 ),

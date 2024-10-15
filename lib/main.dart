@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:penicillisolver/MainMenu.dart';
 import 'theme.dart';
 import 'register.dart';
 import 'login.dart';
@@ -20,7 +21,8 @@ class MyApp extends StatelessWidget {
       routes: {
         '/': (context) => const Landing(), // Halaman awal
         '/login': (context) => const LoginScreen(), // Rute ke Login
-        '/register': (context) => const Register(), // Rute ke Register
+        '/register': (context) => const Register(),
+        '/MainMenu': (context) => const Selamat() // Rute ke Register
       },
     );
   }
