@@ -1,7 +1,7 @@
 // ignore_for_file: file_names, library_private_types_in_public_api, use_build_context_synchronously
 
 import 'package:flutter/material.dart';
-import 'package:penicillisolver/login.dart';
+import 'package:penicillisolver/MainMenu.dart';
 
 void main() {
   runApp(const Selamat());
@@ -37,7 +37,7 @@ class _LoginBerhasilState extends State<LoginBerhasil> {
           transitionDuration:
               const Duration(milliseconds: 600), // Durasi transisi
           pageBuilder: (context, animation, secondaryAnimation) =>
-              const LoginScreen(), // Pastikan class Register sudah ada
+              const MainMenu(), // Pastikan class Register sudah ada
           transitionsBuilder: (context, animation, secondaryAnimation, child) {
             const begin = Offset(1.0, 0.0); // Mulai dari kanan
             const end = Offset.zero;
@@ -60,11 +60,12 @@ class _LoginBerhasilState extends State<LoginBerhasil> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color.fromARGB(255, 255, 255, 255),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Image.asset('assets/josh.png'),
+            Image.asset('assets/josh.png', width: 300),
             const SizedBox(height: 20),
           ],
         ),

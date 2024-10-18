@@ -34,6 +34,7 @@ class _LoginState extends State<LoginScreen> {
         return true; // Kembali ke halaman sebelumnya
       },
       child: Scaffold(
+        backgroundColor: Colors.white,
         appBar: AppBar(
           leading: IconButton(
             icon: const Icon(Icons.arrow_back), // Ikon untuk tombol kembali
@@ -52,7 +53,7 @@ class _LoginState extends State<LoginScreen> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                const SizedBox(height: 50),
+                const SizedBox(height: 30),
                 const Text(
                   'Masuk',
                   style: TextStyle(
@@ -181,7 +182,7 @@ class _LoginState extends State<LoginScreen> {
                     ),
                     child: const Text(
                       'Masuk',
-                      style: TextStyle(fontSize: 20), // Mengatur ukuran teks
+                      style: TextStyle(fontSize: 17), // Mengatur ukuran teks
                     ),
                   ),
                 ),

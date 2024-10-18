@@ -20,6 +20,7 @@ class Verifikasi extends StatelessWidget {
         return false; // Mencegah navigasi kembali ke halaman ini
       },
       child: Scaffold(
+        backgroundColor: Colors.white, // Ubah background menjadi putih
         appBar: AppBar(
           leading: IconButton(
             icon: const Icon(Icons.arrow_back), // Ikon untuk tombol kembali
@@ -39,7 +40,7 @@ class Verifikasi extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                const SizedBox(height: 100),
+                const SizedBox(height: 0),
                 const Text(
                   'Verifikasi',
                   style: TextStyle(
@@ -47,13 +48,13 @@ class Verifikasi extends StatelessWidget {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                const SizedBox(height: 50),
+                const SizedBox(height: 30),
                 Center(
                   child: SizedBox(
                     width: 200,
                     height: 150,
                     child: Image.asset(
-                      'assets/notif.png',
+                      'assets/notif.gif',
                     ), // Ganti dengan logo yang sesuai
                   ),
                 ),
@@ -94,7 +95,7 @@ class Verifikasi extends StatelessWidget {
                 ),
                 const SizedBox(height: 50),
                 SizedBox(
-                  width: 300,
+                  width: 350,
                   height: 50, // Mengatur lebar tombol
                   child: ElevatedButton(
                     onPressed: () {

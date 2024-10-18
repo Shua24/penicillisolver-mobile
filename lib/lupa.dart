@@ -21,6 +21,7 @@ class Lupa extends StatelessWidget {
         return false; // Mencegah navigasi kembali ke halaman ini
       },
       child: Scaffold(
+        backgroundColor: Colors.white,
         appBar: AppBar(
           leading: IconButton(
             icon: const Icon(Icons.arrow_back), // Ikon untuk tombol kembali
@@ -40,7 +41,7 @@ class Lupa extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                const SizedBox(height: 50),
+                const SizedBox(height: 0),
                 const Text(
                   'Lupa Kata Sandi',
                   style: TextStyle(
@@ -48,13 +49,14 @@ class Lupa extends StatelessWidget {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                const SizedBox(height: 15),
-                Center(
+                const SizedBox(height: 0),
+                Transform.translate(
+                  offset: const Offset(90, 10), // Geser 50 piksel ke atas
                   child: SizedBox(
-                    width: 200,
+                    width: 700,
                     height: 250,
                     child: Image.asset(
-                      'assets/lupa.png',
+                      'assets/lupa2.gif',
                     ),
                   ),
                 ),
@@ -93,7 +95,7 @@ class Lupa extends StatelessWidget {
                     ),
                   ),
                 ),
-                const SizedBox(height: 55),
+                const SizedBox(height: 35),
                 SizedBox(
                   width: 400,
                   height: 50, // Mengatur lebar tombol
@@ -122,7 +124,6 @@ class Lupa extends StatelessWidget {
                     ),
                   ),
                 ),
-                const SizedBox(height: 20),
               ],
             ),
           ),

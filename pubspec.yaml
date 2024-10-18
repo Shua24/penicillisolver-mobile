@@ -66,6 +66,13 @@ flutter:
       - assets/notif.png
       - assets/berhasil.png
       - assets/profile.png
+      - assets/bakteri.png
+      - assets/sakit.png
+      - assets/pola.png
+      - assets/lupa2.gif
+      - assets/user1.png
+      - assets/notif.gif
+      - assets/polakuman.png
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in

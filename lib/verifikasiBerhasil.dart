@@ -1,7 +1,7 @@
 // ignore_for_file: file_names, library_private_types_in_public_api, use_build_context_synchronously
 
 import 'package:flutter/material.dart';
-import 'package:penicillisolver/login.dart';
+import 'package:penicillisolver/MainMenu.dart';
 
 void main() {
   runApp(const Berhasil());
@@ -13,19 +13,19 @@ class Berhasil extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const MaterialApp(
-      home: MainMenu(),
+      home: VerifikasiBerhasil(),
     );
   }
 }
 
-class MainMenu extends StatefulWidget {
-  const MainMenu({super.key});
+class VerifikasiBerhasil extends StatefulWidget {
+  const VerifikasiBerhasil({super.key});
 
   @override
-  _MainMenuState createState() => _MainMenuState();
+  _VerifikasiBerhasilState createState() => _VerifikasiBerhasilState();
 }
 
-class _MainMenuState extends State<MainMenu> {
+class _VerifikasiBerhasilState extends State<VerifikasiBerhasil> {
   @override
   void initState() {
     super.initState();
@@ -37,7 +37,7 @@ class _MainMenuState extends State<MainMenu> {
           transitionDuration:
               const Duration(milliseconds: 600), // Durasi transisi
           pageBuilder: (context, animation, secondaryAnimation) =>
-              const LoginScreen(), // Pastikan class Register sudah ada
+              const MainMenu(), // Pastikan class Register sudah ada
           transitionsBuilder: (context, animation, secondaryAnimation, child) {
             const begin = Offset(1.0, 0.0); // Mulai dari kanan
             const end = Offset.zero;
@@ -60,11 +60,12 @@ class _MainMenuState extends State<MainMenu> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color.fromARGB(255, 255, 255, 255),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Image.asset('assets/berhasil.png'),
+            Image.asset('assets/berhasil.png', width: 200),
             const SizedBox(height: 20),
           ],
         ),

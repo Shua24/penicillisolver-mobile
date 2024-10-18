@@ -8,7 +8,6 @@ void main() {
   runApp(const Landing());
 }
 
-// Penamaan kelas harus PascalCase
 class Landing extends StatelessWidget {
   const Landing({super.key});
 
@@ -31,15 +30,13 @@ class _LoadingPageState extends State<LoadingPage> {
   @override
   void initState() {
     super.initState();
-    // Menunggu 5 detik sebelum berpindah halaman
-    Future.delayed(const Duration(seconds: 3), () {
+    Future.delayed(const Duration(seconds: 2), () {
       Navigator.pushReplacement(
         context,
         PageRouteBuilder(
-          transitionDuration:
-              const Duration(milliseconds: 600), // Durasi transisi
+          transitionDuration: const Duration(milliseconds: 600),
           pageBuilder: (context, animation, secondaryAnimation) =>
-              const Register(), // Pastikan class Register sudah ada
+              const Register(),
           transitionsBuilder: (context, animation, secondaryAnimation, child) {
             const begin = Offset(1.0, 0.0); // Mulai dari kanan
             const end = Offset.zero;
@@ -83,12 +80,12 @@ class Register extends StatefulWidget {
 }
 
 class _RegisterState extends State<Register> {
-  bool _obscureText1 = true; // Untuk Kata Sandi
-  bool _obscureText2 = true; // Untuk Konfirmasi Kata Sandi
-  List<bool> isSelected = [true, false, false, false]; // Untuk pilihan tim
+  bool _obscureText1 = true;
+  bool _obscureText2 = true;
+  List<bool> isSelected = [true, false, false, false];
 
   Future<void> _launchURL(String url) async {
-    final Uri uri = Uri.parse(url); // Mengubah URL menjadi objek Uri
+    final Uri uri = Uri.parse(url);
     if (!await launchUrl(uri)) {
       throw 'Could not launch $url';
     }
@@ -97,6 +94,7 @@ class _RegisterState extends State<Register> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(20.0),
@@ -118,12 +116,12 @@ class _RegisterState extends State<Register> {
                   height: 150,
                   child: Image.asset(
                     'assets/logo1.png',
-                  ), // Ubah ke logo yang sesuai
+                  ),
                 ),
               ),
               const SizedBox(height: 25),
 
-              // Email Input Field
+              // Email
               const Align(
                 alignment: Alignment.centerLeft,
                 child: Text(
@@ -143,16 +141,14 @@ class _RegisterState extends State<Register> {
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(5),
                     borderSide: const BorderSide(
-                      color: Color.fromRGBO(
-                          37, 160, 237, 1), // Warna border saat tidak fokus
+                      color: Color.fromRGBO(37, 160, 237, 1),
                       width: 1,
                     ),
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(5),
                     borderSide: const BorderSide(
-                      color: Color.fromRGBO(
-                          37, 160, 237, 1), // Warna border saat fokus
+                      color: Color.fromRGBO(37, 160, 237, 1), // saat fokus
                       width: 2,
                     ),
                   ),
@@ -179,16 +175,14 @@ class _RegisterState extends State<Register> {
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(5),
                     borderSide: const BorderSide(
-                      color: Color.fromRGBO(
-                          37, 160, 237, 1), // Warna border saat tidak fokus
+                      color: Color.fromRGBO(37, 160, 237, 1),
                       width: 1,
                     ),
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(5),
                     borderSide: const BorderSide(
-                      color: Color.fromRGBO(
-                          37, 160, 237, 1), // Warna border saat fokus
+                      color: Color.fromRGBO(37, 160, 237, 1),
                       width: 2,
                     ),
                   ),
@@ -196,7 +190,7 @@ class _RegisterState extends State<Register> {
               ),
               const SizedBox(height: 15),
 
-              // Password Input Field
+              // kata sandi
               const Align(
                 alignment: Alignment.centerLeft,
                 child: Text(
@@ -217,16 +211,14 @@ class _RegisterState extends State<Register> {
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(5),
                     borderSide: const BorderSide(
-                      color: Color.fromRGBO(
-                          37, 160, 237, 1), // Warna border saat tidak fokus
+                      color: Color.fromRGBO(37, 160, 237, 1),
                       width: 1,
                     ),
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(5),
                     borderSide: const BorderSide(
-                      color: Color.fromRGBO(
-                          37, 160, 237, 1), // Warna border saat fokus
+                      color: Color.fromRGBO(37, 160, 237, 1),
                       width: 2,
                     ),
                   ),
@@ -237,7 +229,7 @@ class _RegisterState extends State<Register> {
                     ),
                     onPressed: () {
                       setState(() {
-                        _obscureText1 = !_obscureText1; // Toggle visibility
+                        _obscureText1 = !_obscureText1; // mata
                       });
                     },
                   ),
@@ -245,7 +237,7 @@ class _RegisterState extends State<Register> {
               ),
               const SizedBox(height: 15),
 
-              // Confirm Password Input Field
+              // konfirmasi kata sandi
               const Align(
                 alignment: Alignment.centerLeft,
                 child: Text(
@@ -263,20 +255,17 @@ class _RegisterState extends State<Register> {
                   hintText: 'Konfirmasi Kata Sandi',
                   hintStyle: const TextStyle(
                       color: Color.fromARGB(255, 170, 170, 170)),
-                  // Mengatur border luar
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(5),
                     borderSide: const BorderSide(
-                      color: Color.fromRGBO(
-                          37, 160, 237, 1), // Warna border saat tidak fokus
+                      color: Color.fromRGBO(37, 160, 237, 1),
                       width: 1,
                     ),
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(5),
                     borderSide: const BorderSide(
-                      color: Color.fromRGBO(
-                          37, 160, 237, 1), // Warna border saat fokus
+                      color: Color.fromRGBO(37, 160, 237, 1),
                       width: 2,
                     ),
                   ),
@@ -287,13 +276,12 @@ class _RegisterState extends State<Register> {
                     ),
                     onPressed: () {
                       setState(() {
-                        _obscureText2 = !_obscureText2; // Toggle visibility
+                        _obscureText2 = !_obscureText2;
                       });
                     },
                   ),
                 ),
-                style:
-                    const TextStyle(color: Colors.black), // Mengatur warna teks
+                style: const TextStyle(color: Colors.black),
               ),
 
               const SizedBox(height: 20),
@@ -322,11 +310,9 @@ class _RegisterState extends State<Register> {
                   });
                 },
                 isSelected: isSelected,
-
-                color: const Color.fromARGB(
-                    255, 0, 0, 0), // Warna teks yang tidak dipilih
-                selectedColor: Colors.white, // Warna teks yang dipilih
-                fillColor: Colors.blue, // Warna background ketika dipilih
+                color: const Color.fromARGB(255, 0, 0, 0),
+                selectedColor: Colors.white,
+                fillColor: Colors.blue,
                 children: const <Widget>[
                   Padding(
                     padding:
@@ -374,7 +360,7 @@ class _RegisterState extends State<Register> {
                   ),
                   child: const Text(
                     'Daftar',
-                    style: TextStyle(fontSize: 20), // Mengatur ukuran teks
+                    style: TextStyle(fontSize: 17), // Mengatur ukuran teks
                   ),
                 ),
               ),
