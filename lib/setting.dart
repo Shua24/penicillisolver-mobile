@@ -107,12 +107,15 @@ class _PengaturanPageState extends State<PengaturanPage> {
                 padding: const EdgeInsets.symmetric(horizontal: 25.0),
                 child: ListView(
                   children: [
-                    _buildMenuItem(0, Icons.person, 'Pengaturan Akun'),
-                    _buildMenuItem(1, Icons.lock, 'Hak Akses'),
-                    _buildMenuItem(2, Icons.chat, 'Chat'),
-                    _buildMenuItem(3, Icons.notifications, 'Notifikasi'),
-                    _buildMenuItem(4, Icons.language, 'Bahasa'),
-                    _buildMenuItem(5, Icons.help_outline, 'Bantuan'),
+                    _buildMenuItem(0, Icons.person, 'Pengaturan Akun',
+                        onTap: () {}),
+                    _buildMenuItem(1, Icons.lock, 'Hak Akses', onTap: () {}),
+                    _buildMenuItem(2, Icons.chat, 'Chat', onTap: () {}),
+                    _buildMenuItem(3, Icons.notifications, 'Notifikasi',
+                        onTap: () {}),
+                    _buildMenuItem(4, Icons.language, 'Bahasa', onTap: () {}),
+                    _buildMenuItem(5, Icons.help_outline, 'Bantuan',
+                        onTap: () {}),
                     _buildMenuItem(6, Icons.exit_to_app, 'Keluar Akun',
                         onTap: () {
                       _showLogoutConfirmation(context);
