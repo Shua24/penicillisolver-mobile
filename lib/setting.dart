@@ -1,8 +1,8 @@
-// ignore_for_file: library_private_types_in_public_api, use_build_context_synchronously
+// ignore_for_file: library_private_types_in_public_api
 
 import 'package:flutter/material.dart';
 import 'package:penicillisolver/MainMenu.dart';
-import 'package:penicillisolver/register.dart';
+import 'package:penicillisolver/PengaturanAkun.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -108,7 +108,14 @@ class _PengaturanPageState extends State<PengaturanPage> {
                 child: ListView(
                   children: [
                     _buildMenuItem(0, Icons.person, 'Pengaturan Akun',
-                        onTap: () {}),
+                        onTap: () {
+                        Future.delayed(const Duration(milliseconds: 500), () {
+                          Navigator.of(context).pushReplacement(
+                            MaterialPageRoute(
+                                builder: (context) => PengaturanAkun()), // Tanda const ditambahkan jika perlu
+                          );
+                        });
+                      }),
                     _buildMenuItem(1, Icons.lock, 'Hak Akses', onTap: () {}),
                     _buildMenuItem(2, Icons.chat, 'Chat', onTap: () {}),
                     _buildMenuItem(3, Icons.notifications, 'Notifikasi',
@@ -217,7 +224,6 @@ class _PengaturanPageState extends State<PengaturanPage> {
     );
   }
 
-  // Fungsi untuk membuat ikon navigasi di Bottom Navigation Bar
   Widget _buildBottomNavIcon(
       BuildContext context, IconData icon, VoidCallback onTap) {
     return Material(
@@ -237,7 +243,6 @@ class _PengaturanPageState extends State<PengaturanPage> {
     );
   }
 
-  // Fungsi untuk menunjukkan dialog konfirmasi keluar akun
   void _showLogoutConfirmation(BuildContext context) {
     showDialog(
       context: context,
@@ -257,7 +262,7 @@ class _PengaturanPageState extends State<PengaturanPage> {
                 Future.delayed(const Duration(milliseconds: 500), () {
                   Navigator.of(context).pushReplacement(
                     MaterialPageRoute(
-                        builder: (context) => const LoadingPage()),
+                        builder: (context) => const MainMenu()), // Ganti dengan halaman yang tepat jika tidak ingin MainMenu
                   );
                 });
               },
