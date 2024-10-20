@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:penicillisolver/login.dart';
+import 'package:penicillisolver/theme.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 void main() {
@@ -13,8 +14,9 @@ class Landing extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: LoadingPage(),
+    return MaterialApp(
+      home: const LoadingPage(),
+      theme: AppTheme.lightTheme,
     );
   }
 }
@@ -63,7 +65,11 @@ class _LoadingPageState extends State<LoadingPage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Image.asset('assets/logo2.png'),
+            Image.asset(
+              'assets/logo2.png',
+              width: 333,
+              height: 333,
+            ), // TODO: Ganti size
             const SizedBox(height: 20),
           ],
         ),

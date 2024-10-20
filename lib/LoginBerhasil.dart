@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:penicillisolver/MainMenu.dart';
+import 'package:penicillisolver/theme.dart';
 
 void main() {
   runApp(const Selamat());
@@ -12,8 +13,9 @@ class Selamat extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: LoginBerhasil(),
+    return MaterialApp(
+      home: const LoginBerhasil(),
+      theme: AppTheme.lightTheme,
     );
   }
 }
