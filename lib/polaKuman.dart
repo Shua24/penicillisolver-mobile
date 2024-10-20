@@ -12,7 +12,7 @@ class Polakuman extends StatelessWidget {
     return Scaffold(
       body: Column(
         children: [
-          // Tomnol kembali
+          // Tombol kembali
           Container(
             margin: const EdgeInsets.fromLTRB(0, 45, 0, 0),
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 25),

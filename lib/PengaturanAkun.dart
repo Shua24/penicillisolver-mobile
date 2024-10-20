@@ -7,7 +7,8 @@ class PengaturanAkun extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData(
-        textTheme: GoogleFonts.poppinsTextTheme(), // font Poppins untuk semua teks
+        textTheme:
+            GoogleFonts.poppinsTextTheme(), // font Poppins untuk semua teks
       ),
       home: AccountSettingsPage(),
     );
@@ -23,7 +24,8 @@ class AccountSettingsPage extends StatelessWidget {
         title: Text("Akun dan Keamanan", style: TextStyle(color: Colors.white)),
         centerTitle: true, // Memposisikan teks di tengah
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.white), // Ikon kembali warna putih
+          icon: Icon(Icons.arrow_back,
+              color: Colors.white), // Ikon kembali warna putih
           onPressed: () {
             Navigator.pop(context); // untuk kembali ke halaman sebelumnya
           },
@@ -77,7 +79,8 @@ class AccountSettingsPage extends StatelessWidget {
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => VerifikasiSidikJari()),
+                  MaterialPageRoute(
+                      builder: (context) => VerifikasiSidikJari()),
                 );
               },
             ),
@@ -87,7 +90,8 @@ class AccountSettingsPage extends StatelessWidget {
     );
   }
 
-  Widget _buildListTile({required String title, Widget? trailing, required VoidCallback onTap}) {
+  Widget _buildListTile(
+      {required String title, Widget? trailing, required VoidCallback onTap}) {
     return ListTile(
       title: Text(title),
       trailing: trailing ?? Icon(Icons.chevron_right),
@@ -95,7 +99,10 @@ class AccountSettingsPage extends StatelessWidget {
     );
   }
 
-  Widget _buildDetailTile({required String title, required String detail, required VoidCallback onTap}) {
+  Widget _buildDetailTile(
+      {required String title,
+      required String detail,
+      required VoidCallback onTap}) {
     return ListTile(
       title: Text(title),
       subtitle: Text(detail),
@@ -171,7 +178,8 @@ class _EditProfilPageState extends State<EditProfilPage> {
                 child: ClipOval(
                   child: Image.asset(
                     "assets/profile.png", // Gambar profil
-                    fit: BoxFit.cover, // Buat gambar memenuhi container secara proporsional
+                    fit: BoxFit
+                        .cover, // Buat gambar memenuhi container secara proporsional
                     width: 120,
                     height: 120,
                   ),
@@ -203,7 +211,8 @@ class _EditProfilPageState extends State<EditProfilPage> {
               },
             ),
             ListTile(
-              title: Text("Tanggal Lahir: ${DateFormat('dd/MM/yyyy').format(_selectedDate)}"),
+              title: Text(
+                  "Tanggal Lahir: ${DateFormat('dd/MM/yyyy').format(_selectedDate)}"),
               trailing: Icon(Icons.calendar_today),
               onTap: () {
                 _selectDate(context);
@@ -224,7 +233,8 @@ class _EditProfilPageState extends State<EditProfilPage> {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => VerifikasiKeamananPage()),
+                  MaterialPageRoute(
+                      builder: (context) => VerifikasiKeamananPage()),
                 );
               },
               child: Text("Lanjut"),

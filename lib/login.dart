@@ -35,25 +35,13 @@ class _LoginState extends State<LoginScreen> {
       },
       child: Scaffold(
         backgroundColor: Colors.white,
-        appBar: AppBar(
-          leading: IconButton(
-            icon: const Icon(Icons.arrow_back), // Ikon untuk tombol kembali
-            onPressed: () {
-              // Mengarahkan ke halaman RegisterScreen
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(builder: (context) => const Register()),
-              );
-            },
-          ),
-        ),
         body: SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.all(20.0),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                const SizedBox(height: 30),
+                const SizedBox(height: 56),
                 const Text(
                   'Masuk',
                   style: TextStyle(
