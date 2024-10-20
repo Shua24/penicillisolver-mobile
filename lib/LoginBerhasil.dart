@@ -31,24 +31,20 @@ class _LoginBerhasilState extends State<LoginBerhasil> {
   @override
   void initState() {
     super.initState();
-    // Menunggu 5 detik sebelum berpindah halaman
-    Future.delayed(const Duration(seconds: 3), () {
+    Future.delayed(const Duration(seconds: 1), () {
       Navigator.pushReplacement(
         context,
         PageRouteBuilder(
-          transitionDuration:
-              const Duration(milliseconds: 600), // Durasi transisi
+          transitionDuration: const Duration(milliseconds: 600),
           pageBuilder: (context, animation, secondaryAnimation) =>
-              const MainMenu(), // Pastikan class Register sudah ada
+              const MainMenu(),
           transitionsBuilder: (context, animation, secondaryAnimation, child) {
-            const begin = Offset(1.0, 0.0); // Mulai dari kanan
+            const begin = Offset(1.0, 0.0);
             const end = Offset.zero;
             const curve = Curves.ease;
-
             var tween =
                 Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
             var offsetAnimation = animation.drive(tween);
-
             return SlideTransition(
               position: offsetAnimation,
               child: child,
