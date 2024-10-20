@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:penicillisolver/MainMenu.dart';
+import 'package:penicillisolver/setting.dart';
 import 'theme.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: AppTheme.lightTheme,
+      home: const MainMenu(),
     );
   }
 }
@@ -19,14 +21,48 @@ class AntibioticQuery extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Cari berdasarkan Pola Kuman'),
-        centerTitle: true,
-      ),
       body: Center(
         child: Column(
-          mainAxisSize: MainAxisSize.min,
           children: [
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 25),
+              decoration: const BoxDecoration(
+                color: Color.fromARGB(255, 0, 155, 226),
+              ),
+              child: Row(
+                children: [
+                  IconButton(
+                    icon: const Icon(
+                      Icons.chevron_left,
+                      color: Color.fromARGB(255, 255, 255, 255),
+                      size: 35,
+                    ),
+                    onPressed: () {
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const MainMenu()),
+                      );
+                    },
+                  ),
+                  Expanded(
+                    child: Container(
+                      margin: const EdgeInsets.only(right: 20),
+                      child: const Text(
+                        'Cari Antibiotik',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          color: Color.fromARGB(255, 255, 255, 255),
+                          fontSize: 25,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 100),
             const Text('Cari antibiotik berdasarkan pola kuman'),
             const SizedBox(height: 20),
             const SizedBox(
@@ -41,9 +77,99 @@ class AntibioticQuery extends StatelessWidget {
             const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
-                const Text('');
+                // Add your button action here
               },
               child: const Text('Cari'),
+            ),
+          ],
+        ),
+      ),
+      bottomNavigationBar: Container(
+        margin: const EdgeInsets.all(16),
+        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 10),
+        decoration: BoxDecoration(
+          color: const Color.fromARGB(255, 0, 155, 226),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.3),
+              spreadRadius: 3,
+              blurRadius: 5,
+              offset: const Offset(1, 1),
+            ),
+          ],
+          borderRadius: BorderRadius.circular(30),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            // Tombol Home dengan efek ripple
+            Material(
+              color: Colors.transparent,
+              child: InkWell(
+                borderRadius: BorderRadius.circular(30),
+                onTap: () {
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const MainMenu(),
+                    ),
+                  );
+                },
+                child: Container(
+                  padding: const EdgeInsets.all(8),
+                  child: const Icon(
+                    Icons.home_outlined,
+                    color: Colors.white,
+                    size: 30,
+                  ),
+                ),
+              ),
+            ),
+            // Tombol Assignment dengan efek ripple
+            Material(
+              color: Colors.transparent,
+              child: InkWell(
+                borderRadius: BorderRadius.circular(30),
+                onTap: () {
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const AntibioticQuery(),
+                    ),
+                  );
+                },
+                child: Container(
+                  padding: const EdgeInsets.all(8),
+                  child: const Icon(
+                    Icons.assignment_outlined,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+            ),
+            // Tombol Settings dengan efek ripple
+            Material(
+              color: Colors.transparent,
+              child: InkWell(
+                borderRadius: BorderRadius.circular(30),
+                onTap: () {
+                  Future.delayed(const Duration(milliseconds: 0), () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const PengaturanPage(),
+                      ),
+                    );
+                  });
+                },
+                child: Container(
+                  padding: const EdgeInsets.all(8),
+                  child: const Icon(
+                    Icons.settings_outlined,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
             ),
           ],
         ),
