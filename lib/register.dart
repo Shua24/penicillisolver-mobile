@@ -313,6 +313,11 @@ class _RegisterState extends State<Register> {
                 color: const Color.fromARGB(255, 0, 0, 0),
                 selectedColor: Colors.white,
                 fillColor: Colors.blue,
+                constraints: const BoxConstraints(
+                  minWidth: 110,
+                  minHeight: 40,
+                ),
+                borderRadius: BorderRadius.circular(8),
                 children: const <Widget>[
                   Padding(
                     padding:

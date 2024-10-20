@@ -21,26 +21,13 @@ class Verifikasi extends StatelessWidget {
       },
       child: Scaffold(
         backgroundColor: Colors.white, // Ubah background menjadi putih
-        appBar: AppBar(
-          leading: IconButton(
-            icon: const Icon(Icons.arrow_back), // Ikon untuk tombol kembali
-            onPressed: () {
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                    builder: (context) =>
-                        const Lupa()), // Mengarahkan ke halaman Lupa
-              );
-            },
-          ),
-        ),
         body: SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.all(20.0),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                const SizedBox(height: 0),
+                const SizedBox(height: 56),
                 const Text(
                   'Verifikasi',
                   style: TextStyle(
