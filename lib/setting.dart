@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:penicillisolver/MainMenu.dart';
 import 'package:penicillisolver/PengaturanAkun.dart';
+import 'package:penicillisolver/theme.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -11,10 +12,11 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-        scaffoldBackgroundColor: Colors.white,
-      ),
+      // theme: ThemeData(
+      //   primarySwatch: Colors.blue,
+      //   scaffoldBackgroundColor: Colors.white,
+      // ),
+      theme: AppTheme.lightTheme,
       home: const PengaturanPage(),
     );
   }
@@ -109,13 +111,14 @@ class _PengaturanPageState extends State<PengaturanPage> {
                   children: [
                     _buildMenuItem(0, Icons.person, 'Pengaturan Akun',
                         onTap: () {
-                        Future.delayed(const Duration(milliseconds: 500), () {
-                          Navigator.of(context).pushReplacement(
-                            MaterialPageRoute(
-                                builder: (context) => PengaturanAkun()), // Tanda const ditambahkan jika perlu
-                          );
-                        });
-                      }),
+                      Future.delayed(const Duration(milliseconds: 500), () {
+                        Navigator.of(context).pushReplacement(
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  PengaturanAkun()), // Tanda const ditambahkan jika perlu
+                        );
+                      });
+                    }),
                     _buildMenuItem(1, Icons.lock, 'Hak Akses', onTap: () {}),
                     _buildMenuItem(2, Icons.chat, 'Chat', onTap: () {}),
                     _buildMenuItem(3, Icons.notifications, 'Notifikasi',
@@ -250,6 +253,7 @@ class _PengaturanPageState extends State<PengaturanPage> {
         return AlertDialog(
           title: const Text('Konfirmasi'),
           content: const Text('Anda yakin ingin keluar dari akun?'),
+          backgroundColor: Colors.white,
           actions: [
             TextButton(
               onPressed: () {
@@ -262,7 +266,8 @@ class _PengaturanPageState extends State<PengaturanPage> {
                 Future.delayed(const Duration(milliseconds: 500), () {
                   Navigator.of(context).pushReplacement(
                     MaterialPageRoute(
-                        builder: (context) => const MainMenu()), // Ganti dengan halaman yang tepat jika tidak ingin MainMenu
+                        builder: (context) =>
+                            const MainMenu()), // Ganti dengan halaman yang tepat jika tidak ingin MainMenu
                   );
                 });
               },
