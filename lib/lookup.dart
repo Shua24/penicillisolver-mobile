@@ -59,6 +59,12 @@ class AntibioticQuery extends StatelessWidget {
                       ),
                     ),
                   ),
+                  const CircleAvatar(
+                    radius: 20,
+                    backgroundColor: Color.fromARGB(0, 255, 255, 255),
+                    child: Icon(Icons.person,
+                        size: 40, color: Color.fromARGB(0, 255, 255, 255)),
+                  ),
                 ],
               ),
             ),

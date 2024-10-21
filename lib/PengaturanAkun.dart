@@ -17,10 +17,10 @@ class AccountSettingsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.blue, // Warna background AppBar biru
+        backgroundColor: Colors.blue,
         title: const Text("Akun dan Keamanan",
             style: TextStyle(color: Colors.white)),
-        centerTitle: true, // Memposisikan teks di tengah
+        centerTitle: true,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back,
               color: Colors.white), // Ikon kembali warna putih

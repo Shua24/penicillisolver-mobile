@@ -15,8 +15,8 @@ class Landing extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: const LoadingPage(),
       theme: AppTheme.lightTheme,
+      home: const LoadingPage(),
     );
   }
 }
