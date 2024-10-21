@@ -14,8 +14,8 @@ class Selamat extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: const LoginBerhasil(),
       theme: AppTheme.lightTheme,
+      home: const LoginBerhasil(),
     );
   }
 }

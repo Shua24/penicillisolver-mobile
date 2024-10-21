@@ -118,13 +118,12 @@ class _PengaturanPageState extends State<PengaturanPage> {
                       });
                     }),
                     _buildMenuItem(1, Icons.lock, 'Hak Akses', onTap: () {}),
-                    _buildMenuItem(2, Icons.chat, 'Chat', onTap: () {}),
-                    _buildMenuItem(3, Icons.notifications, 'Notifikasi',
+                    _buildMenuItem(2, Icons.notifications, 'Notifikasi',
                         onTap: () {}),
-                    _buildMenuItem(4, Icons.language, 'Bahasa', onTap: () {}),
-                    _buildMenuItem(5, Icons.help_outline, 'Bantuan',
+                    _buildMenuItem(3, Icons.language, 'Bahasa', onTap: () {}),
+                    _buildMenuItem(4, Icons.help_outline, 'Bantuan',
                         onTap: () {}),
-                    _buildMenuItem(6, Icons.exit_to_app, 'Keluar Akun',
+                    _buildMenuItem(5, Icons.exit_to_app, 'Keluar Akun',
                         onTap: () {
                       _showLogoutConfirmation(context);
                     }),
