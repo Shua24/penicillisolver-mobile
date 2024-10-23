@@ -22,7 +22,7 @@ class AntibioticQuery extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Cari berdasarkan Bakteri'),
+        title: const Text('Cari berdasarkan Penyakit'),
         centerTitle: true,
       ),
       body: Center(
