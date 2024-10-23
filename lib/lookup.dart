@@ -21,10 +21,6 @@ class AntibioticQuery extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Cari berdasarkan Penyakit'),
-        centerTitle: true,
-      ),
       body: Center(
         child: Column(
           children: [
@@ -73,13 +69,13 @@ class AntibioticQuery extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 100),
-            const Text('Cari antibiotik berdasarkan pola kuman'),
+            const Text('Cari antibiotik berdasarkan Penyakit'),
             const SizedBox(height: 20),
             const SizedBox(
               width: 400,
               child: TextField(
                 decoration: InputDecoration(
-                  labelText: 'Pastikan bakteri ada pada pola kuman',
+                  labelText: 'Pastikan penyakit ada pada tabel bakteri',
                   border: OutlineInputBorder(),
                 ),
               ),
@@ -87,7 +83,28 @@ class AntibioticQuery extends StatelessWidget {
             const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
-                // Add your button action here
+                showDialog<String>(
+                  context: context,
+                  builder: (BuildContext context) => const AlertDialog(
+                    title: Text('Antibiotik terbaik'),
+                    content: Column(
+                      mainAxisSize: MainAxisSize
+                          .min, // To make the column wrap its content
+                      crossAxisAlignment:
+                          CrossAxisAlignment.start, // Align items to the left
+                      children: [
+                        Text('Item 1'),
+                        SizedBox(height: 8), // Add space between items
+                        Text('Item 2'),
+                        SizedBox(height: 8),
+                        Text('Item 3'),
+                        SizedBox(height: 8),
+                        Text('Item 4'),
+                        // Add more plain text items as needed
+                      ],
+                    ),
+                  ),
+                );
               },
               child: const Text('Cari'),
             ),
