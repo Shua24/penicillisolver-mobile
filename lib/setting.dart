@@ -3,6 +3,8 @@
 import 'package:flutter/material.dart';
 import 'package:penicillisolver/MainMenu.dart';
 import 'package:penicillisolver/PengaturanAkun.dart';
+import 'package:penicillisolver/login.dart';
+import 'package:penicillisolver/lookup.dart';
 import 'package:penicillisolver/theme.dart';
 
 class MyApp extends StatelessWidget {
@@ -12,10 +14,6 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      // theme: ThemeData(
-      //   primarySwatch: Colors.blue,
-      //   scaffoldBackgroundColor: Colors.white,
-      // ),
       theme: AppTheme.lightTheme,
       home: const PengaturanPage(),
     );
@@ -120,13 +118,12 @@ class _PengaturanPageState extends State<PengaturanPage> {
                       });
                     }),
                     _buildMenuItem(1, Icons.lock, 'Hak Akses', onTap: () {}),
-                    _buildMenuItem(2, Icons.chat, 'Chat', onTap: () {}),
-                    _buildMenuItem(3, Icons.notifications, 'Notifikasi',
+                    _buildMenuItem(2, Icons.notifications, 'Notifikasi',
                         onTap: () {}),
-                    _buildMenuItem(4, Icons.language, 'Bahasa', onTap: () {}),
-                    _buildMenuItem(5, Icons.help_outline, 'Bantuan',
+                    _buildMenuItem(3, Icons.language, 'Bahasa', onTap: () {}),
+                    _buildMenuItem(4, Icons.help_outline, 'Bantuan',
                         onTap: () {}),
-                    _buildMenuItem(6, Icons.exit_to_app, 'Keluar Akun',
+                    _buildMenuItem(5, Icons.exit_to_app, 'Keluar Akun',
                         onTap: () {
                       _showLogoutConfirmation(context);
                     }),
@@ -163,16 +160,75 @@ class _PengaturanPageState extends State<PengaturanPage> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-            _buildBottomNavIcon(context, Icons.home_outlined, () {
-              Navigator.of(context).pushReplacement(
-                MaterialPageRoute(
-                  builder: (context) => const MainMenu(),
+            // Tombol Home dengan efek ripple
+            Material(
+              color: Colors.transparent,
+              child: InkWell(
+                borderRadius: BorderRadius.circular(30),
+                onTap: () {
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const MainMenu(),
+                    ),
+                  );
+                },
+                child: Container(
+                  padding: const EdgeInsets.all(8),
+                  child: const Icon(
+                    Icons.home_outlined,
+                    color: Colors.white,
+                    size: 30,
+                  ),
                 ),
-              );
-            }),
-            _buildBottomNavIcon(context, Icons.chat_bubble_outline, () {}),
-            _buildBottomNavIcon(context, Icons.assignment_outlined, () {}),
-            _buildBottomNavIcon(context, Icons.settings_outlined, () {}),
+              ),
+            ),
+            // Tombol Assignment dengan efek ripple
+            Material(
+              color: Colors.transparent,
+              child: InkWell(
+                borderRadius: BorderRadius.circular(30),
+                onTap: () {
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const AntibioticQuery(),
+                    ),
+                  );
+                },
+                child: Container(
+                  padding: const EdgeInsets.all(8),
+                  child: const Icon(
+                    Icons.assignment_outlined,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+            ),
+            // Tombol Settings dengan efek ripple
+            Material(
+              color: Colors.transparent,
+              child: InkWell(
+                borderRadius: BorderRadius.circular(30),
+                onTap: () {
+                  Future.delayed(const Duration(milliseconds: 0), () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const PengaturanPage(),
+                      ),
+                    );
+                  });
+                },
+                child: Container(
+                  padding: const EdgeInsets.all(8),
+                  child: const Icon(
+                    Icons.settings_outlined,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+            ),
           ],
         ),
       ),
@@ -227,25 +283,6 @@ class _PengaturanPageState extends State<PengaturanPage> {
     );
   }
 
-  Widget _buildBottomNavIcon(
-      BuildContext context, IconData icon, VoidCallback onTap) {
-    return Material(
-      color: Colors.transparent,
-      child: InkWell(
-        borderRadius: BorderRadius.circular(30),
-        onTap: onTap,
-        child: Container(
-          padding: const EdgeInsets.all(8),
-          child: Icon(
-            icon,
-            color: Colors.white,
-            size: 32,
-          ),
-        ),
-      ),
-    );
-  }
-
   void _showLogoutConfirmation(BuildContext context) {
     showDialog(
       context: context,
@@ -266,8 +303,7 @@ class _PengaturanPageState extends State<PengaturanPage> {
                 Future.delayed(const Duration(milliseconds: 500), () {
                   Navigator.of(context).pushReplacement(
                     MaterialPageRoute(
-                        builder: (context) =>
-                            const MainMenu()), // Ganti dengan halaman yang tepat jika tidak ingin MainMenu
+                        builder: (context) => const LoginScreen()),
                   );
                 });
               },

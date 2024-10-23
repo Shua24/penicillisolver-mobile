@@ -2,7 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:penicillisolver/verifikasiBerhasil.dart';
-import 'package:penicillisolver/lupa.dart'; // Pastikan mengimpor file lupa.dart
+import 'package:penicillisolver/lupa.dart';
 
 class Verifikasi extends StatelessWidget {
   const Verifikasi({super.key});
@@ -14,13 +14,12 @@ class Verifikasi extends StatelessWidget {
         // Mengizinkan navigasi kembali
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(
-              builder: (context) => const Lupa()), // Kembali ke halaman Lupa
+          MaterialPageRoute(builder: (context) => const Lupa()),
         );
-        return false; // Mencegah navigasi kembali ke halaman ini
+        return false;
       },
       child: Scaffold(
-        backgroundColor: Colors.white, // Ubah background menjadi putih
+        backgroundColor: Colors.white,
         body: SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.all(20.0),
@@ -42,7 +41,7 @@ class Verifikasi extends StatelessWidget {
                     height: 150,
                     child: Image.asset(
                       'assets/notif.gif',
-                    ), // Ganti dengan logo yang sesuai
+                    ),
                   ),
                 ),
                 const SizedBox(height: 50),
@@ -83,7 +82,7 @@ class Verifikasi extends StatelessWidget {
                 const SizedBox(height: 50),
                 SizedBox(
                   width: 350,
-                  height: 50, // Mengatur lebar tombol
+                  height: 50,
                   child: ElevatedButton(
                     onPressed: () {
                       Future.delayed(const Duration(milliseconds: 500), () {
@@ -92,7 +91,6 @@ class Verifikasi extends StatelessWidget {
                               builder: (context) => const Berhasil()),
                         );
                       });
-                      // Aksi ketika tombol ditekan
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor:

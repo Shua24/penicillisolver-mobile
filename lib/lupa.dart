@@ -2,7 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:penicillisolver/verifikasi.dart';
-import 'package:penicillisolver/login.dart'; // Pastikan mengimpor file login.dart
+import 'package:penicillisolver/login.dart';
 
 class Lupa extends StatelessWidget {
   const Lupa({super.key});
@@ -14,9 +14,7 @@ class Lupa extends StatelessWidget {
         // Mengizinkan navigasi kembali
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(
-              builder: (context) =>
-                  const LoginScreen()), // Kembali ke halaman Login
+          MaterialPageRoute(builder: (context) => const LoginScreen()),
         );
         return false; // Mencegah navigasi kembali ke halaman ini
       },
@@ -25,13 +23,11 @@ class Lupa extends StatelessWidget {
         appBar: AppBar(
           backgroundColor: Colors.white,
           leading: IconButton(
-            icon: const Icon(Icons.arrow_back), // Ikon untuk tombol kembali
+            icon: const Icon(Icons.arrow_back),
             onPressed: () {
               Navigator.pushReplacement(
                 context,
-                MaterialPageRoute(
-                    builder: (context) =>
-                        const LoginScreen()), // Mengarahkan ke halaman Login
+                MaterialPageRoute(builder: (context) => const LoginScreen()),
               );
             },
           ),
@@ -52,7 +48,7 @@ class Lupa extends StatelessWidget {
                 ),
                 const SizedBox(height: 0),
                 Transform.translate(
-                  offset: const Offset(90, 10), // Geser 50 piksel ke atas
+                  offset: const Offset(90, 10),
                   child: SizedBox(
                     width: 700,
                     height: 250,
@@ -107,13 +103,11 @@ class Lupa extends StatelessWidget {
                           MaterialPageRoute(
                               builder: (context) => const Verifikasi()),
                         );
-                      }); // Aksi ketika tombol ditekan
+                      });
                     },
                     style: ElevatedButton.styleFrom(
-                      backgroundColor:
-                          Colors.blue, // Mengatur warna latar belakang tombol
-                      foregroundColor:
-                          Colors.white, // Mengatur warna teks tombol
+                      backgroundColor: Colors.blue,
+                      foregroundColor: Colors.white,
                     ),
                     child: const Text(
                       'Verifikasi',

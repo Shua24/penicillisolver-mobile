@@ -5,7 +5,6 @@ import 'package:penicillisolver/LoginBerhasil.dart';
 import 'package:penicillisolver/lupa.dart';
 import 'package:penicillisolver/register.dart';
 import 'package:url_launcher/url_launcher.dart';
-// Tambahkan import ini untuk url_launcher
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -15,12 +14,11 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginState extends State<LoginScreen> {
-  bool _obscureText1 = true; // Untuk Kata Sandi
-  List<bool> isSelected = [true, false, false, false]; // Untuk pilihan tim
+  bool _obscureText1 = true;
+  List<bool> isSelected = [true, false, false, false];
 
-  // Fungsi untuk membuka URL
   Future<void> _launchURL(String url) async {
-    final Uri uri = Uri.parse(url); // Mengubah URL menjadi objek Uri
+    final Uri uri = Uri.parse(url);
     if (!await launchUrl(uri)) {
       throw 'Could not launch $url';
     }
@@ -30,8 +28,7 @@ class _LoginState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async {
-        // Mengizinkan navigasi kembali
-        return true; // Kembali ke halaman sebelumnya
+        return true;
       },
       child: Scaffold(
         backgroundColor: Colors.white,
@@ -56,7 +53,7 @@ class _LoginState extends State<LoginScreen> {
                     height: 150,
                     child: Image.asset(
                       'assets/logo1.png',
-                    ), // Ubah ke logo yang sesuai
+                    ),
                   ),
                 ),
                 const SizedBox(height: 25),
@@ -96,7 +93,6 @@ class _LoginState extends State<LoginScreen> {
                     ),
                   ),
                 ),
-
                 const SizedBox(height: 15),
 
                 // Password Input Field
@@ -140,18 +136,16 @@ class _LoginState extends State<LoginScreen> {
                       ),
                       onPressed: () {
                         setState(() {
-                          _obscureText1 = !_obscureText1; // Toggle visibility
+                          _obscureText1 = !_obscureText1;
                         });
                       },
                     ),
                   ),
                 ),
                 const SizedBox(height: 35),
-
-                // Tombol Masuk
                 SizedBox(
                   width: 400,
-                  height: 50, // Mengatur lebar tombol
+                  height: 50,
                   child: ElevatedButton(
                     onPressed: () {
                       Future.delayed(const Duration(milliseconds: 500), () {
@@ -160,7 +154,6 @@ class _LoginState extends State<LoginScreen> {
                               builder: (context) => const LoginBerhasil()),
                         );
                       });
-                      // Aksi ketika tombol ditekan
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor:
@@ -170,7 +163,7 @@ class _LoginState extends State<LoginScreen> {
                     ),
                     child: const Text(
                       'Masuk',
-                      style: TextStyle(fontSize: 17), // Mengatur ukuran teks
+                      style: TextStyle(fontSize: 17),
                     ),
                   ),
                 ),
@@ -208,8 +201,7 @@ class _LoginState extends State<LoginScreen> {
                   children: [
                     const Text(
                       'Sudah Punya Akun ?',
-                      style: TextStyle(
-                          fontSize: 17), // Ukuran teks untuk pertanyaan
+                      style: TextStyle(fontSize: 17),
                     ),
                     const SizedBox(width: 5),
                     GestureDetector(
@@ -236,8 +228,7 @@ class _LoginState extends State<LoginScreen> {
                 const SizedBox(height: 30),
                 const Text(
                   'Atau Lanjutkan Dengan :',
-                  style:
-                      TextStyle(fontSize: 16), // Ukuran teks untuk pertanyaan
+                  style: TextStyle(fontSize: 16),
                 ),
                 const SizedBox(height: 20),
 

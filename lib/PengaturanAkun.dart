@@ -1,15 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart'; // untuk tanggal
-import 'package:google_fonts/google_fonts.dart'; // untuk font Poppins
+import 'package:intl/intl.dart';
+import 'package:penicillisolver/theme.dart';
 
 class PengaturanAkun extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme: ThemeData(
-        textTheme:
-            GoogleFonts.poppinsTextTheme(), // font Poppins untuk semua teks
-      ),
+      theme: AppTheme.lightTheme,
       home: AccountSettingsPage(),
     );
   }
@@ -20,11 +17,12 @@ class AccountSettingsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.blue, // Warna background AppBar biru
-        title: Text("Akun dan Keamanan", style: TextStyle(color: Colors.white)),
-        centerTitle: true, // Memposisikan teks di tengah
+        backgroundColor: Colors.blue,
+        title: const Text("Akun dan Keamanan",
+            style: TextStyle(color: Colors.white)),
+        centerTitle: true,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back,
+          icon: const Icon(Icons.arrow_back,
               color: Colors.white), // Ikon kembali warna putih
           onPressed: () {
             Navigator.pop(context); // untuk kembali ke halaman sebelumnya
@@ -32,7 +30,7 @@ class AccountSettingsPage extends StatelessWidget {
         ),
       ),
       body: SingleChildScrollView(
-        padding: EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -45,25 +43,25 @@ class AccountSettingsPage extends StatelessWidget {
                 );
               },
             ),
-            Divider(),
+            const Divider(),
             _buildDetailTile(
               title: "Username",
               detail: "joshua",
               onTap: () {},
             ),
-            Divider(),
+            const Divider(),
             _buildDetailTile(
               title: "No. Handphone",
               detail: "+62 1234567890",
               onTap: () {},
             ),
-            Divider(),
+            const Divider(),
             _buildDetailTile(
               title: "Email",
               detail: "joshua123@gmail.com",
               onTap: () {},
             ),
-            Divider(),
+            const Divider(),
             _buildListTile(
               title: "Akun Media Sosial",
               onTap: () {
@@ -73,7 +71,7 @@ class AccountSettingsPage extends StatelessWidget {
                 );
               },
             ),
-            Divider(),
+            const Divider(),
             _buildListTile(
               title: "Verifikasi Sidik Jari",
               onTap: () {
@@ -94,7 +92,7 @@ class AccountSettingsPage extends StatelessWidget {
       {required String title, Widget? trailing, required VoidCallback onTap}) {
     return ListTile(
       title: Text(title),
-      trailing: trailing ?? Icon(Icons.chevron_right),
+      trailing: trailing ?? const Icon(Icons.chevron_right),
       onTap: onTap,
     );
   }
@@ -106,7 +104,7 @@ class AccountSettingsPage extends StatelessWidget {
     return ListTile(
       title: Text(title),
       subtitle: Text(detail),
-      trailing: Icon(Icons.chevron_right),
+      trailing: const Icon(Icons.chevron_right),
       onTap: onTap,
     );
   }
@@ -186,18 +184,18 @@ class _EditProfilPageState extends State<EditProfilPage> {
                 ),
               ),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             TextFormField(
               controller: _nameController,
-              decoration: InputDecoration(labelText: "Nama"),
+              decoration: const InputDecoration(labelText: "Nama"),
             ),
             TextFormField(
               controller: _bioController,
-              decoration: InputDecoration(labelText: "Bio"),
+              decoration: const InputDecoration(labelText: "Bio"),
             ),
             DropdownButtonFormField<String>(
               value: _gender,
-              decoration: InputDecoration(labelText: "Jenis Kelamin"),
+              decoration: const InputDecoration(labelText: "Jenis Kelamin"),
               items: ["Pria", "Wanita"].map((String value) {
                 return DropdownMenuItem<String>(
                   value: value,
@@ -213,31 +211,31 @@ class _EditProfilPageState extends State<EditProfilPage> {
             ListTile(
               title: Text(
                   "Tanggal Lahir: ${DateFormat('dd/MM/yyyy').format(_selectedDate)}"),
-              trailing: Icon(Icons.calendar_today),
+              trailing: const Icon(Icons.calendar_today),
               onTap: () {
                 _selectDate(context);
               },
             ),
             TextFormField(
               controller: _phoneController,
-              decoration: InputDecoration(labelText: "Nomor Handphone"),
+              decoration: const InputDecoration(labelText: "Nomor Handphone"),
               keyboardType: TextInputType.phone,
             ),
             TextFormField(
               controller: _emailController,
-              decoration: InputDecoration(labelText: "Email"),
+              decoration: const InputDecoration(labelText: "Email"),
               keyboardType: TextInputType.emailAddress,
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => VerifikasiKeamananPage()),
+                      builder: (context) => const VerifikasiKeamananPage()),
                 );
               },
-              child: Text("Lanjut"),
+              child: const Text("Lanjut"),
             ),
           ],
         ),
@@ -248,32 +246,34 @@ class _EditProfilPageState extends State<EditProfilPage> {
 
 // Halaman Verifikasi Keamanan
 class VerifikasiKeamananPage extends StatelessWidget {
+  const VerifikasiKeamananPage({super.key}); // Menambahkan key ke constructor
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Pemeriksaan Keamanan"),
+        title: const Text("Pemeriksaan Keamanan"),
         backgroundColor: Colors.blue,
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
-            Text(
+            const Text(
               "Untuk keamanan akun, mohon verifikasi identitas kamu dengan salah satu cara di bawah ini.",
               textAlign: TextAlign.center,
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             ListTile(
-              leading: Icon(Icons.message, color: Colors.blue),
-              title: Text("Verifikasi dengan OTP SMS"),
+              leading: const Icon(Icons.message, color: Colors.blue),
+              title: const Text("Verifikasi dengan OTP SMS"),
               onTap: () {
                 // untuk verifikasi dengan OTP
               },
             ),
             ListTile(
-              leading: Icon(Icons.lock, color: Colors.blue),
-              title: Text("Verifikasi dengan PIN Aplikasi"),
+              leading: const Icon(Icons.lock, color: Colors.blue),
+              title: const Text("Verifikasi dengan PIN Aplikasi"),
               onTap: () {
                 // untuk verifikasi dengan PIN
               },
@@ -287,35 +287,40 @@ class VerifikasiKeamananPage extends StatelessWidget {
 
 // Halaman Akun Media Sosial
 class SocialMediaPage extends StatelessWidget {
+  const SocialMediaPage({super.key}); // Menambahkan key ke constructor
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Hubungkan Akun Media Sosial"),
+        title: const Text("Hubungkan Akun Media Sosial"),
         backgroundColor: Colors.blue,
       ),
       body: ListView(
         children: [
           ListTile(
-            leading: Icon(Icons.facebook, color: Colors.blue),
-            title: Text("Hubungkan Akun Facebook"),
-            trailing: Text("Pisahkan", style: TextStyle(color: Colors.red)),
+            leading: const Icon(Icons.facebook, color: Colors.blue),
+            title: const Text("Hubungkan Akun Facebook"),
+            trailing:
+                const Text("Pisahkan", style: TextStyle(color: Colors.red)),
             onTap: () {
               // untuk menghubungkan atau memisahkan akun Facebook
             },
           ),
           ListTile(
-            leading: Icon(Icons.camera_alt, color: Colors.purple),
-            title: Text("Hubungkan Akun Instagram"),
-            trailing: Text("Pisahkan", style: TextStyle(color: Colors.red)),
+            leading: const Icon(Icons.camera_alt, color: Colors.purple),
+            title: const Text("Hubungkan Akun Instagram"),
+            trailing:
+                const Text("Pisahkan", style: TextStyle(color: Colors.red)),
             onTap: () {
               // untuk menghubungkan atau memisahkan akun Instagram
             },
           ),
           ListTile(
-            leading: Icon(Icons.mail, color: Colors.red),
-            title: Text("Hubungkan Akun Google"),
-            trailing: Text("Pisahkan", style: TextStyle(color: Colors.red)),
+            leading: const Icon(Icons.mail, color: Colors.red),
+            title: const Text("Hubungkan Akun Google"),
+            trailing:
+                const Text("Pisahkan", style: TextStyle(color: Colors.red)),
             onTap: () {
               // untuk menghubungkan atau memisahkan akun Google
             },
@@ -328,11 +333,12 @@ class SocialMediaPage extends StatelessWidget {
 
 // Halaman Verifikasi Sidik Jari
 class VerifikasiSidikJari extends StatelessWidget {
+  const VerifikasiSidikJari({super.key});
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Verifikasi Sidik Jari"),
+        title: const Text("Verifikasi Sidik Jari"),
         backgroundColor: Colors.blue,
       ),
       body: Center(
@@ -342,28 +348,28 @@ class VerifikasiSidikJari extends StatelessWidget {
               context: context,
               builder: (BuildContext context) {
                 return AlertDialog(
-                  title: Text("Izinkan Biometrik"),
-                  content: Text(
+                  title: const Text("Izinkan Biometrik"),
+                  content: const Text(
                       "Untuk mengubah verifikasi biometrik, kami perlu memerlukan izinmu terlebih dahulu. Pindai sidik jari."),
                   actions: [
                     TextButton(
                       onPressed: () {
                         Navigator.pop(context); // Jika dibatalkan
                       },
-                      child: Text("Batal"),
+                      child: const Text("Batal"),
                     ),
                     ElevatedButton(
                       onPressed: () {
                         // untuk memverifikasi sidik jari
                       },
-                      child: Text("Pindai Sidik Jari"),
+                      child: const Text("Pindai Sidik Jari"),
                     ),
                   ],
                 );
               },
             );
           },
-          child: Text("Verifikasi Sidik Jari"),
+          child: const Text("Verifikasi Sidik Jari"),
         ),
       ),
     );
