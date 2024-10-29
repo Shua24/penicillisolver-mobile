@@ -108,7 +108,10 @@ class AntibioticQuery extends StatelessWidget {
                   ),
                 );
               },
-              child: const Text('Cari'),
+              child: const Text(
+                'Cari',
+                style: TextStyle(fontSize: 17),
+              ),
             ),
           ],
         ),

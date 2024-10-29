@@ -1,10 +1,9 @@
-// ignore_for_file: deprecated_member_use, use_build_context_synchronously
+// ignore_for_file: deprecated_member_use, use_build_context_synchronously, unused_element
 
 import 'package:flutter/material.dart';
 import 'package:penicillisolver/MainMenu.dart';
 import 'package:penicillisolver/lupa.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:flutter/services.dart';
 import 'dart:math';
 
 class Verifikasi extends StatefulWidget {
@@ -140,7 +139,7 @@ class _VerifikasiState extends State<Verifikasi> {
           );
         }
 
-        await Future.delayed(const Duration(milliseconds: 1000));
+        await Future.delayed(const Duration(milliseconds: 1500));
         if (mounted) {
           Navigator.of(context).pushReplacement(
             MaterialPageRoute(builder: (context) => const MainMenu()),
@@ -180,7 +179,7 @@ class _VerifikasiState extends State<Verifikasi> {
     } finally {
       if (mounted) {
         setState(() {
-          isLoading = false;
+          isLoading = true;
         });
       }
     }
@@ -224,9 +223,14 @@ class _VerifikasiState extends State<Verifikasi> {
                 ),
                 const SizedBox(height: 50),
                 const Center(
-                  child: Text(
-                    'Kami akan mengirimkan kode untuk verifikasi ke',
-                    style: TextStyle(fontSize: 16),
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(
+                        vertical: 20.0), // Sesuaikan padding sesuai kebutuhan
+                    child: Text(
+                      'Kami akan mengirimkan kode untuk verifikasi ke :',
+                      style: TextStyle(fontSize: 16),
+                      textAlign: TextAlign.center, // Untuk memusatkan teks
+                    ),
                   ),
                 ),
                 const Text(
@@ -241,35 +245,32 @@ class _VerifikasiState extends State<Verifikasi> {
                     (index) => SizedBox(
                       width: 70,
                       height: 70,
-                      child: RawKeyboardListener(
+                      child: TextField(
+                        controller: _controllers[index],
+                        textAlign: TextAlign.center,
+                        keyboardType: TextInputType.number,
+                        maxLength: 1,
+                        style: const TextStyle(
+                          fontSize: 25,
+                          fontWeight: FontWeight.bold,
+                        ),
+                        decoration: const InputDecoration(
+                          counterText: "",
+                          border: OutlineInputBorder(),
+                        ),
+                        // Menggunakan FocusNode untuk masing-masing TextField
                         focusNode: FocusNode(),
-                        onKey: (event) {
-                          if (event is RawKeyDownEvent &&
-                              event.logicalKey ==
-                                  LogicalKeyboardKey.backspace &&
-                              _controllers[index].text.isEmpty) {
-                            _moveFocus(index, true);
+                        onChanged: (value) {
+                          if (value.length == 1) {
+                            // Jika input memiliki panjang 1, pindah ke input berikutnya
+                            if (index < _controllers.length - 1) {
+                              FocusScope.of(context).nextFocus();
+                            }
+                          } else if (value.isEmpty && index > 0) {
+                            // Jika dihapus dan index bukan 0, pindah ke input sebelumnya
+                            FocusScope.of(context).previousFocus();
                           }
                         },
-                        child: TextField(
-                          controller: _controllers[index],
-                          textAlign: TextAlign.center,
-                          keyboardType: TextInputType.number,
-                          maxLength: 1,
-                          style: const TextStyle(
-                            fontSize: 25,
-                            fontWeight: FontWeight.bold,
-                          ),
-                          decoration: const InputDecoration(
-                            counterText: "",
-                            border: OutlineInputBorder(),
-                          ),
-                          onChanged: (value) {
-                            if (value.isNotEmpty) {
-                              _moveFocus(index, false);
-                            }
-                          },
-                        ),
                       ),
                     ),
                   ),

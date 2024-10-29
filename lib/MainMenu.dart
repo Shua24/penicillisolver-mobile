@@ -12,91 +12,100 @@ class MainMenu extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 16, vertical: 25),
-                decoration: const BoxDecoration(
-                  color: Color.fromARGB(255, 0, 155, 226),
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    const SizedBox(width: 48),
-                    const Text(
-                      'Menu',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        color: Color.fromARGB(255, 255, 255, 255),
-                        fontSize: 30,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                    ClipOval(
-                      child: Image.asset(
-                        'assets/user1.png',
-                        fit: BoxFit.cover,
-                        width: 40,
-                        height: 40,
-                      ),
-                    ),
-                  ],
-                ),
+        child: Column(
+          children: [
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 25),
+              decoration: const BoxDecoration(
+                color: Color.fromARGB(255, 0, 155, 226),
               ),
-              const SizedBox(height: 50),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(0, 15, 0, 0),
-                child: Container(
-                  width: double.infinity,
-                  padding: const EdgeInsets.symmetric(horizontal: 25.0),
-                  child: Column(
-                    children: [
-                      SizedBox(
-                        width: double.infinity,
-                        height: 300,
-                        child: Image.asset(
-                          'assets/polakuman.png',
-                          fit: BoxFit.contain,
-                        ),
-                      ),
-                      const SizedBox(height: 16),
-                      const Text(
-                        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 20,
-                          height: 1.5,
-                        ),
-                        textAlign: TextAlign.left,
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              const SizedBox(height: 200),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const Icon(
-                    Icons.info_outline,
-                    size: 20,
-                    color: Color.fromARGB(255, 0, 174, 255),
-                  ),
-                  const SizedBox(width: 8),
-                  Text(
-                    'Gunakan Web untuk membuka semua fitur',
+                  const SizedBox(width: 48),
+                  const Text(
+                    'Menu',
+                    textAlign: TextAlign.center,
                     style: TextStyle(
-                      color: Colors.grey[600],
-                      fontSize: 14,
+                      color: Color.fromARGB(255, 255, 255, 255),
+                      fontSize: 30,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  ClipOval(
+                    child: Image.asset(
+                      'assets/user1.png',
+                      fit: BoxFit.cover,
+                      width: 40,
+                      height: 40,
                     ),
                   ),
                 ],
               ),
-              const SizedBox(height: 15),
-            ],
-          ),
+            ),
+            const SizedBox(height: 10), // Adjusted spacing
+            Expanded(
+              child: SingleChildScrollView(
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(0, 15, 0, 0),
+                  child: Container(
+                    width: double.infinity,
+                    padding: const EdgeInsets.symmetric(horizontal: 25.0),
+                    child: Column(
+                      children: [
+                        SizedBox(
+                          width: double.infinity,
+                          height: 300,
+                          child: Image.asset(
+                            'assets/polakuman.png',
+                            fit: BoxFit.contain,
+                          ),
+                        ),
+                        const SizedBox(height: 16),
+                        const Text(
+                          'Pola kuman merujuk pada jenis dan distribusi mikroorganisme, terutama bakteri, '
+                          'yang ditemukan dalam lingkungan atau tubuh manusia, dan penting untuk diagnosa '
+                          'serta penanganan infeksi. Analisis pola ini membantu tenaga medis mengidentifikasi '
+                          'penyebab penyakit dan menentukan terapi yang tepat, dengan mempertimbangkan '
+                          'faktor-faktor seperti lokasi geografis dan kebiasaan penggunaan antibiotik. '
+                          'Pemahaman tentang pola kuman juga berkontribusi dalam pencegahan infeksi dan '
+                          'mengurangi risiko penyebaran bakteri resisten, sehingga meningkatkan kesehatan '
+                          'masyarakat secara keseluruhan. Penicillisolver menjadi solusi untuk para dokter '
+                          'agar mempermudah pencarian pola kuman.',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 20,
+                            height: 1.5,
+                          ),
+                          textAlign: TextAlign.left,
+                        ),
+                        const SizedBox(height: 200),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const Icon(
+                              Icons.info_outline,
+                              size: 20,
+                              color: Color.fromARGB(255, 0, 174, 255),
+                            ),
+                            const SizedBox(width: 8),
+                            Text(
+                              'Gunakan Web untuk membuka semua fitur',
+                              style: TextStyle(
+                                color: Colors.grey[600],
+                                fontSize: 14,
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 15),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ],
         ),
       ),
       bottomNavigationBar: Container(
