@@ -19,6 +19,11 @@ class _VerifikasiState extends State<Verifikasi> {
     (index) => TextEditingController(),
   );
 
+  final List<FocusNode> _focusNodes = List.generate(
+    4,
+    (index) => FocusNode(),
+  );
+
   final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
       FlutterLocalNotificationsPlugin();
 
@@ -35,6 +40,9 @@ class _VerifikasiState extends State<Verifikasi> {
   void dispose() {
     for (var controller in _controllers) {
       controller.dispose();
+    }
+    for (var focusNode in _focusNodes) {
+      focusNode.dispose();
     }
     super.dispose();
   }
@@ -96,14 +104,6 @@ class _VerifikasiState extends State<Verifikasi> {
     }
   }
 
-  void _moveFocus(int index, bool isBackspace) {
-    if (isBackspace && index > 0) {
-      FocusScope.of(context).previousFocus();
-    } else if (!isBackspace && index < _controllers.length - 1) {
-      FocusScope.of(context).nextFocus();
-    }
-  }
-
   bool _validateOTP() {
     String enteredOTP =
         _controllers.map((controller) => controller.text).join();
@@ -146,6 +146,14 @@ class _VerifikasiState extends State<Verifikasi> {
           );
         }
       } else {
+        // Reset semua input field
+        for (var controller in _controllers) {
+          controller.clear();
+        }
+        // Set focus ke field pertama
+        if (mounted) {
+          FocusScope.of(context).requestFocus(_focusNodes[0]);
+        }
         _showErrorSnackBar('Kode OTP tidak valid!');
       }
     } finally {
@@ -168,7 +176,15 @@ class _VerifikasiState extends State<Verifikasi> {
       generatedOTP = _generateOTP();
       await _showOtpNotification(generatedOTP);
 
+      // Reset semua input field
+      for (var controller in _controllers) {
+        controller.clear();
+      }
+
       if (mounted) {
+        // Set focus ke field pertama
+        FocusScope.of(context).requestFocus(_focusNodes[0]);
+
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             content: Text('Kode OTP baru telah dikirim'),
@@ -179,7 +195,7 @@ class _VerifikasiState extends State<Verifikasi> {
     } finally {
       if (mounted) {
         setState(() {
-          isLoading = true;
+          isLoading = false;
         });
       }
     }
@@ -224,12 +240,11 @@ class _VerifikasiState extends State<Verifikasi> {
                 const SizedBox(height: 50),
                 const Center(
                   child: Padding(
-                    padding: EdgeInsets.symmetric(
-                        vertical: 20.0), // Sesuaikan padding sesuai kebutuhan
+                    padding: EdgeInsets.symmetric(vertical: 20.0),
                     child: Text(
                       'Kami akan mengirimkan kode untuk verifikasi ke :',
                       style: TextStyle(fontSize: 16),
-                      textAlign: TextAlign.center, // Untuk memusatkan teks
+                      textAlign: TextAlign.center,
                     ),
                   ),
                 ),
@@ -247,9 +262,11 @@ class _VerifikasiState extends State<Verifikasi> {
                       height: 70,
                       child: TextField(
                         controller: _controllers[index],
+                        focusNode: _focusNodes[index],
                         textAlign: TextAlign.center,
                         keyboardType: TextInputType.number,
                         maxLength: 1,
+                        enabled: !isLoading,
                         style: const TextStyle(
                           fontSize: 25,
                           fontWeight: FontWeight.bold,
@@ -258,17 +275,15 @@ class _VerifikasiState extends State<Verifikasi> {
                           counterText: "",
                           border: OutlineInputBorder(),
                         ),
-                        // Menggunakan FocusNode untuk masing-masing TextField
-                        focusNode: FocusNode(),
                         onChanged: (value) {
                           if (value.length == 1) {
-                            // Jika input memiliki panjang 1, pindah ke input berikutnya
                             if (index < _controllers.length - 1) {
-                              FocusScope.of(context).nextFocus();
+                              FocusScope.of(context)
+                                  .requestFocus(_focusNodes[index + 1]);
                             }
                           } else if (value.isEmpty && index > 0) {
-                            // Jika dihapus dan index bukan 0, pindah ke input sebelumnya
-                            FocusScope.of(context).previousFocus();
+                            FocusScope.of(context)
+                                .requestFocus(_focusNodes[index - 1]);
                           }
                         },
                       ),
