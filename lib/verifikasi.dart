@@ -1,17 +1,195 @@
-// ignore_for_file: use_build_context_synchronously, deprecated_member_use
+// ignore_for_file: deprecated_member_use, use_build_context_synchronously
 
 import 'package:flutter/material.dart';
-import 'package:penicillisolver/verifikasiBerhasil.dart';
+import 'package:penicillisolver/MainMenu.dart';
 import 'package:penicillisolver/lupa.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:flutter/services.dart';
+import 'dart:math';
 
-class Verifikasi extends StatelessWidget {
+class Verifikasi extends StatefulWidget {
   const Verifikasi({super.key});
+
+  @override
+  State<Verifikasi> createState() => _VerifikasiState();
+}
+
+class _VerifikasiState extends State<Verifikasi> {
+  final List<TextEditingController> _controllers = List.generate(
+    4,
+    (index) => TextEditingController(),
+  );
+
+  final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+      FlutterLocalNotificationsPlugin();
+
+  String generatedOTP = '';
+  bool isLoading = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _initializeNotifications();
+  }
+
+  @override
+  void dispose() {
+    for (var controller in _controllers) {
+      controller.dispose();
+    }
+    super.dispose();
+  }
+
+  String _generateOTP() {
+    final random = Random();
+    String otp = '';
+    for (var i = 0; i < 4; i++) {
+      otp += random.nextInt(10).toString();
+    }
+    return otp;
+  }
+
+  Future<void> _initializeNotifications() async {
+    try {
+      const AndroidInitializationSettings initializationSettingsAndroid =
+          AndroidInitializationSettings('@mipmap/ic_launcher');
+
+      const InitializationSettings initializationSettings =
+          InitializationSettings(android: initializationSettingsAndroid);
+
+      await flutterLocalNotificationsPlugin.initialize(
+        initializationSettings,
+        onDidReceiveNotificationResponse: (NotificationResponse details) {
+          // Notification tap handling can be implemented here if needed
+        },
+      );
+
+      generatedOTP = _generateOTP();
+      await _showOtpNotification(generatedOTP);
+    } catch (e) {
+      _showErrorSnackBar('Gagal menginisialisasi notifikasi');
+    }
+  }
+
+  Future<void> _showOtpNotification(String otp) async {
+    try {
+      const AndroidNotificationDetails androidPlatformChannelSpecifics =
+          AndroidNotificationDetails(
+        'otp_channel',
+        'OTP Notifications',
+        channelDescription: 'Channel for OTP notifications',
+        importance: Importance.max,
+        priority: Priority.high,
+        showWhen: true,
+      );
+
+      const NotificationDetails platformChannelSpecifics =
+          NotificationDetails(android: androidPlatformChannelSpecifics);
+
+      await flutterLocalNotificationsPlugin.show(
+        0,
+        'Kode OTP',
+        'Kode verifikasi Anda: $otp',
+        platformChannelSpecifics,
+      );
+    } catch (e) {
+      _showErrorSnackBar('Gagal mengirim notifikasi OTP');
+    }
+  }
+
+  void _moveFocus(int index, bool isBackspace) {
+    if (isBackspace && index > 0) {
+      FocusScope.of(context).previousFocus();
+    } else if (!isBackspace && index < _controllers.length - 1) {
+      FocusScope.of(context).nextFocus();
+    }
+  }
+
+  bool _validateOTP() {
+    String enteredOTP =
+        _controllers.map((controller) => controller.text).join();
+    return enteredOTP == generatedOTP;
+  }
+
+  void _showErrorSnackBar(String message) {
+    if (mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(message),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
+  }
+
+  Future<void> _handleVerification() async {
+    if (isLoading) return;
+
+    setState(() {
+      isLoading = true;
+    });
+
+    try {
+      if (_validateOTP()) {
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Verifikasi berhasil!'),
+              backgroundColor: Colors.green,
+            ),
+          );
+        }
+
+        await Future.delayed(const Duration(milliseconds: 1000));
+        if (mounted) {
+          Navigator.of(context).pushReplacement(
+            MaterialPageRoute(builder: (context) => const MainMenu()),
+          );
+        }
+      } else {
+        _showErrorSnackBar('Kode OTP tidak valid!');
+      }
+    } finally {
+      if (mounted) {
+        setState(() {
+          isLoading = false;
+        });
+      }
+    }
+  }
+
+  Future<void> _resendOTP() async {
+    if (isLoading) return;
+
+    setState(() {
+      isLoading = true;
+    });
+
+    try {
+      generatedOTP = _generateOTP();
+      await _showOtpNotification(generatedOTP);
+
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Kode OTP baru telah dikirim'),
+            backgroundColor: Colors.blue,
+          ),
+        );
+      }
+    } finally {
+      if (mounted) {
+        setState(() {
+          isLoading = false;
+        });
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async {
-        // Mengizinkan navigasi kembali
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (context) => const Lupa()),
@@ -45,9 +223,11 @@ class Verifikasi extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 50),
-                const Text(
-                  'Kami akan mengirimkan kode untuk verifikasi ke',
-                  style: TextStyle(fontSize: 16),
+                const Center(
+                  child: Text(
+                    'Kami akan mengirimkan kode untuk verifikasi ke',
+                    style: TextStyle(fontSize: 16),
+                  ),
                 ),
                 const Text(
                   'josh@gmail.com',
@@ -58,22 +238,37 @@ class Verifikasi extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: List.generate(
                     4,
-                    (index) => Container(
-                      width: 60,
-                      height: 60,
-                      decoration: BoxDecoration(
-                        border: Border.all(color: Colors.grey),
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: const TextField(
-                        textAlign: TextAlign.center,
-                        keyboardType: TextInputType.number,
-                        maxLength: 1,
-                        style: TextStyle(
-                            fontSize: 30, fontWeight: FontWeight.bold),
-                        decoration: InputDecoration(
-                          counterText: "",
-                          border: InputBorder.none,
+                    (index) => SizedBox(
+                      width: 70,
+                      height: 70,
+                      child: RawKeyboardListener(
+                        focusNode: FocusNode(),
+                        onKey: (event) {
+                          if (event is RawKeyDownEvent &&
+                              event.logicalKey ==
+                                  LogicalKeyboardKey.backspace &&
+                              _controllers[index].text.isEmpty) {
+                            _moveFocus(index, true);
+                          }
+                        },
+                        child: TextField(
+                          controller: _controllers[index],
+                          textAlign: TextAlign.center,
+                          keyboardType: TextInputType.number,
+                          maxLength: 1,
+                          style: const TextStyle(
+                            fontSize: 25,
+                            fontWeight: FontWeight.bold,
+                          ),
+                          decoration: const InputDecoration(
+                            counterText: "",
+                            border: OutlineInputBorder(),
+                          ),
+                          onChanged: (value) {
+                            if (value.isNotEmpty) {
+                              _moveFocus(index, false);
+                            }
+                          },
                         ),
                       ),
                     ),
@@ -82,29 +277,40 @@ class Verifikasi extends StatelessWidget {
                 const SizedBox(height: 50),
                 SizedBox(
                   width: 350,
-                  height: 50,
+                  height: 60,
                   child: ElevatedButton(
-                    onPressed: () {
-                      Future.delayed(const Duration(milliseconds: 500), () {
-                        Navigator.of(context).pushReplacement(
-                          MaterialPageRoute(
-                              builder: (context) => const Berhasil()),
-                        );
-                      });
-                    },
+                    onPressed: isLoading ? null : _handleVerification,
                     style: ElevatedButton.styleFrom(
-                      backgroundColor:
-                          Colors.blue, // Mengatur warna latar belakang tombol
-                      foregroundColor:
-                          Colors.white, // Mengatur warna teks tombol
+                      backgroundColor: Colors.blue,
+                      foregroundColor: Colors.white,
+                      padding: const EdgeInsets.symmetric(vertical: 15),
                     ),
-                    child: const Text(
-                      'Verifikasi',
-                      style: TextStyle(
-                        color: Color.fromRGBO(252, 252, 252, 1),
-                        fontWeight: FontWeight.bold,
-                        fontSize: 17,
-                      ),
+                    child: isLoading
+                        ? const SizedBox(
+                            width: 20,
+                            height: 20,
+                            child: CircularProgressIndicator(
+                              color: Colors.white,
+                              strokeWidth: 2,
+                            ),
+                          )
+                        : const Text(
+                            'Verifikasi',
+                            style: TextStyle(
+                              color: Color.fromRGBO(252, 252, 252, 1),
+                              fontWeight: FontWeight.bold,
+                              fontSize: 17,
+                            ),
+                          ),
+                  ),
+                ),
+                TextButton(
+                  onPressed: isLoading ? null : _resendOTP,
+                  child: const Text(
+                    'Kirim Ulang Kode',
+                    style: TextStyle(
+                      color: Colors.blue,
+                      fontWeight: FontWeight.bold,
                     ),
                   ),
                 ),

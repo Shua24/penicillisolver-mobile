@@ -69,7 +69,7 @@ class _LoadingPageState extends State<LoadingPage> {
               'assets/logo2.png',
               width: 333,
               height: 333,
-            ), // TODO: Ganti size
+            ),
             const SizedBox(height: 20),
           ],
         ),
@@ -320,7 +320,7 @@ class _RegisterState extends State<Register> {
                 selectedColor: Colors.white,
                 fillColor: Colors.blue,
                 constraints: const BoxConstraints(
-                  minWidth: 110,
+                  minWidth: 50,
                   minHeight: 40,
                 ),
                 borderRadius: BorderRadius.circular(8),
@@ -353,7 +353,7 @@ class _RegisterState extends State<Register> {
               // Tombol Daftar
               SizedBox(
                 width: 400,
-                height: 50, // Mengatur lebar tombol
+                height: 60, // Mengatur lebar tombol
                 child: ElevatedButton(
                   onPressed: () {
                     Future.delayed(const Duration(milliseconds: 500), () {
@@ -367,7 +367,9 @@ class _RegisterState extends State<Register> {
                   style: ElevatedButton.styleFrom(
                     backgroundColor:
                         Colors.blue, // Mengatur warna latar belakang tombol
-                    foregroundColor: Colors.white, // Mengatur warna teks tombol
+                    foregroundColor: Colors.white,
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 15), // Mengatur warna teks tombol
                   ),
                   child: const Text(
                     'Daftar',

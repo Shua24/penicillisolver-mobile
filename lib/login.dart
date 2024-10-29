@@ -1,7 +1,8 @@
 // ignore_for_file: library_private_types_in_public_api, deprecated_member_use, use_build_context_synchronously
 
 import 'package:flutter/material.dart';
-import 'package:penicillisolver/LoginBerhasil.dart';
+
+import 'package:penicillisolver/MainMenu.dart';
 import 'package:penicillisolver/lupa.dart';
 import 'package:penicillisolver/register.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -145,21 +146,32 @@ class _LoginState extends State<LoginScreen> {
                 const SizedBox(height: 35),
                 SizedBox(
                   width: 400,
-                  height: 50,
+                  height: 60,
                   child: ElevatedButton(
                     onPressed: () {
-                      Future.delayed(const Duration(milliseconds: 500), () {
+                      // Menampilkan Snackbar
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text('Login berhasil'),
+                          duration: Duration(seconds: 1),
+                          backgroundColor: Colors.green,
+                        ),
+                      );
+
+                      // Delay sebelum pindah halaman
+                      Future.delayed(const Duration(milliseconds: 1000), () {
                         Navigator.of(context).pushReplacement(
                           MaterialPageRoute(
-                              builder: (context) => const LoginBerhasil()),
+                              builder: (context) => const MainMenu()),
                         );
                       });
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor:
                           Colors.blue, // Mengatur warna latar belakang tombol
-                      foregroundColor:
-                          Colors.white, // Mengatur warna teks tombol
+                      foregroundColor: Colors.white,
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 15), // Mengatur warna teks tombol
                     ),
                     child: const Text(
                       'Masuk',
@@ -171,7 +183,6 @@ class _LoginState extends State<LoginScreen> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const Text(''),
                     const SizedBox(width: 5),
                     GestureDetector(
                       onTap: () {

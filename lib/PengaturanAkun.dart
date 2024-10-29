@@ -1,18 +1,24 @@
+// ignore_for_file: file_names, library_private_types_in_public_api
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:penicillisolver/theme.dart';
 
 class PengaturanAkun extends StatelessWidget {
+  const PengaturanAkun({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: AppTheme.lightTheme,
-      home: AccountSettingsPage(),
+      home: const AccountSettingsPage(),
     );
   }
 }
 
 class AccountSettingsPage extends StatelessWidget {
+  const AccountSettingsPage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -39,7 +45,8 @@ class AccountSettingsPage extends StatelessWidget {
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => EditProfilPage()),
+                  MaterialPageRoute(
+                      builder: (context) => const EditProfilPage()),
                 );
               },
             ),
@@ -67,7 +74,8 @@ class AccountSettingsPage extends StatelessWidget {
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => SocialMediaPage()),
+                  MaterialPageRoute(
+                      builder: (context) => const SocialMediaPage()),
                 );
               },
             ),
@@ -78,7 +86,7 @@ class AccountSettingsPage extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => VerifikasiSidikJari()),
+                      builder: (context) => const VerifikasiSidikJari()),
                 );
               },
             ),
@@ -112,6 +120,8 @@ class AccountSettingsPage extends StatelessWidget {
 
 // Halaman Ubah Profil
 class EditProfilPage extends StatefulWidget {
+  const EditProfilPage({super.key});
+
   @override
   _EditProfilPageState createState() => _EditProfilPageState();
 }

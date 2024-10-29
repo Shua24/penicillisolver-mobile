@@ -1,4 +1,4 @@
-// ignore_for_file: library_private_types_in_public_api
+// ignore_for_file: library_private_types_in_public_api, use_build_context_synchronously
 
 import 'package:flutter/material.dart';
 import 'package:penicillisolver/MainMenu.dart';
@@ -113,7 +113,7 @@ class _PengaturanPageState extends State<PengaturanPage> {
                         Navigator.of(context).pushReplacement(
                           MaterialPageRoute(
                               builder: (context) =>
-                                  PengaturanAkun()), // Tanda const ditambahkan jika perlu
+                                  const PengaturanAkun()), // Tanda const ditambahkan jika perlu
                         );
                       });
                     }),

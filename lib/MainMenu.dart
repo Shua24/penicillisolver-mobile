@@ -53,7 +53,7 @@ class MainMenu extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(horizontal: 25.0),
                   child: Column(
                     children: [
-                      Container(
+                      SizedBox(
                         width: double.infinity,
                         height: 300,
                         child: Image.asset(

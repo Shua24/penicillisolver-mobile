@@ -95,7 +95,7 @@ class Lupa extends StatelessWidget {
                 const SizedBox(height: 35),
                 SizedBox(
                   width: 400,
-                  height: 50, // Mengatur lebar tombol
+                  height: 60, // Mengatur lebar tombol
                   child: ElevatedButton(
                     onPressed: () {
                       Future.delayed(const Duration(milliseconds: 500), () {
@@ -108,6 +108,7 @@ class Lupa extends StatelessWidget {
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.blue,
                       foregroundColor: Colors.white,
+                      padding: const EdgeInsets.symmetric(vertical: 15),
                     ),
                     child: const Text(
                       'Verifikasi',
