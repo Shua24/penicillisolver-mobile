@@ -12,96 +12,103 @@ class MainMenu extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
-        child: Column(
+        child: Stack(
           children: [
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 25),
-              decoration: const BoxDecoration(
-                color: Color.fromARGB(255, 0, 155, 226),
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const SizedBox(width: 48),
-                  const Text(
-                    'Menu',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      color: Color.fromARGB(255, 255, 255, 255),
-                      fontSize: 30,
-                      fontWeight: FontWeight.w500,
-                    ),
+            Column(
+              children: [
+                Container(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 16, vertical: 25),
+                  decoration: const BoxDecoration(
+                    color: Color.fromARGB(255, 0, 155, 226),
                   ),
-                  ClipOval(
-                    child: Image.asset(
-                      'assets/user1.png',
-                      fit: BoxFit.cover,
-                      width: 40,
-                      height: 40,
-                    ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const SizedBox(width: 48),
+                      const Text(
+                        'Menu',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          color: Color.fromARGB(255, 255, 255, 255),
+                          fontSize: 30,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                      ClipOval(
+                        child: Image.asset(
+                          'assets/user1.png',
+                          fit: BoxFit.cover,
+                          width: 40,
+                          height: 40,
+                        ),
+                      ),
+                    ],
                   ),
-                ],
-              ),
-            ),
-            const SizedBox(height: 10), // Adjusted spacing
-            Expanded(
-              child: SingleChildScrollView(
-                child: Padding(
-                  padding: const EdgeInsets.fromLTRB(0, 15, 0, 0),
-                  child: Container(
-                    width: double.infinity,
-                    padding: const EdgeInsets.symmetric(horizontal: 25.0),
-                    child: Column(
-                      children: [
-                        SizedBox(
-                          width: double.infinity,
-                          height: 300,
-                          child: Image.asset(
-                            'assets/polakuman.png',
-                            fit: BoxFit.contain,
-                          ),
-                        ),
-                        const SizedBox(height: 16),
-                        const Text(
-                          'Pola kuman merujuk pada jenis dan distribusi mikroorganisme, terutama bakteri, '
-                          'yang ditemukan dalam lingkungan atau tubuh manusia, dan penting untuk diagnosa '
-                          'serta penanganan infeksi. Analisis pola ini membantu tenaga medis mengidentifikasi '
-                          'penyebab penyakit dan menentukan terapi yang tepat, dengan mempertimbangkan '
-                          'faktor-faktor seperti lokasi geografis dan kebiasaan penggunaan antibiotik. '
-                          'Pemahaman tentang pola kuman juga berkontribusi dalam pencegahan infeksi dan '
-                          'mengurangi risiko penyebaran bakteri resisten, sehingga meningkatkan kesehatan '
-                          'masyarakat secara keseluruhan. Penicillisolver menjadi solusi untuk para dokter '
-                          'agar mempermudah pencarian pola kuman.',
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 20,
-                            height: 1.5,
-                          ),
-                          textAlign: TextAlign.left,
-                        ),
-                        const SizedBox(height: 200),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
+                ),
+                const SizedBox(height: 10),
+                Expanded(
+                  child: SingleChildScrollView(
+                    child: Padding(
+                      padding: const EdgeInsets.fromLTRB(0, 15, 0, 0),
+                      child: Container(
+                        width: double.infinity,
+                        padding: const EdgeInsets.symmetric(horizontal: 25.0),
+                        child: Column(
                           children: [
-                            const Icon(
-                              Icons.info_outline,
-                              size: 20,
-                              color: Color.fromARGB(255, 0, 174, 255),
-                            ),
-                            const SizedBox(width: 8),
-                            Text(
-                              'Gunakan Web untuk membuka semua fitur',
-                              style: TextStyle(
-                                color: Colors.grey[600],
-                                fontSize: 14,
+                            SizedBox(
+                              width: double.infinity,
+                              height: 300,
+                              child: Image.asset(
+                                'assets/polakuman.png',
+                                fit: BoxFit.contain,
                               ),
                             ),
+                            const SizedBox(height: 16),
+                            const Text(
+                              'Pola kuman mengacu pada jenis dan distribusi mikroorganisme, terutama bakteri,'
+                              'di lingkungan atau tubuh manusia. Analisis ini membantu tenaga medis'
+                              'mengidentifikasi penyebab infeksi dan menentukan terapi yang tepat,'
+                              'dengan mempertimbangkan lokasi dan penggunaan antibiotik. Penicillisolver'
+                              ' memudahkan dokter dalam mencari pola kuman, sehingga dapat mencegah infeksi'
+                              ' dan mengurangi risiko bakteri resisten untuk meningkatkan kesehatan masyarakat.',
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 18,
+                                height: 1.5,
+                              ),
+                              textAlign: TextAlign.left,
+                            ),
+                            const SizedBox(height: 80),
                           ],
                         ),
-                        const SizedBox(height: 15),
-                      ],
+                      ),
                     ),
                   ),
+                ),
+              ],
+            ),
+            Align(
+              alignment: Alignment.bottomCenter,
+              child: Padding(
+                padding: const EdgeInsets.only(bottom: 20),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Icon(
+                      Icons.info_outline,
+                      size: 20,
+                      color: Color.fromARGB(255, 0, 174, 255),
+                    ),
+                    const SizedBox(width: 8),
+                    Text(
+                      'Gunakan Web untuk membuka semua fitur',
+                      style: TextStyle(
+                        color: Colors.grey[600],
+                        fontSize: 14,
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ),
@@ -126,7 +133,6 @@ class MainMenu extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-            // Tombol Home dengan efek ripple
             Material(
               color: Colors.transparent,
               child: InkWell(
@@ -149,7 +155,6 @@ class MainMenu extends StatelessWidget {
                 ),
               ),
             ),
-            // Tombol Assignment dengan efek ripple
             Material(
               color: Colors.transparent,
               child: InkWell(
@@ -171,7 +176,6 @@ class MainMenu extends StatelessWidget {
                 ),
               ),
             ),
-            // Tombol Settings dengan efek ripple
             Material(
               color: Colors.transparent,
               child: InkWell(
