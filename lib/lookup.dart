@@ -100,8 +100,6 @@ class AntibioticQuery extends StatelessWidget {
                         Text('Item 2'),
                         SizedBox(height: 8),
                         Text('Item 3'),
-                        SizedBox(height: 8),
-                        Text('Item 4'),
                       ],
                     ),
                   ),
