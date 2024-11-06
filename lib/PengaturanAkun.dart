@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:penicillisolver/setting.dart';
 import 'package:penicillisolver/theme.dart';
 
 class PengaturanAkun extends StatelessWidget {
@@ -31,7 +32,9 @@ class AccountSettingsPage extends StatelessWidget {
           icon: const Icon(Icons.arrow_back,
               color: Colors.white), // Ikon kembali warna putih
           onPressed: () {
-            Navigator.pop(context); // untuk kembali ke halaman sebelumnya
+            Navigator.of(context).pushReplacement(
+              MaterialPageRoute(builder: (context) => const PengaturanPage()),
+            ); // untuk kembali ke halaman sebelumnya
           },
         ),
       ),

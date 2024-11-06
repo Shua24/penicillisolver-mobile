@@ -79,7 +79,7 @@ class MainMenu extends StatelessWidget {
                               ),
                               textAlign: TextAlign.left,
                             ),
-                            const SizedBox(height: 80),
+                            const SizedBox(height: 70),
                           ],
                         ),
                       ),
