@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:penicillisolver/PengaturanAkun.dart';
 import 'package:penicillisolver/verifikasi.dart';
 
 import 'package:penicillisolver/lupa.dart';
@@ -26,7 +25,6 @@ class MyApp extends StatelessWidget {
         '/register': (context) => const Register(),
         '/lupa': (context) => const Lupa(),
         '/verifikasi': (context) => const Verifikasi(),
-        '/PengaturanAkun': (context) => const PengaturanAkun(),
       },
       onUnknownRoute: (settings) {
         return MaterialPageRoute(
