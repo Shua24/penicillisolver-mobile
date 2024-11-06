@@ -96,13 +96,12 @@ class AntibioticQuery extends StatelessWidget {
                           CrossAxisAlignment.start, // Align items to the left
                       children: [
                         Text('Item 1'),
-                        SizedBox(height: 8), // Add space between items
+                        SizedBox(height: 8),
                         Text('Item 2'),
                         SizedBox(height: 8),
                         Text('Item 3'),
                         SizedBox(height: 8),
                         Text('Item 4'),
-                        // Add more plain text items as needed
                       ],
                     ),
                   ),
