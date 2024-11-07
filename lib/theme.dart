@@ -57,7 +57,6 @@ class AppTheme {
         selectedColor: Colors.white,
         borderRadius: BorderRadius.circular(5),
       ),
-      // blyat
       dialogTheme: const DialogTheme(
         backgroundColor: Colors.white,
       ));
