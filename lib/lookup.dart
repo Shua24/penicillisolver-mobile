@@ -23,9 +23,11 @@ class AntibioticQuery extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       body: Center(
         child: Column(
           children: [
+            const SizedBox(height: 45),
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 25),
               decoration: const BoxDecoration(
@@ -90,10 +92,8 @@ class AntibioticQuery extends StatelessWidget {
                   builder: (BuildContext context) => const AlertDialog(
                     title: Text('Antibiotik terbaik'),
                     content: Column(
-                      mainAxisSize: MainAxisSize
-                          .min, // To make the column wrap its content
-                      crossAxisAlignment:
-                          CrossAxisAlignment.start, // Align items to the left
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text('Item 1'),
                         SizedBox(height: 8),
@@ -131,7 +131,6 @@ class AntibioticQuery extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-            // Tombol Home dengan efek ripple
             Material(
               color: Colors.transparent,
               child: InkWell(
@@ -154,7 +153,6 @@ class AntibioticQuery extends StatelessWidget {
                 ),
               ),
             ),
-            // Tombol Assignment dengan efek ripple
             Material(
               color: Colors.transparent,
               child: InkWell(
@@ -176,7 +174,6 @@ class AntibioticQuery extends StatelessWidget {
                 ),
               ),
             ),
-            // Tombol Settings dengan efek ripple
             Material(
               color: Colors.transparent,
               child: InkWell(

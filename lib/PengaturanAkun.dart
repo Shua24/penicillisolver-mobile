@@ -1,3 +1,5 @@
+// ignore_for_file: file_names, library_private_types_in_public_api
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:penicillisolver/setting.dart';
@@ -21,23 +23,41 @@ class AccountSettingsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.blue,
-        title: const Text("Akun dan Keamanan",
-            style: TextStyle(color: Colors.white)),
-        centerTitle: true,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back,
-              color: Colors.white), // Ikon kembali warna putih
-          onPressed: () {
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                builder: (context) => const PengaturanPage(),
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(80.0), // Menambah tinggi AppBar
+        child: SafeArea(
+            // Menggunakan SafeArea untuk memberi jarak
+            child: AppBar(
+          backgroundColor: const Color.fromARGB(255, 0, 155, 226),
+          flexibleSpace: const Padding(
+            padding: EdgeInsets.all(10),
+            child: Align(
+              alignment: Alignment.center,
+              child: Text(
+                "Akun dan Keamanan",
+                style: TextStyle(color: Colors.white, fontSize: 25),
               ),
-            ); // untuk kembali ke halaman sebelumnya
-          },
-        ),
+            ),
+          ),
+          leading: Padding(
+            padding: const EdgeInsets.only(
+                top: 15.0), // Menambahkan jarak pada tombol
+            child: IconButton(
+              icon: const Icon(
+                Icons.chevron_left,
+                color: Colors.white,
+                size: 35,
+              ),
+              onPressed: () {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const PengaturanPage()),
+                );
+              },
+            ),
+          ),
+        )),
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
@@ -133,22 +153,41 @@ class _EditProfilPageState extends State<EditProfilPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.blue, // Warna background AppBar biru
-        title: const Text(
-          "Ubah Profil",
-          style: TextStyle(color: Colors.white), // Warna teks putih
-        ),
-        centerTitle: true, // Menempatkan teks di tengah
-        leading: IconButton(
-          icon: const Icon(
-            Icons.arrow_back,
-            color: Colors.white, // ikon kembali warna putih
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(80.0), // Menambah tinggi AppBar
+        child: SafeArea(
+            // Menggunakan SafeArea untuk memberi jarak
+            child: AppBar(
+          backgroundColor: const Color.fromARGB(255, 0, 155, 226),
+          flexibleSpace: const Padding(
+            padding: EdgeInsets.all(10),
+            child: Align(
+              alignment: Alignment.center,
+              child: Text(
+                "Ubah Profil",
+                style: TextStyle(color: Colors.white, fontSize: 25),
+              ),
+            ),
           ),
-          onPressed: () {
-            Navigator.pop(context); //  untuk kembali ke halaman sebelumnya
-          },
-        ),
+          leading: Padding(
+            padding: const EdgeInsets.only(
+                top: 15.0), // Menambahkan jarak pada tombol
+            child: IconButton(
+              icon: const Icon(
+                Icons.chevron_left,
+                color: Colors.white,
+                size: 35,
+              ),
+              onPressed: () {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const AccountSettingsPage()),
+                );
+              },
+            ),
+          ),
+        )),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),

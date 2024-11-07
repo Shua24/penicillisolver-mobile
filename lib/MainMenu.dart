@@ -101,7 +101,7 @@ class MainMenu extends StatelessWidget {
                 child: Container(
                   padding:
                       const EdgeInsets.symmetric(horizontal: 70, vertical: 15),
-                  decoration: BoxDecoration(
+                  decoration: const BoxDecoration(
                     color: Colors.white,
                   ),
                   width: 700, // Sesuaikan lebar container
