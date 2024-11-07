@@ -27,7 +27,6 @@ class AntibioticQuery extends StatelessWidget {
       body: Center(
         child: Column(
           children: [
-            const SizedBox(height: 45),
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 25),
               decoration: const BoxDecoration(
@@ -73,7 +72,10 @@ class AntibioticQuery extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 100),
-            const Text('Cari antibiotik berdasarkan Penyakit'),
+            Text(
+              'Cari antibiotik berdasarkan Penyakit',
+              style: TextStyle(fontSize: 20),
+            ),
             const SizedBox(height: 20),
             const SizedBox(
               width: 400,
