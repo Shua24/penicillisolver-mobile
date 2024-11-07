@@ -1,7 +1,6 @@
 // ignore_for_file: library_private_types_in_public_api, deprecated_member_use, use_build_context_synchronously
 
 import 'package:flutter/material.dart';
-
 import 'package:penicillisolver/MainMenu.dart';
 import 'package:penicillisolver/lupa.dart';
 import 'package:penicillisolver/register.dart';
@@ -58,8 +57,6 @@ class _LoginState extends State<LoginScreen> {
                   ),
                 ),
                 const SizedBox(height: 25),
-
-                // Email Input Field
                 const Align(
                   alignment: Alignment.centerLeft,
                   child: Text(
@@ -79,24 +76,20 @@ class _LoginState extends State<LoginScreen> {
                     enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(5),
                       borderSide: const BorderSide(
-                        color: Color.fromRGBO(
-                            37, 160, 237, 1), // Warna border saat tidak fokus
+                        color: Color.fromRGBO(37, 160, 237, 1),
                         width: 1,
                       ),
                     ),
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(5),
                       borderSide: const BorderSide(
-                        color: Color.fromRGBO(
-                            37, 160, 237, 1), // Warna border saat fokus
+                        color: Color.fromRGBO(37, 160, 237, 1),
                         width: 2,
                       ),
                     ),
                   ),
                 ),
                 const SizedBox(height: 15),
-
-                // Password Input Field
                 const Align(
                   alignment: Alignment.centerLeft,
                   child: Text(
@@ -117,16 +110,14 @@ class _LoginState extends State<LoginScreen> {
                     enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(5),
                       borderSide: const BorderSide(
-                        color: Color.fromRGBO(
-                            37, 160, 237, 1), // Warna border saat tidak fokus
+                        color: Color.fromRGBO(37, 160, 237, 1),
                         width: 1,
                       ),
                     ),
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(5),
                       borderSide: const BorderSide(
-                        color: Color.fromRGBO(
-                            37, 160, 237, 1), // Warna border saat fokus
+                        color: Color.fromRGBO(37, 160, 237, 1),
                         width: 2,
                       ),
                     ),
@@ -149,7 +140,6 @@ class _LoginState extends State<LoginScreen> {
                   height: 60,
                   child: ElevatedButton(
                     onPressed: () {
-                      // Menampilkan Snackbar
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(
                           content: Text('Login berhasil'),
@@ -158,7 +148,6 @@ class _LoginState extends State<LoginScreen> {
                         ),
                       );
 
-                      // Delay sebelum pindah halaman
                       Future.delayed(const Duration(milliseconds: 1000), () {
                         Navigator.of(context).pushReplacement(
                           MaterialPageRoute(
@@ -167,11 +156,9 @@ class _LoginState extends State<LoginScreen> {
                       });
                     },
                     style: ElevatedButton.styleFrom(
-                      backgroundColor:
-                          Colors.blue, // Mengatur warna latar belakang tombol
+                      backgroundColor: Colors.blue,
                       foregroundColor: Colors.white,
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 15), // Mengatur warna teks tombol
+                      padding: const EdgeInsets.symmetric(vertical: 15),
                     ),
                     child: const Text(
                       'Masuk',
@@ -204,9 +191,7 @@ class _LoginState extends State<LoginScreen> {
                     ),
                   ],
                 ),
-
                 const SizedBox(height: 30),
-                // Sudah punya akun / Login dengan
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -235,19 +220,15 @@ class _LoginState extends State<LoginScreen> {
                     ),
                   ],
                 ),
-
                 const SizedBox(height: 30),
                 const Text(
                   'Atau Lanjutkan Dengan :',
                   style: TextStyle(fontSize: 16),
                 ),
                 const SizedBox(height: 20),
-
-                // Tombol Sosial Media (Google, Facebook, Twitter)
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    // Tombol Google
                     IconButton(
                       icon: Image.asset(
                         'assets/google.png',
@@ -260,7 +241,6 @@ class _LoginState extends State<LoginScreen> {
                       },
                     ),
                     const SizedBox(width: 10),
-                    // Tombol Facebook
                     IconButton(
                       icon: Image.asset(
                         'assets/fb.png',
@@ -273,7 +253,6 @@ class _LoginState extends State<LoginScreen> {
                       },
                     ),
                     const SizedBox(width: 10),
-                    // Tombol Twitter
                     IconButton(
                       icon: Image.asset(
                         'assets/x.png',

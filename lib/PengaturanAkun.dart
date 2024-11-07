@@ -1,5 +1,3 @@
-// ignore_for_file: file_names, library_private_types_in_public_api
-
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:penicillisolver/setting.dart';
@@ -32,8 +30,11 @@ class AccountSettingsPage extends StatelessWidget {
           icon: const Icon(Icons.arrow_back,
               color: Colors.white), // Ikon kembali warna putih
           onPressed: () {
-            Navigator.of(context).pushReplacement(
-              MaterialPageRoute(builder: (context) => const PengaturanPage()),
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const PengaturanPage(),
+              ),
             ); // untuk kembali ke halaman sebelumnya
           },
         ),
@@ -72,27 +73,6 @@ class AccountSettingsPage extends StatelessWidget {
               onTap: () {},
             ),
             const Divider(),
-            _buildListTile(
-              title: "Akun Media Sosial",
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => const SocialMediaPage()),
-                );
-              },
-            ),
-            const Divider(),
-            _buildListTile(
-              title: "Verifikasi Sidik Jari",
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => const VerifikasiSidikJari()),
-                );
-              },
-            ),
           ],
         ),
       ),
@@ -115,7 +95,6 @@ class AccountSettingsPage extends StatelessWidget {
     return ListTile(
       title: Text(title),
       subtitle: Text(detail),
-      trailing: const Icon(Icons.chevron_right),
       onTap: onTap,
     );
   }
@@ -188,7 +167,7 @@ class _EditProfilPageState extends State<EditProfilPage> {
                 ),
                 child: ClipOval(
                   child: Image.asset(
-                    "assets/profile.png", // Gambar profil
+                    "assets/jawinpp.png", // Gambar profil
                     fit: BoxFit
                         .cover, // Buat gambar memenuhi container secara proporsional
                     width: 120,
@@ -202,10 +181,12 @@ class _EditProfilPageState extends State<EditProfilPage> {
               controller: _nameController,
               decoration: const InputDecoration(labelText: "Nama"),
             ),
+            const SizedBox(height: 20),
             TextFormField(
               controller: _bioController,
               decoration: const InputDecoration(labelText: "Bio"),
             ),
+            const SizedBox(height: 20),
             DropdownButtonFormField<String>(
               value: _gender,
               decoration: const InputDecoration(labelText: "Jenis Kelamin"),
@@ -221,6 +202,7 @@ class _EditProfilPageState extends State<EditProfilPage> {
                 });
               },
             ),
+            const SizedBox(height: 20),
             ListTile(
               title: Text(
                   "Tanggal Lahir: ${DateFormat('dd/MM/yyyy').format(_selectedDate)}"),
@@ -229,11 +211,13 @@ class _EditProfilPageState extends State<EditProfilPage> {
                 _selectDate(context);
               },
             ),
+            const SizedBox(height: 20),
             TextFormField(
               controller: _phoneController,
               decoration: const InputDecoration(labelText: "Nomor Handphone"),
               keyboardType: TextInputType.phone,
             ),
+            const SizedBox(height: 20),
             TextFormField(
               controller: _emailController,
               decoration: const InputDecoration(labelText: "Email"),
@@ -267,6 +251,15 @@ class VerifikasiKeamananPage extends StatelessWidget {
       appBar: AppBar(
         title: const Text("Pemeriksaan Keamanan"),
         backgroundColor: Colors.blue,
+        leading: IconButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          icon: const Icon(
+            Icons.arrow_back,
+            color: Colors.white,
+          ),
+        ),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -292,97 +285,6 @@ class VerifikasiKeamananPage extends StatelessWidget {
               },
             ),
           ],
-        ),
-      ),
-    );
-  }
-}
-
-// Halaman Akun Media Sosial
-class SocialMediaPage extends StatelessWidget {
-  const SocialMediaPage({super.key}); // Menambahkan key ke constructor
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text("Hubungkan Akun Media Sosial"),
-        backgroundColor: Colors.blue,
-      ),
-      body: ListView(
-        children: [
-          ListTile(
-            leading: const Icon(Icons.facebook, color: Colors.blue),
-            title: const Text("Hubungkan Akun Facebook"),
-            trailing:
-                const Text("Pisahkan", style: TextStyle(color: Colors.red)),
-            onTap: () {
-              // untuk menghubungkan atau memisahkan akun Facebook
-            },
-          ),
-          ListTile(
-            leading: const Icon(Icons.camera_alt, color: Colors.purple),
-            title: const Text("Hubungkan Akun Instagram"),
-            trailing:
-                const Text("Pisahkan", style: TextStyle(color: Colors.red)),
-            onTap: () {
-              // untuk menghubungkan atau memisahkan akun Instagram
-            },
-          ),
-          ListTile(
-            leading: const Icon(Icons.mail, color: Colors.red),
-            title: const Text("Hubungkan Akun Google"),
-            trailing:
-                const Text("Pisahkan", style: TextStyle(color: Colors.red)),
-            onTap: () {
-              // untuk menghubungkan atau memisahkan akun Google
-            },
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-// Halaman Verifikasi Sidik Jari
-class VerifikasiSidikJari extends StatelessWidget {
-  const VerifikasiSidikJari({super.key});
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text("Verifikasi Sidik Jari"),
-        backgroundColor: Colors.blue,
-      ),
-      body: Center(
-        child: ElevatedButton(
-          onPressed: () {
-            showDialog(
-              context: context,
-              builder: (BuildContext context) {
-                return AlertDialog(
-                  title: const Text("Izinkan Biometrik"),
-                  content: const Text(
-                      "Untuk mengubah verifikasi biometrik, kami perlu memerlukan izinmu terlebih dahulu. Pindai sidik jari."),
-                  actions: [
-                    TextButton(
-                      onPressed: () {
-                        Navigator.pop(context); // Jika dibatalkan
-                      },
-                      child: const Text("Batal"),
-                    ),
-                    ElevatedButton(
-                      onPressed: () {
-                        // untuk memverifikasi sidik jari
-                      },
-                      child: const Text("Pindai Sidik Jari"),
-                    ),
-                  ],
-                );
-              },
-            );
-          },
-          child: const Text("Verifikasi Sidik Jari"),
         ),
       ),
     );
