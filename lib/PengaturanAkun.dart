@@ -1,9 +1,12 @@
-// ignore_for_file: file_names, library_private_types_in_public_api
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:penicillisolver/camera_page.dart';
 import 'package:penicillisolver/setting.dart';
 import 'package:penicillisolver/theme.dart';
+
+var selectedImage;
 
 class PengaturanAkun extends StatelessWidget {
   const PengaturanAkun({super.key});
@@ -24,40 +27,39 @@ class AccountSettingsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(80.0), // Menambah tinggi AppBar
+        preferredSize: const Size.fromHeight(80.0),
         child: SafeArea(
-            // Menggunakan SafeArea untuk memberi jarak
-            child: AppBar(
-          backgroundColor: const Color.fromARGB(255, 0, 155, 226),
-          flexibleSpace: const Padding(
-            padding: EdgeInsets.all(10),
-            child: Align(
-              alignment: Alignment.center,
-              child: Text(
-                "Akun dan Keamanan",
-                style: TextStyle(color: Colors.white, fontSize: 25),
+          child: AppBar(
+            backgroundColor: const Color.fromARGB(255, 0, 155, 226),
+            flexibleSpace: const Padding(
+              padding: EdgeInsets.all(10),
+              child: Align(
+                alignment: Alignment.center,
+                child: Text(
+                  "Akun dan Keamanan",
+                  style: TextStyle(color: Colors.white, fontSize: 25),
+                ),
+              ),
+            ),
+            leading: Padding(
+              padding: const EdgeInsets.only(top: 15.0),
+              child: IconButton(
+                icon: const Icon(
+                  Icons.chevron_left,
+                  color: Colors.white,
+                  size: 35,
+                ),
+                onPressed: () {
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const PengaturanPage()),
+                  );
+                },
               ),
             ),
           ),
-          leading: Padding(
-            padding: const EdgeInsets.only(
-                top: 15.0), // Menambahkan jarak pada tombol
-            child: IconButton(
-              icon: const Icon(
-                Icons.chevron_left,
-                color: Colors.white,
-                size: 35,
-              ),
-              onPressed: () {
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => const PengaturanPage()),
-                );
-              },
-            ),
-          ),
-        )),
+        ),
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
@@ -75,23 +77,13 @@ class AccountSettingsPage extends StatelessWidget {
               },
             ),
             const Divider(),
-            _buildDetailTile(
-              title: "Username",
-              detail: "joshua",
-              onTap: () {},
-            ),
+            _buildDetailTile(title: "Username", detail: "joshua", onTap: () {}),
             const Divider(),
             _buildDetailTile(
-              title: "No. Handphone",
-              detail: "+62 1234567890",
-              onTap: () {},
-            ),
+                title: "No. Handphone", detail: "+62 1234567890", onTap: () {}),
             const Divider(),
             _buildDetailTile(
-              title: "Email",
-              detail: "joshua123@gmail.com",
-              onTap: () {},
-            ),
+                title: "Email", detail: "joshua123@gmail.com", onTap: () {}),
             const Divider(),
           ],
         ),
@@ -120,7 +112,6 @@ class AccountSettingsPage extends StatelessWidget {
   }
 }
 
-// Halaman Ubah Profil
 class EditProfilPage extends StatefulWidget {
   const EditProfilPage({super.key});
 
@@ -129,7 +120,7 @@ class EditProfilPage extends StatefulWidget {
 }
 
 class _EditProfilPageState extends State<EditProfilPage> {
-  String _gender = "Pria"; //  jenis kelamin
+  String _gender = "Pria";
   DateTime _selectedDate = DateTime.now();
   final _nameController = TextEditingController();
   final _bioController = TextEditingController();
@@ -150,82 +141,96 @@ class _EditProfilPageState extends State<EditProfilPage> {
     }
   }
 
+  void _onImageCaptured(File image) {
+    setState(() {
+      selectedImage = image; // Set the selected image in ImageService
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(80.0), // Menambah tinggi AppBar
+        preferredSize: const Size.fromHeight(80.0),
         child: SafeArea(
-            // Menggunakan SafeArea untuk memberi jarak
-            child: AppBar(
-          backgroundColor: const Color.fromARGB(255, 0, 155, 226),
-          flexibleSpace: const Padding(
-            padding: EdgeInsets.all(10),
-            child: Align(
-              alignment: Alignment.center,
-              child: Text(
-                "Ubah Profil",
-                style: TextStyle(color: Colors.white, fontSize: 25),
+          child: AppBar(
+            backgroundColor: const Color.fromARGB(255, 0, 155, 226),
+            flexibleSpace: const Padding(
+              padding: EdgeInsets.all(10),
+              child: Align(
+                alignment: Alignment.center,
+                child: Text(
+                  "Ubah Profil",
+                  style: TextStyle(color: Colors.white, fontSize: 25),
+                ),
+              ),
+            ),
+            leading: Padding(
+              padding: const EdgeInsets.only(top: 15.0),
+              child: IconButton(
+                icon: const Icon(
+                  Icons.chevron_left,
+                  color: Colors.white,
+                  size: 35,
+                ),
+                onPressed: () {
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const AccountSettingsPage()),
+                  );
+                },
               ),
             ),
           ),
-          leading: Padding(
-            padding: const EdgeInsets.only(
-                top: 15.0), // Menambahkan jarak pada tombol
-            child: IconButton(
-              icon: const Icon(
-                Icons.chevron_left,
-                color: Colors.white,
-                size: 35,
-              ),
-              onPressed: () {
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => const AccountSettingsPage()),
-                );
-              },
-            ),
-          ),
-        )),
+        ),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: ListView(
           children: [
+            // bagian profil gambar
             Center(
-              child: Container(
-                width: 120, // Atur lebar container yang lebih presisi
-                height: 120, // Atur tinggi container agar proporsional
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  border: Border.all(
-                    color: Colors.blue, // Warna border untuk menonjolkan gambar
-                    width: 2.0, // Ketebalan border
+              child: GestureDetector(
+                onTap: ()
+                {
+                  Navigator.push(context, MaterialPageRoute(builder: (context)=>CameraPage(onImageCaptured: _onImageCaptured,)));
+                },
+                child: Container(
+                  width: 120,
+                  height: 120,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    border: Border.all(color: Colors.blue, width: 2.0),
                   ),
-                ),
-                child: ClipOval(
-                  child: Image.asset(
-                    "assets/jawinpp.png", // Gambar profil
-                    fit: BoxFit
-                        .cover, // Buat gambar memenuhi container secara proporsional
-                    width: 120,
-                    height: 120,
+                  child: ClipOval(
+                    child: selectedImage == null? Image.asset(
+                      "assets/jawinpp.png",
+                      fit: BoxFit.cover,
+                      width: 120,
+                      height: 120,
+                    ):Image.file(selectedImage!)),
                   ),
                 ),
               ),
-            ),
+            
             const SizedBox(height: 20),
+
+            // Nama
             TextFormField(
               controller: _nameController,
               decoration: const InputDecoration(labelText: "Nama"),
             ),
             const SizedBox(height: 20),
+
+            // Bio 
             TextFormField(
               controller: _bioController,
               decoration: const InputDecoration(labelText: "Bio"),
             ),
             const SizedBox(height: 20),
+
+            // jenis kelamin dropdown
             DropdownButtonFormField<String>(
               value: _gender,
               decoration: const InputDecoration(labelText: "Jenis Kelamin"),
@@ -242,27 +247,40 @@ class _EditProfilPageState extends State<EditProfilPage> {
               },
             ),
             const SizedBox(height: 20),
-            ListTile(
-              title: Text(
-                  "Tanggal Lahir: ${DateFormat('dd/MM/yyyy').format(_selectedDate)}"),
-              trailing: const Icon(Icons.calendar_today),
+
+            // tanggal lahir
+            TextFormField(
+              readOnly: true,
+              controller: TextEditingController(
+                text: DateFormat('dd/MM/yyyy').format(_selectedDate),
+              ),
+              decoration: const InputDecoration(
+                labelText: "Tanggal Lahir",
+                suffixIcon: Icon(Icons.calendar_today),
+              ),
               onTap: () {
                 _selectDate(context);
               },
             ),
             const SizedBox(height: 20),
+
+            //nomer hp
             TextFormField(
               controller: _phoneController,
               decoration: const InputDecoration(labelText: "Nomor Handphone"),
               keyboardType: TextInputType.phone,
             ),
             const SizedBox(height: 20),
+
+            // Email 
             TextFormField(
               controller: _emailController,
               decoration: const InputDecoration(labelText: "Email"),
               keyboardType: TextInputType.emailAddress,
             ),
             const SizedBox(height: 20),
+
+            // tombol verifikasi
             ElevatedButton(
               onPressed: () {
                 Navigator.push(
@@ -273,16 +291,14 @@ class _EditProfilPageState extends State<EditProfilPage> {
               },
               child: const Text("Lanjut"),
             ),
-          ],
-        ),
-      ),
-    );
+            ],
+        ),),
+      );
   }
 }
 
-// Halaman Verifikasi Keamanan
 class VerifikasiKeamananPage extends StatelessWidget {
-  const VerifikasiKeamananPage({super.key}); // Menambahkan key ke constructor
+  const VerifikasiKeamananPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -313,14 +329,14 @@ class VerifikasiKeamananPage extends StatelessWidget {
               leading: const Icon(Icons.message, color: Colors.blue),
               title: const Text("Verifikasi dengan OTP SMS"),
               onTap: () {
-                // untuk verifikasi dengan OTP
+                //  OTP verifikasi
               },
             ),
             ListTile(
               leading: const Icon(Icons.lock, color: Colors.blue),
               title: const Text("Verifikasi dengan PIN Aplikasi"),
               onTap: () {
-                // untuk verifikasi dengan PIN
+                // PIN verifikasi
               },
             ),
           ],
