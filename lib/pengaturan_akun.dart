@@ -6,7 +6,7 @@ import 'package:penicillisolver/camera_page.dart';
 import 'package:penicillisolver/setting.dart';
 import 'package:penicillisolver/theme.dart';
 
-var selectedImage;
+File? selectedImage;
 
 class PengaturanAkun extends StatelessWidget {
   const PengaturanAkun({super.key});
@@ -116,10 +116,10 @@ class EditProfilPage extends StatefulWidget {
   const EditProfilPage({super.key});
 
   @override
-  _EditProfilPageState createState() => _EditProfilPageState();
+  EditProfilPageState createState() => EditProfilPageState();
 }
 
-class _EditProfilPageState extends State<EditProfilPage> {
+class EditProfilPageState extends State<EditProfilPage> {
   String _gender = "Pria";
   DateTime _selectedDate = DateTime.now();
   final _nameController = TextEditingController();
@@ -143,7 +143,7 @@ class _EditProfilPageState extends State<EditProfilPage> {
 
   void _onImageCaptured(File image) {
     setState(() {
-      selectedImage = image; // Set the selected image in ImageService
+      selectedImage = image;
     });
   }
 
@@ -189,12 +189,17 @@ class _EditProfilPageState extends State<EditProfilPage> {
         padding: const EdgeInsets.all(16.0),
         child: ListView(
           children: [
-            // bagian profil gambar
             Center(
               child: GestureDetector(
-                onTap: ()
-                {
-                  Navigator.push(context, MaterialPageRoute(builder: (context)=>CameraPage(onImageCaptured: _onImageCaptured,)));
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => CameraPage(
+                        onImageCaptured: _onImageCaptured,
+                      ),
+                    ),
+                  );
                 },
                 child: Container(
                   width: 120,
@@ -204,33 +209,29 @@ class _EditProfilPageState extends State<EditProfilPage> {
                     border: Border.all(color: Colors.blue, width: 2.0),
                   ),
                   child: ClipOval(
-                    child: selectedImage == null? Image.asset(
-                      "assets/jawinpp.png",
-                      fit: BoxFit.cover,
-                      width: 120,
-                      height: 120,
-                    ):Image.file(selectedImage!)),
+                    child: selectedImage == null
+                        ? Image.asset(
+                            "assets/jawinpp.png",
+                            fit: BoxFit.cover,
+                            width: 120,
+                            height: 120,
+                          )
+                        : Image.file(selectedImage!),
                   ),
                 ),
               ),
-            
+            ),
             const SizedBox(height: 20),
-
-            // Nama
             TextFormField(
               controller: _nameController,
               decoration: const InputDecoration(labelText: "Nama"),
             ),
             const SizedBox(height: 20),
-
-            // Bio 
             TextFormField(
               controller: _bioController,
               decoration: const InputDecoration(labelText: "Bio"),
             ),
             const SizedBox(height: 20),
-
-            // jenis kelamin dropdown
             DropdownButtonFormField<String>(
               value: _gender,
               decoration: const InputDecoration(labelText: "Jenis Kelamin"),
@@ -247,8 +248,6 @@ class _EditProfilPageState extends State<EditProfilPage> {
               },
             ),
             const SizedBox(height: 20),
-
-            // tanggal lahir
             TextFormField(
               readOnly: true,
               controller: TextEditingController(
@@ -263,24 +262,18 @@ class _EditProfilPageState extends State<EditProfilPage> {
               },
             ),
             const SizedBox(height: 20),
-
-            //nomer hp
             TextFormField(
               controller: _phoneController,
               decoration: const InputDecoration(labelText: "Nomor Handphone"),
               keyboardType: TextInputType.phone,
             ),
             const SizedBox(height: 20),
-
-            // Email 
             TextFormField(
               controller: _emailController,
               decoration: const InputDecoration(labelText: "Email"),
               keyboardType: TextInputType.emailAddress,
             ),
             const SizedBox(height: 20),
-
-            // tombol verifikasi
             ElevatedButton(
               onPressed: () {
                 Navigator.push(
@@ -291,9 +284,10 @@ class _EditProfilPageState extends State<EditProfilPage> {
               },
               child: const Text("Lanjut"),
             ),
-            ],
-        ),),
-      );
+          ],
+        ),
+      ),
+    );
   }
 }
 

@@ -1,5 +1,3 @@
-// ignore_for_file: use_build_context_synchronously
-
 import 'package:flutter/material.dart';
 import 'package:penicillisolver/MainMenu.dart';
 import 'package:penicillisolver/setting.dart';
@@ -72,7 +70,7 @@ class AntibioticQuery extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 100),
-            Text(
+            const Text(
               'Cari antibiotik berdasarkan Penyakit',
               style: TextStyle(fontSize: 20),
             ),
@@ -181,14 +179,12 @@ class AntibioticQuery extends StatelessWidget {
               child: InkWell(
                 borderRadius: BorderRadius.circular(30),
                 onTap: () {
-                  Future.delayed(const Duration(milliseconds: 0), () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const PengaturanPage(),
-                      ),
-                    );
-                  });
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const PengaturanPage(),
+                    ),
+                  );
                 },
                 child: Container(
                   padding: const EdgeInsets.all(8),

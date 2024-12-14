@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
 import 'dart:io';
 
-
-
 class CameraPage extends StatefulWidget {
   final Function(File) onImageCaptured;
 
@@ -26,7 +24,9 @@ class _CameraPageState extends State<CameraPage> {
     final cameras = await availableCameras();
     _cameraController = CameraController(cameras.first, ResolutionPreset.high);
     await _cameraController!.initialize();
-    setState(() {});
+    if (mounted) {
+      setState(() {}); // Pastikan widget masih ada sebelum memanggil setState
+    }
   }
 
   void _captureImage() async {
@@ -34,9 +34,11 @@ class _CameraPageState extends State<CameraPage> {
       try {
         final XFile file = await _cameraController!.takePicture();
         widget.onImageCaptured(File(file.path));
-        Navigator.pop(context); 
+        if (mounted) {
+          Navigator.pop(context); // Periksa `mounted` sebelum menggunakan `context`
+        }
       } catch (e) {
-        print("Error capturing image: $e");
+        debugPrint("Error capturing image: $e"); // Gunakan debugPrint untuk debugging
       }
     }
   }
