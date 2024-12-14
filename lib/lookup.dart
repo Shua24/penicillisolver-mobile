@@ -72,7 +72,7 @@ class AntibioticQuery extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 100),
-            Text(
+            const Text(
               'Cari antibiotik berdasarkan Penyakit',
               style: TextStyle(fontSize: 20),
             ),

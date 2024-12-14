@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:penicillisolver/PengaturanAkun.dart';
 import 'package:penicillisolver/verifikasi.dart';
-
 import 'package:penicillisolver/lupa.dart';
 import 'package:penicillisolver/theme.dart';
 import 'package:penicillisolver/register.dart';
 import 'package:penicillisolver/login.dart';
-import 'package:penicillisolver/camera_page.dart';
 
 void main() {
   runApp(const MyApp());
