@@ -2,7 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:penicillisolver/MainMenu.dart';
-import 'package:penicillisolver/PengaturanAkun.dart';
+import 'package:penicillisolver/pengaturan_akun.dart';
 import 'package:penicillisolver/login.dart';
 import 'package:penicillisolver/lookup.dart';
 import 'package:penicillisolver/theme.dart';
