@@ -21,6 +21,7 @@ dependencies:
   firebase_auth: ^4.19.0
   cloud_firestore: ^4.9.0
   cryptography: ^2.7.0
+  flutter_dotenv: ^5.2.1
 
 dev_dependencies:
   flutter_test:
@@ -48,3 +49,4 @@ flutter:
     - assets/notif.gif
     - assets/polakuman.png
     - assets/jawinpp.png
+    - .env
