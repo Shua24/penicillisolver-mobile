@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 import 'package:penicillisolver/MainMenu.dart';
 import 'package:penicillisolver/setting.dart';
 import 'theme.dart';
@@ -15,8 +18,107 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class AntibioticQuery extends StatelessWidget {
+class AntibioticQuery extends StatefulWidget {
   const AntibioticQuery({super.key});
+
+  @override
+  _AntibioticQueryState createState() => _AntibioticQueryState();
+}
+
+class _AntibioticQueryState extends State<AntibioticQuery> {
+  final TextEditingController _textController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    _loadEnv();
+  }
+
+  Future<void> _loadEnv() async {
+    try {
+      await dotenv.load();
+      print("Environment variables loaded");
+    } catch (e) {
+      print("Error loading .env file: $e");
+    }
+  }
+
+  List<String> _results = [];
+
+  Future<void> _fetchData() async {
+    final query = _textController.text.trim();
+    final apiUrl = '${dotenv.env['FLUTTER_API_URL']}/top-values?column=$query';
+    if (query.isEmpty) {
+      _showDialog('Error', 'Please enter a valid input.');
+      return;
+    }
+
+    final url = Uri.parse(apiUrl);
+
+    try {
+      final response = await http.get(url);
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+
+        final List<dynamic> antibiotics = data['tiga_antibiotik'];
+
+        setState(() {
+          _results = antibiotics.map((antibiotic) {
+            final organism = antibiotic['Organism'];
+            final percentage = antibiotic[query] ?? 'Unknown';
+            return '$organism: $percentage%';
+          }).toList();
+        });
+
+        _showResultsDialog();
+      } else {
+        _showDialog('Error', 'Failed to fetch data: ${response.reasonPhrase}');
+      }
+    } catch (e) {
+      _showDialog('Error', 'An error occurred: $e');
+    }
+  }
+
+  void _showDialog(String title, String content) {
+    showDialog<String>(
+      context: context,
+      builder: (BuildContext context) => AlertDialog(
+        title: Text(title),
+        content: Text(content),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('OK'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _showResultsDialog() {
+    showDialog<String>(
+      context: context,
+      builder: (BuildContext context) => AlertDialog(
+        title: const Text('Antibiotik terbaik'),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: _results.map((item) {
+            return Padding(
+              padding: const EdgeInsets.only(bottom: 8),
+              child: Text(item),
+            );
+          }).toList(),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('OK'),
+          ),
+        ],
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -35,14 +137,15 @@ class AntibioticQuery extends StatelessWidget {
                   IconButton(
                     icon: const Icon(
                       Icons.chevron_left,
-                      color: Color.fromARGB(255, 255, 255, 255),
+                      color: Colors.white,
                       size: 35,
                     ),
                     onPressed: () {
                       Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => const MainMenu()),
+                          builder: (context) => const MainMenu(),
+                        ),
                       );
                     },
                   ),
@@ -53,7 +156,7 @@ class AntibioticQuery extends StatelessWidget {
                         'Cari Antibiotik',
                         textAlign: TextAlign.center,
                         style: TextStyle(
-                          color: Color.fromARGB(255, 255, 255, 255),
+                          color: Colors.white,
                           fontSize: 25,
                           fontWeight: FontWeight.w500,
                         ),
@@ -62,9 +165,9 @@ class AntibioticQuery extends StatelessWidget {
                   ),
                   const CircleAvatar(
                     radius: 20,
-                    backgroundColor: Color.fromARGB(0, 255, 255, 255),
-                    child: Icon(Icons.person,
-                        size: 40, color: Color.fromARGB(0, 255, 255, 255)),
+                    backgroundColor: Colors.transparent,
+                    child:
+                        Icon(Icons.person, size: 40, color: Colors.transparent),
                   ),
                 ],
               ),
@@ -75,36 +178,19 @@ class AntibioticQuery extends StatelessWidget {
               style: TextStyle(fontSize: 20),
             ),
             const SizedBox(height: 20),
-            const SizedBox(
+            SizedBox(
               width: 400,
               child: TextField(
-                decoration: InputDecoration(
-                  labelText: 'Pastikan penyakit ada pada tabel bakteri',
+                controller: _textController,
+                decoration: const InputDecoration(
+                  labelText: 'Masukkan bakteri',
                   border: OutlineInputBorder(),
                 ),
               ),
             ),
             const SizedBox(height: 20),
             ElevatedButton(
-              onPressed: () {
-                showDialog<String>(
-                  context: context,
-                  builder: (BuildContext context) => const AlertDialog(
-                    title: Text('Antibiotik terbaik'),
-                    content: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text('Item 1'),
-                        SizedBox(height: 8),
-                        Text('Item 2'),
-                        SizedBox(height: 8),
-                        Text('Item 3'),
-                      ],
-                    ),
-                  ),
-                );
-              },
+              onPressed: _fetchData,
               child: const Text(
                 'Cari',
                 style: TextStyle(fontSize: 17),
