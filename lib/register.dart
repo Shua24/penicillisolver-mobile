@@ -1,9 +1,13 @@
-// ignore_for_file: library_private_types_in_public_api, use_build_context_synchronously
+// ignore_for_file: library_private_types_in_public_api, use_build_context_synchronously, unused_import, unused_element, avoid_print
 
 import 'package:flutter/material.dart';
+import 'dart:developer';
 import 'package:penicillisolver/login.dart';
 import 'package:penicillisolver/theme.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'firebase_options.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 void main() {
   runApp(const Landing());
@@ -86,9 +90,135 @@ class Register extends StatefulWidget {
 }
 
 class _RegisterState extends State<Register> {
+  final TextEditingController _namaController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _confirmPasswordController =
+      TextEditingController();
+  final TextEditingController _sipController = TextEditingController();
+  final ValueNotifier<String?> selectedTeamNotifier =
+      ValueNotifier<String?>(null);
+
+  final TextEditingController teamController = TextEditingController();
+
+  final FirebaseAuth auth = FirebaseAuth.instance;
+  final FirebaseFirestore firestore = FirebaseFirestore.instance;
+
   bool _obscureText1 = true;
   bool _obscureText2 = true;
   List<bool> isSelected = [true, false, false, false];
+
+  @override
+  void dispose() {
+    selectedTeamNotifier.dispose();
+    teamController.dispose();
+    super.dispose();
+  }
+
+  bool _validateInputs() {
+    if (_namaController.text.isEmpty ||
+        _emailController.text.isEmpty ||
+        _passwordController.text.isEmpty ||
+        _confirmPasswordController.text.isEmpty ||
+        _sipController.text.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Semua field wajib diisi'),
+          backgroundColor: Colors.red,
+        ),
+      );
+      return false;
+    }
+
+    if (_passwordController.text != _confirmPasswordController.text) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Kata sandi dan konfirmasi sandi tidak cocok'),
+          backgroundColor: Colors.red,
+        ),
+      );
+      return false;
+    }
+
+    if (selectedTeamNotifier.value == null ||
+        selectedTeamNotifier.value!.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Pilih tim terlebih dahulu'),
+          backgroundColor: Colors.red,
+        ),
+      );
+      return false;
+    }
+
+    return true;
+  }
+
+  Future<void> _registerUser() async {
+    if (!_validateInputs()) {
+      return;
+    }
+
+    try {
+      final credential =
+          await FirebaseAuth.instance.createUserWithEmailAndPassword(
+        email: _emailController.text.trim(),
+        password: _passwordController.text.trim(),
+      );
+
+      try {
+        await FirebaseFirestore.instance
+            .collection('users')
+            .doc(credential.user?.uid)
+            .set({
+          'uid': credential.user?.uid,
+          'nama': _namaController.text.trim(),
+          'email': _emailController.text.trim(),
+          'sip': _sipController.text.trim(),
+          'role': selectedTeamNotifier.value,
+          'createdAt': FieldValue.serverTimestamp(),
+        });
+        print("Data berhasil disimpan ke Firestore.");
+
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+                content: Text('Registrasi berhasil!'),
+                backgroundColor: Colors.green),
+          );
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => const LoginScreen()),
+          );
+        }
+      } catch (firestoreError) {
+        print("Error saat menyimpan ke Firestore: $firestoreError");
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content:
+                Text('Terjadi kesalahan saat menyimpan data. $firestoreError'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    } on FirebaseAuthException catch (e) {
+      print("FirebaseAuthException: ${e.message}");
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Error: ${e.message}'),
+          backgroundColor: Colors.red,
+        ),
+      );
+    } catch (e) {
+      print("General Exception: $e");
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Terjadi kesalahan. Coba lagi.'),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
+  }
 
   Future<void> _launchURL(String url) async {
     final Uri uri = Uri.parse(url);
@@ -111,21 +241,58 @@ class _RegisterState extends State<Register> {
               const Text(
                 'Daftar',
                 style: TextStyle(
-                  fontSize: 30,
+                  fontSize: 25,
                   fontWeight: FontWeight.bold,
                 ),
               ),
               const SizedBox(height: 15),
               Center(
                 child: SizedBox(
-                  width: 200,
-                  height: 150,
+                  width: 170,
+                  height: 125,
                   child: Image.asset(
                     'assets/logo1.png',
                   ),
                 ),
               ),
               const SizedBox(height: 25),
+
+              // Nama
+              const Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  'Nama',
+                  style: TextStyle(
+                    color: Color.fromRGBO(37, 160, 237, 1),
+                    fontSize: 16,
+                  ),
+                ),
+              ),
+              const SizedBox(height: 5),
+
+              TextField(
+                controller: _namaController,
+                decoration: InputDecoration(
+                  hintText: 'Nama anda',
+                  hintStyle: const TextStyle(
+                      color: Color.fromARGB(255, 170, 170, 170)),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(5),
+                    borderSide: const BorderSide(
+                      color: Color.fromRGBO(37, 160, 237, 1),
+                      width: 1,
+                    ),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(5),
+                    borderSide: const BorderSide(
+                      color: Color.fromRGBO(37, 160, 237, 1), // saat fokus
+                      width: 2,
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 15),
 
               // Email
               const Align(
@@ -140,6 +307,7 @@ class _RegisterState extends State<Register> {
               ),
               const SizedBox(height: 5),
               TextField(
+                controller: _emailController,
                 decoration: InputDecoration(
                   hintText: 'Email anda',
                   hintStyle: const TextStyle(
@@ -174,6 +342,7 @@ class _RegisterState extends State<Register> {
               ),
               const SizedBox(height: 5),
               TextField(
+                controller: _sipController,
                 decoration: InputDecoration(
                   hintText: 'Nomor SIP',
                   hintStyle: const TextStyle(
@@ -209,6 +378,7 @@ class _RegisterState extends State<Register> {
               ),
               const SizedBox(height: 5),
               TextField(
+                controller: _passwordController,
                 obscureText: _obscureText1,
                 decoration: InputDecoration(
                   hintText: 'Kata Sandi Anda',
@@ -235,7 +405,7 @@ class _RegisterState extends State<Register> {
                     ),
                     onPressed: () {
                       setState(() {
-                        _obscureText1 = !_obscureText1; // mata
+                        _obscureText1 = !_obscureText1;
                       });
                     },
                   ),
@@ -243,7 +413,6 @@ class _RegisterState extends State<Register> {
               ),
               const SizedBox(height: 15),
 
-              // konfirmasi kata sandi
               const Align(
                 alignment: Alignment.centerLeft,
                 child: Text(
@@ -256,6 +425,7 @@ class _RegisterState extends State<Register> {
               ),
               const SizedBox(height: 5),
               TextField(
+                controller: _confirmPasswordController,
                 obscureText: _obscureText2,
                 decoration: InputDecoration(
                   hintText: 'Konfirmasi Kata Sandi',
@@ -290,115 +460,81 @@ class _RegisterState extends State<Register> {
                 style: const TextStyle(color: Colors.black),
               ),
 
-              const SizedBox(height: 20),
-
-              // Pilihan Tim (Mikrobiologi, Dokter, PPI, PPRA)
+              const SizedBox(height: 15),
               const Align(
-                alignment: Alignment.center,
+                alignment: Alignment.centerLeft,
                 child: Text(
-                  'Daftar Sebagai Tim:',
+                  'Masuk Sebagai Tim',
                   style: TextStyle(
                     color: Color.fromRGBO(37, 160, 237, 1),
                     fontSize: 16,
                   ),
                 ),
               ),
-              const SizedBox(height: 1),
-              const Padding(
-                padding: EdgeInsets.all(5),
-              ),
-              ToggleButtons(
-                onPressed: (int index) {
-                  setState(() {
-                    for (int i = 0; i < isSelected.length; i++) {
-                      isSelected[i] = i == index;
-                    }
-                  });
+              const SizedBox(height: 5),
+              ValueListenableBuilder<String?>(
+                valueListenable: selectedTeamNotifier,
+                builder: (context, selectedTeam, _) {
+                  return DropdownButtonFormField<String>(
+                    value: selectedTeam,
+                    items: [
+                      "Pilih Tim",
+                      "Mikrobiologi",
+                      "Dokter",
+                      "PPI",
+                      "PPRA",
+                      "Penanggung Jawab Lab"
+                    ].map((item) {
+                      return DropdownMenuItem<String>(
+                        value: item,
+                        child: Text(item),
+                      );
+                    }).toList(),
+                    onChanged: (value) {
+                      selectedTeamNotifier.value = value;
+                    },
+                  );
                 },
-                isSelected: isSelected,
-                color: const Color.fromARGB(255, 0, 0, 0),
-                selectedColor: Colors.white,
-                fillColor: Colors.blue,
-                constraints: const BoxConstraints(
-                  minWidth: 50,
-                  minHeight: 40,
-                ),
-                borderRadius: BorderRadius.circular(8),
-                children: const <Widget>[
-                  Padding(
-                    padding:
-                        EdgeInsets.symmetric(horizontal: 16.0, vertical: 1),
-                    child: Text('Mikrobiologi'),
-                  ),
-                  Padding(
-                    padding:
-                        EdgeInsets.symmetric(horizontal: 16.0, vertical: 1),
-                    child: Text('Dokter'),
-                  ),
-                  Padding(
-                    padding:
-                        EdgeInsets.symmetric(horizontal: 16.0, vertical: 1),
-                    child: Text('PPI'),
-                  ),
-                  Padding(
-                    padding:
-                        EdgeInsets.symmetric(horizontal: 16.0, vertical: 1),
-                    child: Text('PPRA'),
-                  ),
-                ],
               ),
 
               const SizedBox(height: 30),
 
-              // Tombol Daftar
               SizedBox(
                 width: 400,
-                height: 60, // Mengatur lebar tombol
+                height: 60,
                 child: ElevatedButton(
-                  onPressed: () {
-                    Future.delayed(const Duration(milliseconds: 500), () {
-                      Navigator.of(context).pushReplacement(
-                        MaterialPageRoute(
-                            builder: (context) => const LoginScreen()),
-                      );
-                    });
-                    // Aksi ketika tombol ditekan
+                  onPressed: () async {
+                    await _registerUser();
                   },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor:
-                        Colors.blue, // Mengatur warna latar belakang tombol
+                    backgroundColor: Colors.blue,
                     foregroundColor: Colors.white,
-                    padding: const EdgeInsets.symmetric(
-                        vertical: 15), // Mengatur warna teks tombol
+                    padding: const EdgeInsets.symmetric(vertical: 15),
                   ),
                   child: const Text(
                     'Daftar',
-                    style: TextStyle(fontSize: 17), // Mengatur ukuran teks
+                    style: TextStyle(fontSize: 17),
                   ),
                 ),
               ),
 
               const SizedBox(height: 20),
 
-              // Sudah punya akun / Login dengan
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   const Text(
                     'Sudah Punya Akun ?',
-                    style:
-                        TextStyle(fontSize: 17), // Ukuran teks untuk pertanyaan
+                    style: TextStyle(fontSize: 17),
                   ),
                   const SizedBox(width: 5),
                   GestureDetector(
                     onTap: () {
-                      // Menavigasi ke LoginScreen setelah penundaan
                       Future.delayed(const Duration(milliseconds: 500), () {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) =>
-                                const LoginScreen(), // Navigasi ke LoginScreen
+                            builder: (context) => const LoginScreen(),
                           ),
                         );
                       });
@@ -406,9 +542,9 @@ class _RegisterState extends State<Register> {
                     child: const Text(
                       'Masuk',
                       style: TextStyle(
-                        color: Color.fromRGBO(37, 160, 237, 1), // Warna teks
-                        fontWeight: FontWeight.bold, // Teks tebal
-                        fontSize: 17, // Ukuran teks
+                        color: Color.fromRGBO(37, 160, 237, 1),
+                        fontWeight: FontWeight.bold,
+                        fontSize: 17,
                       ),
                     ),
                   ),
@@ -418,15 +554,13 @@ class _RegisterState extends State<Register> {
               const SizedBox(height: 10),
               const Text(
                 'Atau Lanjutkan Dengan :',
-                style: TextStyle(fontSize: 15), // Ukuran teks untuk pertanyaan
+                style: TextStyle(fontSize: 15),
               ),
               const SizedBox(height: 10),
 
-              // Tombol Sosial Media (Google, Facebook, Twitter)
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  // Tombol Google
                   IconButton(
                     icon: Image.asset(
                       'assets/google.png',
@@ -439,7 +573,6 @@ class _RegisterState extends State<Register> {
                     },
                   ),
                   const SizedBox(width: 10),
-                  // Tombol Facebook
                   IconButton(
                     icon: Image.asset(
                       'assets/fb.png',
@@ -452,7 +585,6 @@ class _RegisterState extends State<Register> {
                     },
                   ),
                   const SizedBox(width: 10),
-                  // Tombol Twitter
                   IconButton(
                       icon: Image.asset(
                         'assets/x.png',

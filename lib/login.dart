@@ -1,10 +1,21 @@
-// ignore_for_file: deprecated_member_use, use_build_context_synchronously, library_private_types_in_public_api
+// ignore_for_file: deprecated_member_use, use_build_context_synchronously, library_private_types_in_public_api, avoid_print
 
 import 'package:flutter/material.dart';
 import 'package:penicillisolver/MainMenu.dart';
 import 'package:penicillisolver/lupa.dart';
 import 'package:penicillisolver/register.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+  runApp(const Register());
+}
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -16,6 +27,73 @@ class LoginScreen extends StatefulWidget {
 class _LoginState extends State<LoginScreen> {
   bool _obscureText1 = true;
   List<bool> isSelected = [true, false, false, false];
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+
+  Future<void> _loginUser() async {
+    if (_emailController.text.isEmpty || _passwordController.text.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Email dan password tidak boleh kosong'),
+          backgroundColor: Colors.red,
+        ),
+      );
+      return;
+    }
+
+    if (!_emailController.text.contains('@')) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Format email tidak valid'),
+          backgroundColor: Colors.red,
+        ),
+      );
+      return;
+    }
+
+    try {
+      await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: _emailController.text.trim(),
+        password: _passwordController.text.trim(),
+      );
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Login berhasil'),
+          backgroundColor: Colors.green,
+        ),
+      );
+
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(builder: (context) => const MainMenu()),
+      );
+    } on FirebaseAuthException catch (e) {
+      String errorMessage;
+      if (e.code == 'user-not-found') {
+        errorMessage = 'Akun tidak ditemuka. Coba daftar terlebih dahulu.';
+      } else if (e.code == 'wrong-password') {
+        errorMessage = 'Password salah. Coba lagi.';
+      } else if (e.code == 'invalid-email') {
+        errorMessage = 'Email tidak valid.';
+      } else {
+        errorMessage = 'Hmmm... Ada yg tidak sesuai kayaknya.';
+      }
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(errorMessage),
+          backgroundColor: Colors.red,
+        ),
+      );
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Login gagal: ${e.toString()}'),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
+  }
 
   Future<void> _launchURL(String url) async {
     final Uri uri = Uri.parse(url);
@@ -69,6 +147,7 @@ class _LoginState extends State<LoginScreen> {
                 ),
                 const SizedBox(height: 5),
                 TextField(
+                  controller: _emailController,
                   decoration: InputDecoration(
                     hintText: 'Email anda',
                     hintStyle: const TextStyle(
@@ -102,6 +181,7 @@ class _LoginState extends State<LoginScreen> {
                 ),
                 const SizedBox(height: 5),
                 TextField(
+                  controller: _passwordController,
                   obscureText: _obscureText1,
                   decoration: InputDecoration(
                     hintText: 'Kata Sandi Anda',
@@ -139,22 +219,7 @@ class _LoginState extends State<LoginScreen> {
                   width: 400,
                   height: 60,
                   child: ElevatedButton(
-                    onPressed: () {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text('Login berhasil'),
-                          duration: Duration(seconds: 1),
-                          backgroundColor: Colors.green,
-                        ),
-                      );
-
-                      Future.delayed(const Duration(milliseconds: 1000), () {
-                        Navigator.of(context).pushReplacement(
-                          MaterialPageRoute(
-                              builder: (context) => const MainMenu()),
-                        );
-                      });
-                    },
+                    onPressed: _loginUser, // Pastikan fungsi ini dipanggil.
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.blue,
                       foregroundColor: Colors.white,
