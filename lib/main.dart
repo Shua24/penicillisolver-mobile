@@ -1,13 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:penicillisolver/PengaturanAkun.dart';
+import 'package:penicillisolver/pengaturan_akun.dart';
 import 'package:penicillisolver/verifikasi.dart';
-
 import 'package:penicillisolver/lupa.dart';
 import 'package:penicillisolver/theme.dart';
 import 'package:penicillisolver/register.dart';
 import 'package:penicillisolver/login.dart';
 
-void main() {
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart'; // Import file konfigurasi Firebase
+
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp( // Inisialisasi Firebase dengan konfigurasi
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(const MyApp());
 }
 

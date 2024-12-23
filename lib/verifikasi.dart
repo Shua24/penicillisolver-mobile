@@ -1,4 +1,4 @@
-// ignore_for_file: deprecated_member_use, use_build_context_synchronously, unused_element
+// ignore_for_file: deprecated_member_use
 
 import 'package:flutter/material.dart';
 import 'package:penicillisolver/MainMenu.dart';
@@ -66,9 +66,7 @@ class _VerifikasiState extends State<Verifikasi> {
 
       await flutterLocalNotificationsPlugin.initialize(
         initializationSettings,
-        onDidReceiveNotificationResponse: (NotificationResponse details) {
-          // Notification tap handling can be implemented here if needed
-        },
+        onDidReceiveNotificationResponse: (NotificationResponse details) {},
       );
 
       generatedOTP = _generateOTP();
@@ -146,11 +144,10 @@ class _VerifikasiState extends State<Verifikasi> {
           );
         }
       } else {
-        // Reset semua input field
         for (var controller in _controllers) {
           controller.clear();
         }
-        // Set focus ke field pertama
+
         if (mounted) {
           FocusScope.of(context).requestFocus(_focusNodes[0]);
         }
@@ -176,13 +173,11 @@ class _VerifikasiState extends State<Verifikasi> {
       generatedOTP = _generateOTP();
       await _showOtpNotification(generatedOTP);
 
-      // Reset semua input field
       for (var controller in _controllers) {
         controller.clear();
       }
 
       if (mounted) {
-        // Set focus ke field pertama
         FocusScope.of(context).requestFocus(_focusNodes[0]);
 
         ScaffoldMessenger.of(context).showSnackBar(
