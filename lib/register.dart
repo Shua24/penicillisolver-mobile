@@ -116,6 +116,7 @@ class _RegisterState extends State<Register> {
   }
 
   bool _validateInputs() {
+    // Memeriksa apakah semua field diisi
     if (_namaController.text.isEmpty ||
         _emailController.text.isEmpty ||
         _passwordController.text.isEmpty ||
@@ -129,7 +130,19 @@ class _RegisterState extends State<Register> {
       );
       return false;
     }
+    String password = _passwordController.text;
+    if (!_isPasswordValid(password)) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Kata sandi harus minimal 6 karakter, '
+              'mengandung huruf besar, huruf kecil, dan angka.'),
+          backgroundColor: Colors.red,
+        ),
+      );
+      return false;
+    }
 
+    // Memeriksa apakah kata sandi dan konfirmasi kata sandi cocok
     if (_passwordController.text != _confirmPasswordController.text) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
@@ -140,6 +153,7 @@ class _RegisterState extends State<Register> {
       return false;
     }
 
+    // Memeriksa apakah tim telah dipilih
     if (selectedTeamNotifier.value == null ||
         selectedTeamNotifier.value!.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -151,7 +165,22 @@ class _RegisterState extends State<Register> {
       return false;
     }
 
+    // Validasi kata sandi
+
     return true;
+  }
+
+// Fungsi untuk memvalidasi kata sandi
+  bool _isPasswordValid(String password) {
+    // Memeriksa panjang kata sandi
+    if (password.length < 6) return false;
+
+    // Memeriksa keberadaan huruf besar, huruf kecil, dan angka
+    bool hasUppercase = password.contains(RegExp(r'[A-Z]'));
+    bool hasLowercase = password.contains(RegExp(r'[a-z]'));
+    bool hasDigits = password.contains(RegExp(r'[0-9]'));
+
+    return hasUppercase && hasLowercase && hasDigits;
   }
 
   Future<void> _registerUser() async {
