@@ -1,22 +1,73 @@
-// ignore_for_file: use_build_context_synchronously, deprecated_member_use
+// ignore_for_file: library_private_types_in_public_api, deprecated_member_use, use_build_context_synchronously
 
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:penicillisolver/verifikasi.dart';
 import 'package:penicillisolver/login.dart';
 
-class Lupa extends StatelessWidget {
+class Lupa extends StatefulWidget {
   const Lupa({super.key});
+
+  @override
+  _LupaState createState() => _LupaState();
+}
+
+class _LupaState extends State<Lupa> {
+  final TextEditingController _emailController = TextEditingController();
+
+  @override
+  void dispose() {
+    _emailController.dispose();
+    super.dispose();
+  }
+
+  Future<void> resetPassword(String email) async {
+    try {
+      await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+            content: Text(
+                'Email reset kata sandi telah dikirim. Periksa inbox Anda.')),
+      );
+
+      Future.delayed(const Duration(seconds: 3), () {
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (context) => const LoginScreen()),
+        );
+      });
+    } on FirebaseAuthException catch (e) {
+      String errorMessage;
+      switch (e.code) {
+        case "auth/user-not-found":
+          errorMessage = "Email tidak ditemukan dalam sistem kami.";
+          break;
+        case "invalid-email":
+          errorMessage = "Format email tidak valid.";
+          break;
+        default:
+          errorMessage =
+              "Terjadi kesalahan. Silakan coba lagi nanti.(${e.code})";
+      }
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(errorMessage),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async {
-        // Mengizinkan navigasi kembali
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (context) => const LoginScreen()),
         );
-        return false; // Mencegah navigasi kembali ke halaman ini
+        return false;
       },
       child: Scaffold(
         backgroundColor: Colors.white,
@@ -38,7 +89,6 @@ class Lupa extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                const SizedBox(height: 0),
                 const Text(
                   'Lupa Kata Sandi',
                   style: TextStyle(
@@ -46,7 +96,7 @@ class Lupa extends StatelessWidget {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                const SizedBox(height: 0),
+                const SizedBox(height: 10),
                 Transform.translate(
                   offset: const Offset(90, 10),
                   child: SizedBox(
@@ -70,6 +120,7 @@ class Lupa extends StatelessWidget {
                 ),
                 const SizedBox(height: 10),
                 TextField(
+                  controller: _emailController,
                   decoration: InputDecoration(
                     hintText: 'Email anda',
                     hintStyle: const TextStyle(
@@ -77,16 +128,14 @@ class Lupa extends StatelessWidget {
                     enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(5),
                       borderSide: const BorderSide(
-                        color: Color.fromRGBO(
-                            37, 160, 237, 1), // Warna border saat tidak fokus
+                        color: Color.fromRGBO(37, 160, 237, 1),
                         width: 1,
                       ),
                     ),
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(5),
                       borderSide: const BorderSide(
-                        color: Color.fromRGBO(
-                            37, 160, 237, 1), // Warna border saat fokus
+                        color: Color.fromRGBO(37, 160, 237, 1),
                         width: 2,
                       ),
                     ),
@@ -95,15 +144,18 @@ class Lupa extends StatelessWidget {
                 const SizedBox(height: 35),
                 SizedBox(
                   width: 400,
-                  height: 60, // Mengatur lebar tombol
+                  height: 60,
                   child: ElevatedButton(
-                    onPressed: () {
-                      Future.delayed(const Duration(milliseconds: 500), () {
-                        Navigator.of(context).pushReplacement(
-                          MaterialPageRoute(
-                              builder: (context) => const Verifikasi()),
+                    onPressed: () async {
+                      final email = _emailController.text.trim();
+                      if (email.isNotEmpty) {
+                        resetPassword(email);
+                      } else {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                              content: Text('Email tidak boleh kosong')),
                         );
-                      });
+                      }
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.blue,
@@ -117,6 +169,25 @@ class Lupa extends StatelessWidget {
                         fontWeight: FontWeight.bold,
                         fontSize: 17,
                       ),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 20),
+                GestureDetector(
+                  onTap: () {
+                    Future.delayed(const Duration(milliseconds: 500), () {
+                      Navigator.of(context).pushReplacement(
+                        MaterialPageRoute(
+                            builder: (context) => const Verifikasi()),
+                      );
+                    });
+                  },
+                  child: const Text(
+                    'Atau Gunakan OTP',
+                    style: TextStyle(
+                      color: Color.fromRGBO(37, 160, 237, 1),
+                      fontWeight: FontWeight.bold,
+                      fontSize: 17,
                     ),
                   ),
                 ),

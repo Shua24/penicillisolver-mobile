@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use, library_private_types_in_public_api, avoid_print
+
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
@@ -71,8 +73,16 @@ class _AntibioticQueryState extends State<AntibioticQuery> {
         });
 
         _showResultsDialog();
+      } else if (response.statusCode == 400) {
+        _showDialog(
+          'Tidak ditemukan',
+          'Bakteri tidak ditemukan. Sesuaikan nama bakteri dengan pola kuman.',
+        );
       } else {
-        _showDialog('Error', 'Failed to fetch data: ${response.reasonPhrase}');
+        _showDialog(
+          'Error',
+          'Tidak dapat mengambil data. Rincian: ${response.statusCode}, ${response.reasonPhrase}',
+        );
       }
     } catch (e) {
       _showDialog('Error', 'An error occurred: $e');
@@ -179,7 +189,7 @@ class _AntibioticQueryState extends State<AntibioticQuery> {
             ),
             const SizedBox(height: 20),
             SizedBox(
-              width: 400,
+              width: 350,
               child: TextField(
                 controller: _textController,
                 decoration: const InputDecoration(
