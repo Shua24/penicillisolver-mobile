@@ -68,17 +68,15 @@ class _LoginState extends State<LoginScreen> {
         MaterialPageRoute(builder: (context) => const MainMenu()),
       );
     } on FirebaseAuthException catch (e) {
+      // Tangani berbagai error spesifik dari Firebase
       String errorMessage;
-      if (e.code == 'user-not-found') {
-        errorMessage = 'Akun tidak ditemuka. Coba daftar terlebih dahulu.';
-      } else if (e.code == 'wrong-password') {
-        errorMessage = 'Password salah. Coba lagi.';
-      } else if (e.code == 'invalid-email') {
-        errorMessage = 'Email tidak valid.';
-      } else {
-        errorMessage = 'Hmmm... Ada yg tidak sesuai kayaknya.';
+      switch (e.code) {
+        case 'invalid-credential':
+          errorMessage = 'Email atau Password salah. Coba lagi.';
+          break;
+        default:
+          errorMessage = 'Hmmm... Ada yg tidak sesuai kayaknya (${e.code}).';
       }
-
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(errorMessage),

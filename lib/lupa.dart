@@ -42,15 +42,19 @@ class _LupaState extends State<Lupa> {
         case "auth/user-not-found":
           errorMessage = "Email tidak ditemukan dalam sistem kami.";
           break;
-        case "auth/invalid-email":
+        case "invalid-email":
           errorMessage = "Format email tidak valid.";
           break;
         default:
-          errorMessage = "Terjadi kesalahan. Silakan coba lagi nanti.";
+          errorMessage =
+              "Terjadi kesalahan. Silakan coba lagi nanti.(${e.code})";
       }
 
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(errorMessage)),
+        SnackBar(
+          content: Text(errorMessage),
+          backgroundColor: Colors.red,
+        ),
       );
     }
   }

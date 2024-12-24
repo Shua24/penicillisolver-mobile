@@ -1,4 +1,4 @@
-// ignore_for_file: deprecated_member_use
+// ignore_for_file: deprecated_member_use, library_private_types_in_public_api, avoid_print
 
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -181,7 +181,7 @@ class _AntibioticQueryState extends State<AntibioticQuery> {
             ),
             const SizedBox(height: 20),
             SizedBox(
-              width: 400,
+              width: 350,
               child: TextField(
                 controller: _textController,
                 decoration: const InputDecoration(
