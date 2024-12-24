@@ -73,8 +73,16 @@ class _AntibioticQueryState extends State<AntibioticQuery> {
         });
 
         _showResultsDialog();
+      } else if (response.statusCode == 400) {
+        _showDialog(
+          'Tidak ditemukan',
+          'Bakteri tidak ditemukan. Sesuaikan nama bakteri dengan pola kuman.',
+        );
       } else {
-        _showDialog('Error', 'Failed to fetch data: ${response.reasonPhrase}');
+        _showDialog(
+          'Error',
+          'Tidak dapat mengambil data. Rincian: ${response.statusCode}, ${response.reasonPhrase}',
+        );
       }
     } catch (e) {
       _showDialog('Error', 'An error occurred: $e');
