@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:penicillisolver/camera_page.dart';
 import 'package:penicillisolver/setting.dart';
 import 'package:penicillisolver/theme.dart';
+import 'database_helper.dart';
 
 File? selectedImage;
 
@@ -127,6 +128,23 @@ class EditProfilPageState extends State<EditProfilPage> {
   final _phoneController = TextEditingController();
   final _emailController = TextEditingController();
 
+  Future<void> _loadProfilePicture() async {
+    final dbHelper = DatabaseHelper();
+    final photoPath = await dbHelper.getProfilePicture();
+    if (!mounted) return;
+    setState(() {
+      if (photoPath != null) {
+        selectedImage = File(photoPath);
+      }
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _loadProfilePicture();
+  }
+
   Future<void> _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
       context: context,
@@ -134,6 +152,7 @@ class EditProfilPageState extends State<EditProfilPage> {
       firstDate: DateTime(1900),
       lastDate: DateTime.now(),
     );
+    if (!mounted) return; // Tambahkan pengecekan mounted
     if (picked != null && picked != _selectedDate) {
       setState(() {
         _selectedDate = picked;
@@ -275,63 +294,26 @@ class EditProfilPageState extends State<EditProfilPage> {
             ),
             const SizedBox(height: 20),
             ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => const VerifikasiKeamananPage()),
-                );
+            onPressed: () {
+                final navigator = Navigator.of(context); // Simpan BuildContext
+                Future.delayed(const Duration(milliseconds: 500), () {
+                  if (!mounted) return; // Validasi widget masih aktif
+                  navigator.pushReplacement(
+                    MaterialPageRoute(
+                      builder: (context) => const EditProfilPage(),
+                    ),
+                  );
+                });
               },
-              child: const Text("Lanjut"),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class VerifikasiKeamananPage extends StatelessWidget {
-  const VerifikasiKeamananPage({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text("Pemeriksaan Keamanan"),
-        backgroundColor: Colors.blue,
-        leading: IconButton(
-          onPressed: () {
-            Navigator.pop(context);
-          },
-          icon: const Icon(
-            Icons.arrow_back,
-            color: Colors.white,
-          ),
-        ),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            const Text(
-              "Untuk keamanan akun, mohon verifikasi identitas kamu dengan salah satu cara di bawah ini.",
-              textAlign: TextAlign.center,
-            ),
-            const SizedBox(height: 20),
-            ListTile(
-              leading: const Icon(Icons.message, color: Colors.blue),
-              title: const Text("Verifikasi dengan OTP SMS"),
-              onTap: () {
-                //  OTP verifikasi
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.lock, color: Colors.blue),
-              title: const Text("Verifikasi dengan PIN Aplikasi"),
-              onTap: () {
-                // PIN verifikasi
-              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.blue,
+                foregroundColor: Colors.white,
+                padding: const EdgeInsets.symmetric(vertical: 15),
+              ),
+              child: const Text(
+                'Simpan Perubahan',
+                style: TextStyle(fontSize: 17),
+              ),
             ),
           ],
         ),
