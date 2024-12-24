@@ -279,59 +279,10 @@ class EditProfilPageState extends State<EditProfilPage> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => const VerifikasiKeamananPage()),
+                      builder: (context) => const PengaturanPage()),
                 );
               },
-              child: const Text("Lanjut"),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class VerifikasiKeamananPage extends StatelessWidget {
-  const VerifikasiKeamananPage({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text("Pemeriksaan Keamanan"),
-        backgroundColor: Colors.blue,
-        leading: IconButton(
-          onPressed: () {
-            Navigator.pop(context);
-          },
-          icon: const Icon(
-            Icons.arrow_back,
-            color: Colors.white,
-          ),
-        ),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            const Text(
-              "Untuk keamanan akun, mohon verifikasi identitas kamu dengan salah satu cara di bawah ini.",
-              textAlign: TextAlign.center,
-            ),
-            const SizedBox(height: 20),
-            ListTile(
-              leading: const Icon(Icons.message, color: Colors.blue),
-              title: const Text("Verifikasi dengan OTP SMS"),
-              onTap: () {
-                //  OTP verifikasi
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.lock, color: Colors.blue),
-              title: const Text("Verifikasi dengan PIN Aplikasi"),
-              onTap: () {
-                // PIN verifikasi
-              },
+              child: const Text("Simpan"),
             ),
           ],
         ),
