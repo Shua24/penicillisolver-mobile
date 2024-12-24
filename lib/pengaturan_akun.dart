@@ -78,11 +78,6 @@ class AccountSettingsPage extends StatelessWidget {
               },
             ),
             const Divider(),
-            _buildDetailTile(title: "Username", detail: "joshua", onTap: () {}),
-            const Divider(),
-            _buildDetailTile(
-                title: "No. Handphone", detail: "+62 1234567890", onTap: () {}),
-            const Divider(),
             _buildDetailTile(
                 title: "Email", detail: "joshua123@gmail.com", onTap: () {}),
             const Divider(),
@@ -124,7 +119,6 @@ class EditProfilPageState extends State<EditProfilPage> {
   String _gender = "Pria";
   DateTime _selectedDate = DateTime.now();
   final _nameController = TextEditingController();
-  final _bioController = TextEditingController();
   final _phoneController = TextEditingController();
   final _emailController = TextEditingController();
 
@@ -246,11 +240,6 @@ class EditProfilPageState extends State<EditProfilPage> {
               decoration: const InputDecoration(labelText: "Nama"),
             ),
             const SizedBox(height: 20),
-            TextFormField(
-              controller: _bioController,
-              decoration: const InputDecoration(labelText: "Bio"),
-            ),
-            const SizedBox(height: 20),
             DropdownButtonFormField<String>(
               value: _gender,
               decoration: const InputDecoration(labelText: "Jenis Kelamin"),
@@ -281,28 +270,12 @@ class EditProfilPageState extends State<EditProfilPage> {
               },
             ),
             const SizedBox(height: 20),
-            TextFormField(
-              controller: _phoneController,
-              decoration: const InputDecoration(labelText: "Nomor Handphone"),
-              keyboardType: TextInputType.phone,
-            ),
-            const SizedBox(height: 20),
-            TextFormField(
-              controller: _emailController,
-              decoration: const InputDecoration(labelText: "Email"),
-              keyboardType: TextInputType.emailAddress,
-            ),
-            const SizedBox(height: 20),
             ElevatedButton(
-            onPressed: () {
+              onPressed: () {
                 final navigator = Navigator.of(context); // Simpan BuildContext
                 Future.delayed(const Duration(milliseconds: 500), () {
                   if (!mounted) return; // Validasi widget masih aktif
-                  navigator.pushReplacement(
-                    MaterialPageRoute(
-                      builder: (context) => const EditProfilPage(),
-                    ),
-                  );
+                  navigator.pop(); // Kembali ke halaman sebelumnya
                 });
               },
               style: ElevatedButton.styleFrom(

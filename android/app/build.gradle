@@ -11,7 +11,7 @@ dependencies {
 
 android {
     namespace = "com.example.penicillisolver"
-    compileSdk = 34 // Gunakan versi SDK terbaru (34)
+    compileSdk = 35 // Gunakan versi SDK terbaru (34)
 
     ndkVersion = flutter.ndkVersion
 
@@ -28,7 +28,7 @@ android {
     defaultConfig {
         applicationId = "com.mobile.penicillisolver"
         minSdkVersion 23 // Pastikan sesuai kebutuhan aplikasi Anda
-        targetSdkVersion 34 // Gunakan target SDK terbaru
+        targetSdkVersion 35 // Gunakan target SDK terbaru
         versionCode flutter.versionCode
         versionName flutter.versionName
     }
