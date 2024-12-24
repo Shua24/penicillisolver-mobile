@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:penicillisolver/camera_page.dart';
 import 'package:penicillisolver/setting.dart';
 import 'package:penicillisolver/theme.dart';
+import 'database_helper.dart';
 
 File? selectedImage;
 
@@ -127,6 +128,23 @@ class EditProfilPageState extends State<EditProfilPage> {
   final _phoneController = TextEditingController();
   final _emailController = TextEditingController();
 
+  Future<void> _loadProfilePicture() async {
+    final dbHelper = DatabaseHelper();
+    final photoPath = await dbHelper.getProfilePicture();
+    if (!mounted) return;
+    setState(() {
+      if (photoPath != null) {
+        selectedImage = File(photoPath);
+      }
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _loadProfilePicture();
+  }
+
   Future<void> _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
       context: context,
@@ -134,6 +152,7 @@ class EditProfilPageState extends State<EditProfilPage> {
       firstDate: DateTime(1900),
       lastDate: DateTime.now(),
     );
+    if (!mounted) return; // Tambahkan pengecekan mounted
     if (picked != null && picked != _selectedDate) {
       setState(() {
         _selectedDate = picked;
@@ -275,14 +294,26 @@ class EditProfilPageState extends State<EditProfilPage> {
             ),
             const SizedBox(height: 20),
             ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => const PengaturanPage()),
-                );
+            onPressed: () {
+                final navigator = Navigator.of(context); // Simpan BuildContext
+                Future.delayed(const Duration(milliseconds: 500), () {
+                  if (!mounted) return; // Validasi widget masih aktif
+                  navigator.pushReplacement(
+                    MaterialPageRoute(
+                      builder: (context) => const EditProfilPage(),
+                    ),
+                  );
+                });
               },
-              child: const Text("Simpan"),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.blue,
+                foregroundColor: Colors.white,
+                padding: const EdgeInsets.symmetric(vertical: 15),
+              ),
+              child: const Text(
+                'Simpan Perubahan',
+                style: TextStyle(fontSize: 17),
+              ),
             ),
           ],
         ),

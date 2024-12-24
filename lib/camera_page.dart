@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
+import 'package:image_cropper/image_cropper.dart';
 import 'dart:io';
+import 'database_helper.dart';
 
 class CameraPage extends StatefulWidget {
   final Function(File) onImageCaptured;
@@ -33,15 +35,48 @@ class _CameraPageState extends State<CameraPage> {
     if (_cameraController != null && _cameraController!.value.isInitialized) {
       try {
         final XFile file = await _cameraController!.takePicture();
-        widget.onImageCaptured(File(file.path));
-        if (mounted) {
-          Navigator.pop(context); // Periksa `mounted` sebelum menggunakan `context`
+        File? croppedFile = await _cropImage(File(file.path));
+
+        if (croppedFile != null) {
+          widget.onImageCaptured(croppedFile);
+
+          // Simpan path hasil crop ke SQLite
+          final dbHelper = DatabaseHelper();
+          await dbHelper.saveProfilePicture(croppedFile.path);
+
+          if (mounted) {
+            Navigator.pop(context); // Periksa `mounted` sebelum menggunakan `context`
+          }
         }
       } catch (e) {
-        debugPrint("Error capturing image: $e"); // Gunakan debugPrint untuk debugging
+        debugPrint("Error capturing image: $e");
       }
     }
   }
+
+Future<File?> _cropImage(File imageFile) async {
+  final croppedFile = await ImageCropper().cropImage(
+    sourcePath: imageFile.path,
+    uiSettings: [
+      AndroidUiSettings(
+        toolbarTitle: 'Crop Image',
+        toolbarColor: Colors.blue,
+        toolbarWidgetColor: Colors.white,
+        initAspectRatio: CropAspectRatioPreset.original,
+        lockAspectRatio: false,
+      ),
+      IOSUiSettings(
+        title: 'Crop Image',
+        minimumAspectRatio: 1.0,
+      ),
+    ],
+  );
+
+  if (croppedFile != null) {
+    return File(croppedFile.path);
+  }
+  return null;
+}
 
   @override
   void dispose() {
