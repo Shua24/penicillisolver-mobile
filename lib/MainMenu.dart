@@ -29,7 +29,7 @@ class _MainMenuState extends State<MainMenu> {
           .get();
       if (doc.exists && doc.data() != null) {
         setState(() {
-          deadline = doc.data()!['date']; // Assuming 'date' is a String
+          deadline = doc.data()!['date'];
         });
       }
     } catch (e) {
@@ -163,7 +163,7 @@ class _MainMenuState extends State<MainMenu> {
                   decoration: const BoxDecoration(
                     color: Colors.white,
                   ),
-                  width: 700, // Sesuaikan lebar container
+                  width: 700,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
