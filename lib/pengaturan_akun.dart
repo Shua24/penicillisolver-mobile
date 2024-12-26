@@ -1,12 +1,20 @@
 import 'dart:io';
+import 'dart:convert';
+import 'dart:typed_data';
+
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:penicillisolver/camera_page.dart';
 import 'package:penicillisolver/setting.dart';
 import 'package:penicillisolver/theme.dart';
+import 'database_helper.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 
 File? selectedImage;
+String? base64Image;
 
 class PengaturanAkun extends StatelessWidget {
   const PengaturanAkun({super.key});
@@ -77,11 +85,6 @@ class AccountSettingsPage extends StatelessWidget {
               },
             ),
             const Divider(),
-            _buildDetailTile(title: "Username", detail: "joshua", onTap: () {}),
-            const Divider(),
-            _buildDetailTile(
-                title: "No. Handphone", detail: "+62 1234567890", onTap: () {}),
-            const Divider(),
             _buildDetailTile(
                 title: "Email", detail: "joshua123@gmail.com", onTap: () {}),
             const Divider(),
@@ -123,9 +126,85 @@ class EditProfilPageState extends State<EditProfilPage> {
   String _gender = "Pria";
   DateTime _selectedDate = DateTime.now();
   final _nameController = TextEditingController();
-  final _bioController = TextEditingController();
-  final _phoneController = TextEditingController();
-  final _emailController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    _loadProfileData();
+    _loadProfilePicture();
+  }
+
+   Future<void> _loadProfilePicture() async {
+    final dbHelper = DatabaseHelper();
+    final photoPath = await dbHelper.getProfilePicture();
+    if (!mounted) return;
+    setState(() {
+      if (photoPath != null) {
+        selectedImage = File(photoPath);
+      }
+    });
+  }
+
+  Future<void> _loadProfileData() async {
+    try {
+      final currentUser = FirebaseAuth.instance.currentUser;
+      if (currentUser == null) {
+        throw Exception("Pengguna tidak login.");
+      }
+
+      final userDoc = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(currentUser.uid)
+          .get();
+
+      if (userDoc.exists) {
+        final data = userDoc.data();
+        if (data != null) {
+          setState(() {
+            _nameController.text = data['nama'] ?? '';
+            _gender = data['gender'] ?? 'Pria';
+            _selectedDate = data['birthdate'] != null
+                ? DateTime.parse(data['birthdate'])
+                : DateTime.now();
+          });
+        }
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Gagal memuat data: $e')),
+      );
+    }
+  }
+
+  Future<void> _saveToFirestore() async {
+    try {
+      final currentUser = FirebaseAuth.instance.currentUser;
+      if (currentUser == null) {
+        throw Exception("Pengguna tidak login.");
+      }
+
+      final userId = currentUser.uid;
+      final userData = {
+        'nama': _nameController.text,
+        'gender': _gender,
+        'birthdate': _selectedDate.toIso8601String(),
+        'profilePicture': selectedImage != null ? selectedImage!.path : null,
+      };
+
+      await FirebaseFirestore.instance.collection('users').doc(userId).set(
+            userData,
+            SetOptions(merge: true),
+          );
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Profil berhasil diperbarui.')),
+      );
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Gagal menyimpan data: $e')),
+      );
+    }
+  }
 
   Future<void> _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
@@ -134,6 +213,7 @@ class EditProfilPageState extends State<EditProfilPage> {
       firstDate: DateTime(1900),
       lastDate: DateTime.now(),
     );
+    if (!mounted) return; // Tambahkan pengecekan mounted
     if (picked != null && picked != _selectedDate) {
       setState(() {
         _selectedDate = picked;
@@ -227,11 +307,6 @@ class EditProfilPageState extends State<EditProfilPage> {
               decoration: const InputDecoration(labelText: "Nama"),
             ),
             const SizedBox(height: 20),
-            TextFormField(
-              controller: _bioController,
-              decoration: const InputDecoration(labelText: "Bio"),
-            ),
-            const SizedBox(height: 20),
             DropdownButtonFormField<String>(
               value: _gender,
               decoration: const InputDecoration(labelText: "Jenis Kelamin"),
@@ -262,76 +337,19 @@ class EditProfilPageState extends State<EditProfilPage> {
               },
             ),
             const SizedBox(height: 20),
-            TextFormField(
-              controller: _phoneController,
-              decoration: const InputDecoration(labelText: "Nomor Handphone"),
-              keyboardType: TextInputType.phone,
-            ),
-            const SizedBox(height: 20),
-            TextFormField(
-              controller: _emailController,
-              decoration: const InputDecoration(labelText: "Email"),
-              keyboardType: TextInputType.emailAddress,
-            ),
-            const SizedBox(height: 20),
             ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => const VerifikasiKeamananPage()),
-                );
+              onPressed: () async {
+                await _saveToFirestore();
               },
-              child: const Text("Lanjut"),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class VerifikasiKeamananPage extends StatelessWidget {
-  const VerifikasiKeamananPage({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text("Pemeriksaan Keamanan"),
-        backgroundColor: Colors.blue,
-        leading: IconButton(
-          onPressed: () {
-            Navigator.pop(context);
-          },
-          icon: const Icon(
-            Icons.arrow_back,
-            color: Colors.white,
-          ),
-        ),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            const Text(
-              "Untuk keamanan akun, mohon verifikasi identitas kamu dengan salah satu cara di bawah ini.",
-              textAlign: TextAlign.center,
-            ),
-            const SizedBox(height: 20),
-            ListTile(
-              leading: const Icon(Icons.message, color: Colors.blue),
-              title: const Text("Verifikasi dengan OTP SMS"),
-              onTap: () {
-                //  OTP verifikasi
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.lock, color: Colors.blue),
-              title: const Text("Verifikasi dengan PIN Aplikasi"),
-              onTap: () {
-                // PIN verifikasi
-              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.blue,
+                foregroundColor: Colors.white,
+                padding: const EdgeInsets.symmetric(vertical: 15),
+              ),
+              child: const Text(
+                'Simpan Perubahan',
+                style: TextStyle(fontSize: 17),
+              ),
             ),
           ],
         ),

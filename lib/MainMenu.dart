@@ -1,11 +1,41 @@
 // ignore_for_file: file_names, use_build_context_synchronously, library_private_types_in_public_api, deprecated_member_use
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:penicillisolver/lookup.dart';
 import 'package:penicillisolver/setting.dart';
 
-class MainMenu extends StatelessWidget {
+class MainMenu extends StatefulWidget {
   const MainMenu({super.key});
+
+  @override
+  State<MainMenu> createState() => _MainMenuState();
+}
+
+class _MainMenuState extends State<MainMenu> {
+  String? deadline;
+
+  @override
+  void initState() {
+    super.initState();
+    fetchDeadline();
+  }
+
+  Future<void> fetchDeadline() async {
+    try {
+      final doc = await FirebaseFirestore.instance
+          .collection('dataTambahan')
+          .doc('date')
+          .get();
+      if (doc.exists && doc.data() != null) {
+        setState(() {
+          deadline = doc.data()!['date'];
+        });
+      }
+    } catch (e) {
+      print('Error fetching deadline: $e');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -56,13 +86,42 @@ class MainMenu extends StatelessWidget {
                         padding: const EdgeInsets.symmetric(horizontal: 25.0),
                         child: Column(
                           children: [
-                            SizedBox(
-                              width: double.infinity,
-                              height: 300,
-                              child: Image.asset(
-                                'assets/polakuman.png',
-                                fit: BoxFit.contain,
-                              ),
+                            Stack(
+                              children: [
+                                SizedBox(
+                                  width: double.infinity,
+                                  height: 300,
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(top: 50),
+                                    child: Image.asset(
+                                      'assets/polakuman.png',
+                                      fit: BoxFit.contain,
+                                    ),
+                                  ),
+                                ),
+                                Positioned(
+                                  top: 10,
+                                  left: 10,
+                                  child: Container(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 8, vertical: 4),
+                                    decoration: BoxDecoration(
+                                      color: Colors.black.withOpacity(0.6),
+                                      borderRadius: BorderRadius.circular(8),
+                                    ),
+                                    child: Text(
+                                      deadline != null
+                                          ? 'Deadline Pergantian: $deadline'
+                                          : 'Memuat deadline...',
+                                      style: const TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
                             const SizedBox(height: 15),
                             const Text(
@@ -104,7 +163,7 @@ class MainMenu extends StatelessWidget {
                   decoration: const BoxDecoration(
                     color: Colors.white,
                   ),
-                  width: 700, // Sesuaikan lebar container
+                  width: 700,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
