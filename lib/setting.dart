@@ -1,5 +1,8 @@
+// ignore_for_file: library_private_types_in_public_api, use_build_context_synchronously, deprecated_member_use
+
 import 'package:flutter/material.dart';
 import 'package:penicillisolver/MainMenu.dart';
+import 'package:penicillisolver/pengaturan_akun.dart';
 import 'package:penicillisolver/login.dart';
 import 'package:penicillisolver/lookup.dart';
 import 'package:penicillisolver/theme.dart';
@@ -104,7 +107,17 @@ class _PengaturanPageState extends State<PengaturanPage> {
                 padding: const EdgeInsets.symmetric(horizontal: 25.0),
                 child: ListView(
                   children: [
-                    _buildMenuItem(5, Icons.exit_to_app, 'Keluar Akun',
+                    _buildMenuItem(0, Icons.person, 'Pengaturan Akun',
+                        onTap: () {
+                      Future.delayed(const Duration(milliseconds: 500), () {
+                        Navigator.of(context).pushReplacement(
+                          MaterialPageRoute(
+                            builder: (context) => const PengaturanAkun(),
+                          ), // Tanda const ditambahkan jika perlu
+                        );
+                      });
+                    }),
+                    _buildMenuItem(1, Icons.exit_to_app, 'Keluar Akun',
                         onTap: () {
                       _showLogoutConfirmation(context);
                     }),

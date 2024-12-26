@@ -1,11 +1,21 @@
-// ignore_for_file: library_private_types_in_public_api, deprecated_member_use, use_build_context_synchronously
+// ignore_for_file: deprecated_member_use, use_build_context_synchronously, library_private_types_in_public_api, avoid_print
 
 import 'package:flutter/material.dart';
-
 import 'package:penicillisolver/MainMenu.dart';
 import 'package:penicillisolver/lupa.dart';
 import 'package:penicillisolver/register.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+  runApp(const Register());
+}
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -17,6 +27,71 @@ class LoginScreen extends StatefulWidget {
 class _LoginState extends State<LoginScreen> {
   bool _obscureText1 = true;
   List<bool> isSelected = [true, false, false, false];
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+
+  Future<void> _loginUser() async {
+    if (_emailController.text.isEmpty || _passwordController.text.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Email dan password tidak boleh kosong'),
+          backgroundColor: Colors.red,
+        ),
+      );
+      return;
+    }
+
+    if (!_emailController.text.contains('@')) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Format email tidak valid'),
+          backgroundColor: Colors.red,
+        ),
+      );
+      return;
+    }
+
+    try {
+      await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: _emailController.text.trim(),
+        password: _passwordController.text.trim(),
+      );
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Login berhasil'),
+          backgroundColor: Colors.green,
+        ),
+      );
+
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(builder: (context) => const MainMenu()),
+      );
+    } on FirebaseAuthException catch (e) {
+      // Tangani berbagai error spesifik dari Firebase
+      String errorMessage;
+      switch (e.code) {
+        case 'invalid-credential':
+          errorMessage = 'Email atau Password salah. Coba lagi.';
+          break;
+        default:
+          errorMessage = 'Hmmm... Ada yg tidak sesuai kayaknya (${e.code}).';
+      }
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(errorMessage),
+          backgroundColor: Colors.red,
+        ),
+      );
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Login gagal: ${e.toString()}'),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
+  }
 
   Future<void> _launchURL(String url) async {
     final Uri uri = Uri.parse(url);
@@ -58,8 +133,6 @@ class _LoginState extends State<LoginScreen> {
                   ),
                 ),
                 const SizedBox(height: 25),
-
-                // Email Input Field
                 const Align(
                   alignment: Alignment.centerLeft,
                   child: Text(
@@ -72,6 +145,7 @@ class _LoginState extends State<LoginScreen> {
                 ),
                 const SizedBox(height: 5),
                 TextField(
+                  controller: _emailController,
                   decoration: InputDecoration(
                     hintText: 'Email anda',
                     hintStyle: const TextStyle(
@@ -79,24 +153,20 @@ class _LoginState extends State<LoginScreen> {
                     enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(5),
                       borderSide: const BorderSide(
-                        color: Color.fromRGBO(
-                            37, 160, 237, 1), // Warna border saat tidak fokus
+                        color: Color.fromRGBO(37, 160, 237, 1),
                         width: 1,
                       ),
                     ),
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(5),
                       borderSide: const BorderSide(
-                        color: Color.fromRGBO(
-                            37, 160, 237, 1), // Warna border saat fokus
+                        color: Color.fromRGBO(37, 160, 237, 1),
                         width: 2,
                       ),
                     ),
                   ),
                 ),
                 const SizedBox(height: 15),
-
-                // Password Input Field
                 const Align(
                   alignment: Alignment.centerLeft,
                   child: Text(
@@ -109,6 +179,7 @@ class _LoginState extends State<LoginScreen> {
                 ),
                 const SizedBox(height: 5),
                 TextField(
+                  controller: _passwordController,
                   obscureText: _obscureText1,
                   decoration: InputDecoration(
                     hintText: 'Kata Sandi Anda',
@@ -117,16 +188,14 @@ class _LoginState extends State<LoginScreen> {
                     enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(5),
                       borderSide: const BorderSide(
-                        color: Color.fromRGBO(
-                            37, 160, 237, 1), // Warna border saat tidak fokus
+                        color: Color.fromRGBO(37, 160, 237, 1),
                         width: 1,
                       ),
                     ),
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(5),
                       borderSide: const BorderSide(
-                        color: Color.fromRGBO(
-                            37, 160, 237, 1), // Warna border saat fokus
+                        color: Color.fromRGBO(37, 160, 237, 1),
                         width: 2,
                       ),
                     ),
@@ -148,30 +217,11 @@ class _LoginState extends State<LoginScreen> {
                   width: 400,
                   height: 60,
                   child: ElevatedButton(
-                    onPressed: () {
-                      // Menampilkan Snackbar
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text('Login berhasil'),
-                          duration: Duration(seconds: 1),
-                          backgroundColor: Colors.green,
-                        ),
-                      );
-
-                      // Delay sebelum pindah halaman
-                      Future.delayed(const Duration(milliseconds: 1000), () {
-                        Navigator.of(context).pushReplacement(
-                          MaterialPageRoute(
-                              builder: (context) => const MainMenu()),
-                        );
-                      });
-                    },
+                    onPressed: _loginUser, // Pastikan fungsi ini dipanggil.
                     style: ElevatedButton.styleFrom(
-                      backgroundColor:
-                          Colors.blue, // Mengatur warna latar belakang tombol
+                      backgroundColor: Colors.blue,
                       foregroundColor: Colors.white,
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 15), // Mengatur warna teks tombol
+                      padding: const EdgeInsets.symmetric(vertical: 15),
                     ),
                     child: const Text(
                       'Masuk',
@@ -204,9 +254,7 @@ class _LoginState extends State<LoginScreen> {
                     ),
                   ],
                 ),
-
                 const SizedBox(height: 30),
-                // Sudah punya akun / Login dengan
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -235,19 +283,15 @@ class _LoginState extends State<LoginScreen> {
                     ),
                   ],
                 ),
-
                 const SizedBox(height: 30),
                 const Text(
                   'Atau Lanjutkan Dengan :',
                   style: TextStyle(fontSize: 16),
                 ),
                 const SizedBox(height: 20),
-
-                // Tombol Sosial Media (Google, Facebook, Twitter)
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    // Tombol Google
                     IconButton(
                       icon: Image.asset(
                         'assets/google.png',
@@ -260,7 +304,6 @@ class _LoginState extends State<LoginScreen> {
                       },
                     ),
                     const SizedBox(width: 10),
-                    // Tombol Facebook
                     IconButton(
                       icon: Image.asset(
                         'assets/fb.png',
@@ -273,7 +316,6 @@ class _LoginState extends State<LoginScreen> {
                       },
                     ),
                     const SizedBox(width: 10),
-                    // Tombol Twitter
                     IconButton(
                       icon: Image.asset(
                         'assets/x.png',

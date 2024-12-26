@@ -1,4 +1,4 @@
-// ignore_for_file: file_names, use_build_context_synchronously, library_private_types_in_public_api
+// ignore_for_file: file_names, use_build_context_synchronously, library_private_types_in_public_api, deprecated_member_use
 
 import 'package:flutter/material.dart';
 import 'package:penicillisolver/lookup.dart';
@@ -46,11 +46,11 @@ class MainMenu extends StatelessWidget {
                     ],
                   ),
                 ),
-                const SizedBox(height: 10),
+                const SizedBox(height: 25),
                 Expanded(
                   child: SingleChildScrollView(
                     child: Padding(
-                      padding: const EdgeInsets.fromLTRB(0, 15, 0, 0),
+                      padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
                       child: Container(
                         width: double.infinity,
                         padding: const EdgeInsets.symmetric(horizontal: 25.0),
@@ -64,8 +64,14 @@ class MainMenu extends StatelessWidget {
                                 fit: BoxFit.contain,
                               ),
                             ),
-                            const SizedBox(height: 16),
+                            const SizedBox(height: 15),
                             const Text(
+                              'Pola kuman mengacu pada jenis dan distribusi mikroorganisme, terutama bakteri,'
+                              'di lingkungan atau tubuh manusia. Analisis ini membantu tenaga medis'
+                              'mengidentifikasi penyebab infeksi dan menentukan terapi yang tepat,'
+                              'dengan mempertimbangkan lokasi dan penggunaan antibiotik. Penicillisolver'
+                              ' memudahkan dokter dalam mencari pola kuman, sehingga dapat mencegah infeksi'
+                              ' dan mengurangi risiko bakteri resisten untuk meningkatkan kesehatan masyarakat.'
                               'Pola kuman mengacu pada jenis dan distribusi mikroorganisme, terutama bakteri,'
                               'di lingkungan atau tubuh manusia. Analisis ini membantu tenaga medis'
                               'mengidentifikasi penyebab infeksi dan menentukan terapi yang tepat,'
@@ -74,7 +80,7 @@ class MainMenu extends StatelessWidget {
                               ' dan mengurangi risiko bakteri resisten untuk meningkatkan kesehatan masyarakat.',
                               style: TextStyle(
                                 color: Colors.black,
-                                fontSize: 18,
+                                fontSize: 20,
                                 height: 1.5,
                               ),
                               textAlign: TextAlign.left,
@@ -91,32 +97,43 @@ class MainMenu extends StatelessWidget {
             Align(
               alignment: Alignment.bottomCenter,
               child: Padding(
-                padding: const EdgeInsets.only(bottom: 20),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Icon(
-                      Icons.info_outline,
-                      size: 20,
-                      color: Color.fromARGB(255, 0, 174, 255),
-                    ),
-                    const SizedBox(width: 8),
-                    Text(
-                      'Gunakan Web untuk membuka semua fitur',
-                      style: TextStyle(
-                        color: Colors.grey[600],
-                        fontSize: 14,
+                padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
+                child: Container(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 70, vertical: 15),
+                  decoration: const BoxDecoration(
+                    color: Colors.white,
+                  ),
+                  width: 700, // Sesuaikan lebar container
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Icon(
+                        Icons.info_outline,
+                        size: 20,
+                        color: Color.fromARGB(255, 0, 174, 255),
                       ),
-                    ),
-                  ],
+                      const SizedBox(width: 8),
+                      Expanded(
+                        child: Text(
+                          'Gunakan Web untuk membuka semua fitur',
+                          style: TextStyle(
+                            color: Colors.grey[600],
+                            fontSize: 14,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
-            ),
+            )
           ],
         ),
       ),
       bottomNavigationBar: Container(
-        margin: const EdgeInsets.all(16),
+        margin: const EdgeInsets.fromLTRB(15, 0, 15, 15),
         padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 10),
         decoration: BoxDecoration(
           color: const Color.fromARGB(255, 0, 155, 226),
