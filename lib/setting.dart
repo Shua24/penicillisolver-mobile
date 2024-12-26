@@ -1,5 +1,4 @@
-// ignore_for_file: library_private_types_in_public_api, use_build_context_synchronously, deprecated_member_use
-
+import 'package:firebase_auth/firebase_auth.dart'; // Tambahkan import Firebase
 import 'package:flutter/material.dart';
 import 'package:penicillisolver/MainMenu.dart';
 import 'package:penicillisolver/pengaturan_akun.dart';
@@ -72,33 +71,20 @@ class _PengaturanPageState extends State<PengaturanPage> {
                       ),
                     ),
                   ),
-                  const CircleAvatar(
-                    radius: 20,
-                    backgroundColor: Color.fromARGB(0, 255, 255, 255),
-                    child: Icon(Icons.person,
-                        size: 40, color: Color.fromARGB(0, 255, 255, 255)),
-                  ),
                 ],
               ),
             ),
             const SizedBox(height: 20),
             const Padding(
               padding: EdgeInsets.symmetric(horizontal: 25.0),
-              child: Row(
-                children: [
-                  CircleAvatar(
-                    backgroundImage: AssetImage('assets/user1.png'),
-                    radius: 30,
+              child: Center(
+                child: Text(
+                  'Joshua',
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
                   ),
-                  SizedBox(width: 10),
-                  Text(
-                    'Joshua',
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ],
+                ),
               ),
             ),
             const SizedBox(height: 20),
@@ -113,7 +99,7 @@ class _PengaturanPageState extends State<PengaturanPage> {
                         Navigator.of(context).pushReplacement(
                           MaterialPageRoute(
                             builder: (context) => const PengaturanAkun(),
-                          ), // Tanda const ditambahkan jika perlu
+                          ),
                         );
                       });
                     }),
@@ -121,6 +107,16 @@ class _PengaturanPageState extends State<PengaturanPage> {
                         onTap: () {
                       _showLogoutConfirmation(context);
                     }),
+                    _buildMenuItem(
+                      2,
+                      Icons.delete_forever_outlined,
+                      'Hapus Akun',
+                      onTap: () {
+                        _showDeleteAccountConfirmation(context);
+                      },
+                      iconColor: Colors.red,
+                      backgroundColor: Colors.red.shade100,
+                    ),
                   ],
                 ),
               ),
@@ -136,101 +132,60 @@ class _PengaturanPageState extends State<PengaturanPage> {
           ],
         ),
       ),
-      bottomNavigationBar: Container(
-        margin: const EdgeInsets.all(16),
-        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 10),
-        decoration: BoxDecoration(
-          color: const Color.fromARGB(255, 0, 155, 226),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withOpacity(0.3),
-              spreadRadius: 3,
-              blurRadius: 5,
-              offset: const Offset(1, 1),
+      bottomNavigationBar: _buildBottomNavigationBar(),
+    );
+  }
+
+  Widget _buildBottomNavigationBar() {
+    return Container(
+      margin: const EdgeInsets.all(16),
+      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 10),
+      decoration: BoxDecoration(
+        color: const Color.fromARGB(255, 0, 155, 226),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.3),
+            spreadRadius: 3,
+            blurRadius: 5,
+            offset: const Offset(1, 1),
+          ),
+        ],
+        borderRadius: BorderRadius.circular(30),
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: [
+          _buildBottomNavButton(Icons.home_outlined, const MainMenu()),
+          _buildBottomNavButton(Icons.assignment_outlined, const AntibioticQuery()),
+          _buildBottomNavButton(Icons.settings_outlined, const PengaturanPage()),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildBottomNavButton(IconData icon, Widget page) {
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        borderRadius: BorderRadius.circular(30),
+        onTap: () {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => page,
             ),
-          ],
-          borderRadius: BorderRadius.circular(30),
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            // Tombol Home dengan efek ripple
-            Material(
-              color: Colors.transparent,
-              child: InkWell(
-                borderRadius: BorderRadius.circular(30),
-                onTap: () {
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const MainMenu(),
-                    ),
-                  );
-                },
-                child: Container(
-                  padding: const EdgeInsets.all(8),
-                  child: const Icon(
-                    Icons.home_outlined,
-                    color: Colors.white,
-                    size: 30,
-                  ),
-                ),
-              ),
-            ),
-            // Tombol Assignment dengan efek ripple
-            Material(
-              color: Colors.transparent,
-              child: InkWell(
-                borderRadius: BorderRadius.circular(30),
-                onTap: () {
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const AntibioticQuery(),
-                    ),
-                  );
-                },
-                child: Container(
-                  padding: const EdgeInsets.all(8),
-                  child: const Icon(
-                    Icons.assignment_outlined,
-                    color: Colors.white,
-                  ),
-                ),
-              ),
-            ),
-            // Tombol Settings dengan efek ripple
-            Material(
-              color: Colors.transparent,
-              child: InkWell(
-                borderRadius: BorderRadius.circular(30),
-                onTap: () {
-                  Future.delayed(const Duration(milliseconds: 0), () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const PengaturanPage(),
-                      ),
-                    );
-                  });
-                },
-                child: Container(
-                  padding: const EdgeInsets.all(8),
-                  child: const Icon(
-                    Icons.settings_outlined,
-                    color: Colors.white,
-                  ),
-                ),
-              ),
-            ),
-          ],
+          );
+        },
+        child: Container(
+          padding: const EdgeInsets.all(8),
+          child: Icon(icon, color: Colors.white, size: 30),
         ),
       ),
     );
   }
 
   Widget _buildMenuItem(int index, IconData icon, String title,
-      {VoidCallback? onTap}) {
+      {VoidCallback? onTap, Color? iconColor, Color? backgroundColor}) {
     return GestureDetector(
       onTapDown: (_) {
         setState(() {
@@ -255,22 +210,28 @@ class _PengaturanPageState extends State<PengaturanPage> {
         child: Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(8),
-            color: Colors.white,
-            border: Border.all(color: const Color.fromARGB(255, 0, 155, 226)),
+            color: backgroundColor ?? Colors.white,
+            border: Border.all(
+              color: iconColor ?? const Color.fromARGB(255, 0, 155, 226)),
             boxShadow: _isPressed[index]
                 ? []
                 : [
                     BoxShadow(
-                      color: Colors.black.withOpacity(0.3), // Warna bayangan
-                      spreadRadius: 2, // Jarak bayangan
-                      blurRadius: 5, // Tingkat kabur bayangan
-                      offset: const Offset(0, 3), // Arah bayangan
+                      color: Colors.black.withOpacity(0.3),
+                      spreadRadius: 2,
+                      blurRadius: 5,
+                      offset: const Offset(0, 3),
                     ),
                   ],
           ),
           child: ListTile(
-            leading: Icon(icon, color: const Color.fromARGB(255, 0, 155, 226)),
-            title: Text(title),
+            leading: Icon(
+              icon, 
+              color: iconColor ?? const Color.fromARGB(255, 0, 155, 226)),
+            title: Text(
+              title,
+              style: TextStyle(color: iconColor ?? Colors.black),
+              ),
           ),
         ),
       ),
@@ -302,6 +263,43 @@ class _PengaturanPageState extends State<PengaturanPage> {
                 });
               },
               child: const Text('Keluar'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _showDeleteAccountConfirmation(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Konfirmasi Hapus Akun'),
+          content: const Text(
+              'Apakah Anda yakin ingin menghapus akun ini?'),
+          backgroundColor: Colors.white,
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: const Text('Batal'),
+            ),
+            TextButton(
+              onPressed: () async {
+                try {
+                  await FirebaseAuth.instance.currentUser?.delete();
+                  Navigator.of(context).pushReplacement(
+                    MaterialPageRoute(builder: (context) => const LoginScreen()),
+                  );
+                } catch (e) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text('Error: ${e.toString()}')),
+                  );
+                }
+              },
+              child: const Text('Hapus'),
             ),
           ],
         );
