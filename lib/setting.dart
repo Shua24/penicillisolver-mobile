@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart'; // Tambahkan import Firebase
 import 'package:flutter/material.dart';
 import 'package:penicillisolver/MainMenu.dart';
@@ -271,39 +272,97 @@ class _PengaturanPageState extends State<PengaturanPage> {
   }
 
   void _showDeleteAccountConfirmation(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('Konfirmasi Hapus Akun'),
-          content: const Text(
-              'Apakah Anda yakin ingin menghapus akun ini?'),
-          backgroundColor: Colors.white,
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              child: const Text('Batal'),
-            ),
-            TextButton(
-              onPressed: () async {
-                try {
-                  await FirebaseAuth.instance.currentUser?.delete();
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: const Text('Konfirmasi Hapus Akun'),
+        content: const Text(
+            'Apakah Anda yakin ingin menghapus akun ini? Semua data Anda akan dihapus secara permanen.'),
+        backgroundColor: Colors.white,
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            child: const Text('Batal'),
+          ),
+          TextButton(
+            onPressed: () async {
+              try {
+                // Ambil pengguna saat ini
+                User? user = FirebaseAuth.instance.currentUser;
+
+                if (user != null) {
+                  String uid = user.uid;
+
+                  // Hapus dokumen pengguna di Firestore
+                  await FirebaseFirestore.instance
+                      .collection('users')
+                      .doc(uid)
+                      .delete();
+
+                  // Hapus akun pengguna dari Firebase Authentication
+                  await user.delete();
+
+                  // Navigasi ke layar login
                   Navigator.of(context).pushReplacement(
                     MaterialPageRoute(builder: (context) => const LoginScreen()),
                   );
-                } catch (e) {
+                }
+              } catch (e) {
+                if (e.toString().contains('requires-recent-login')) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text(
+                          'Sesi login Anda telah kedaluwarsa. Harap login ulang untuk menghapus akun.'),
+                    ),
+                  );
+                } else {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(content: Text('Error: ${e.toString()}')),
                   );
                 }
-              },
-              child: const Text('Hapus'),
-            ),
-          ],
-        );
-      },
-    );
-  }
+              }
+            },
+            child: const Text('Hapus'),
+          ),
+        ],
+      );
+    },
+  );
+}
+
+Future<String?> _getPasswordFromUser(BuildContext context) async {
+  TextEditingController passwordController = TextEditingController();
+  return showDialog<String>(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: const Text('Konfirmasi Password'),
+        content: TextField(
+          controller: passwordController,
+          decoration: const InputDecoration(labelText: 'Masukkan password Anda'),
+          obscureText: true,
+        ),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.pop(context, null);
+            },
+            child: const Text('Batal'),
+          ),
+          TextButton(
+            onPressed: () {
+              Navigator.pop(context, passwordController.text);
+            },
+            child: const Text('OK'),
+          ),
+        ],
+      );
+    },
+  );
+}
+
+
 }
