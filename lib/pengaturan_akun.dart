@@ -1,4 +1,7 @@
 import 'dart:io';
+import 'dart:convert';
+import 'dart:typed_data';
+
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -6,8 +9,12 @@ import 'package:penicillisolver/camera_page.dart';
 import 'package:penicillisolver/setting.dart';
 import 'package:penicillisolver/theme.dart';
 import 'database_helper.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 
 File? selectedImage;
+String? base64Image;
 
 class PengaturanAkun extends StatelessWidget {
   const PengaturanAkun({super.key});
@@ -119,10 +126,15 @@ class EditProfilPageState extends State<EditProfilPage> {
   String _gender = "Pria";
   DateTime _selectedDate = DateTime.now();
   final _nameController = TextEditingController();
-  final _phoneController = TextEditingController();
-  final _emailController = TextEditingController();
 
-  Future<void> _loadProfilePicture() async {
+  @override
+  void initState() {
+    super.initState();
+    _loadProfileData();
+    _loadProfilePicture();
+  }
+
+   Future<void> _loadProfilePicture() async {
     final dbHelper = DatabaseHelper();
     final photoPath = await dbHelper.getProfilePicture();
     if (!mounted) return;
@@ -133,10 +145,65 @@ class EditProfilPageState extends State<EditProfilPage> {
     });
   }
 
-  @override
-  void initState() {
-    super.initState();
-    _loadProfilePicture();
+  Future<void> _loadProfileData() async {
+    try {
+      final currentUser = FirebaseAuth.instance.currentUser;
+      if (currentUser == null) {
+        throw Exception("Pengguna tidak login.");
+      }
+
+      final userDoc = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(currentUser.uid)
+          .get();
+
+      if (userDoc.exists) {
+        final data = userDoc.data();
+        if (data != null) {
+          setState(() {
+            _nameController.text = data['nama'] ?? '';
+            _gender = data['gender'] ?? 'Pria';
+            _selectedDate = data['birthdate'] != null
+                ? DateTime.parse(data['birthdate'])
+                : DateTime.now();
+          });
+        }
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Gagal memuat data: $e')),
+      );
+    }
+  }
+
+  Future<void> _saveToFirestore() async {
+    try {
+      final currentUser = FirebaseAuth.instance.currentUser;
+      if (currentUser == null) {
+        throw Exception("Pengguna tidak login.");
+      }
+
+      final userId = currentUser.uid;
+      final userData = {
+        'nama': _nameController.text,
+        'gender': _gender,
+        'birthdate': _selectedDate.toIso8601String(),
+        'profilePicture': selectedImage != null ? selectedImage!.path : null,
+      };
+
+      await FirebaseFirestore.instance.collection('users').doc(userId).set(
+            userData,
+            SetOptions(merge: true),
+          );
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Profil berhasil diperbarui.')),
+      );
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Gagal menyimpan data: $e')),
+      );
+    }
   }
 
   Future<void> _selectDate(BuildContext context) async {
@@ -271,12 +338,8 @@ class EditProfilPageState extends State<EditProfilPage> {
             ),
             const SizedBox(height: 20),
             ElevatedButton(
-              onPressed: () {
-                final navigator = Navigator.of(context); // Simpan BuildContext
-                Future.delayed(const Duration(milliseconds: 500), () {
-                  if (!mounted) return; // Validasi widget masih aktif
-                  navigator.pop(); // Kembali ke halaman sebelumnya
-                });
+              onPressed: () async {
+                await _saveToFirestore();
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.blue,
