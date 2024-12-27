@@ -29,6 +29,38 @@ class PengaturanPage extends StatefulWidget {
 
 class _PengaturanPageState extends State<PengaturanPage> {
   final List<bool> _isPressed = List.filled(7, false);
+  String? namaPengguna;
+  bool isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _ambilNamaPengguna();
+  }
+
+  Future<void> _ambilNamaPengguna() async {
+    try {
+      final user = FirebaseAuth.instance.currentUser;
+      if (user != null) {
+        final uid = user.uid;
+
+        final docSnapshot =
+            await FirebaseFirestore.instance.collection('users').doc(uid).get();
+
+        setState(() {
+          namaPengguna = docSnapshot.get('nama');
+          isLoading = false;
+        });
+      }
+    } catch (e) {
+      setState(() {
+        namaPengguna = "Nama tidak ditemukan";
+        isLoading = false;
+      });
+
+      print('Error mengambil nama pengguna: $e');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -76,16 +108,18 @@ class _PengaturanPageState extends State<PengaturanPage> {
               ),
             ),
             const SizedBox(height: 20),
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 25.0),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 25.0),
               child: Center(
-                child: Text(
-                  'Joshua',
-                  style: TextStyle(
+                child: isLoading
+                ? const CircularProgressIndicator()
+                : Text(
+                  namaPengguna ?? 'Nama tidak ditemukan',
+                  style: const TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
                   ),
-                ),
+                )
               ),
             ),
             const SizedBox(height: 20),
@@ -157,8 +191,10 @@ class _PengaturanPageState extends State<PengaturanPage> {
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
           _buildBottomNavButton(Icons.home_outlined, const MainMenu()),
-          _buildBottomNavButton(Icons.assignment_outlined, const AntibioticQuery()),
-          _buildBottomNavButton(Icons.settings_outlined, const PengaturanPage()),
+          _buildBottomNavButton(
+              Icons.assignment_outlined, const AntibioticQuery()),
+          _buildBottomNavButton(
+              Icons.settings_outlined, const PengaturanPage()),
         ],
       ),
     );
@@ -213,7 +249,7 @@ class _PengaturanPageState extends State<PengaturanPage> {
             borderRadius: BorderRadius.circular(8),
             color: backgroundColor ?? Colors.white,
             border: Border.all(
-              color: iconColor ?? const Color.fromARGB(255, 0, 155, 226)),
+                color: iconColor ?? const Color.fromARGB(255, 0, 155, 226)),
             boxShadow: _isPressed[index]
                 ? []
                 : [
@@ -226,13 +262,12 @@ class _PengaturanPageState extends State<PengaturanPage> {
                   ],
           ),
           child: ListTile(
-            leading: Icon(
-              icon, 
-              color: iconColor ?? const Color.fromARGB(255, 0, 155, 226)),
+            leading: Icon(icon,
+                color: iconColor ?? const Color.fromARGB(255, 0, 155, 226)),
             title: Text(
               title,
               style: TextStyle(color: iconColor ?? Colors.black),
-              ),
+            ),
           ),
         ),
       ),
@@ -272,97 +307,97 @@ class _PengaturanPageState extends State<PengaturanPage> {
   }
 
   void _showDeleteAccountConfirmation(BuildContext context) {
-  showDialog(
-    context: context,
-    builder: (BuildContext context) {
-      return AlertDialog(
-        title: const Text('Konfirmasi Hapus Akun'),
-        content: const Text(
-            'Apakah Anda yakin ingin menghapus akun ini? Semua data Anda akan dihapus secara permanen.'),
-        backgroundColor: Colors.white,
-        actions: [
-          TextButton(
-            onPressed: () {
-              Navigator.pop(context);
-            },
-            child: const Text('Batal'),
-          ),
-          TextButton(
-            onPressed: () async {
-              try {
-                // Ambil pengguna saat ini
-                User? user = FirebaseAuth.instance.currentUser;
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Konfirmasi Hapus Akun'),
+          content: const Text(
+              'Apakah Anda yakin ingin menghapus akun ini? Semua data Anda akan dihapus secara permanen.'),
+          backgroundColor: Colors.white,
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: const Text('Batal'),
+            ),
+            TextButton(
+              onPressed: () async {
+                try {
+                  
+                  User? user = FirebaseAuth.instance.currentUser;
 
-                if (user != null) {
-                  String uid = user.uid;
+                  if (user != null) {
+                    String uid = user.uid;
 
-                  // Hapus dokumen pengguna di Firestore
-                  await FirebaseFirestore.instance
-                      .collection('users')
-                      .doc(uid)
-                      .delete();
+                    
+                    await FirebaseFirestore.instance
+                        .collection('users')
+                        .doc(uid)
+                        .delete();
 
-                  // Hapus akun pengguna dari Firebase Authentication
-                  await user.delete();
+                    
+                    await user.delete();
 
-                  // Navigasi ke layar login
-                  Navigator.of(context).pushReplacement(
-                    MaterialPageRoute(builder: (context) => const LoginScreen()),
-                  );
+                    
+                    Navigator.of(context).pushReplacement(
+                      MaterialPageRoute(
+                          builder: (context) => const LoginScreen()),
+                    );
+                  }
+                } catch (e) {
+                  if (e.toString().contains('requires-recent-login')) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text(
+                            'Sesi login Anda telah kedaluwarsa. Harap login ulang untuk menghapus akun.'),
+                      ),
+                    );
+                  } else {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text('Error: ${e.toString()}')),
+                    );
+                  }
                 }
-              } catch (e) {
-                if (e.toString().contains('requires-recent-login')) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text(
-                          'Sesi login Anda telah kedaluwarsa. Harap login ulang untuk menghapus akun.'),
-                    ),
-                  );
-                } else {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text('Error: ${e.toString()}')),
-                  );
-                }
-              }
-            },
-            child: const Text('Hapus'),
-          ),
-        ],
-      );
-    },
-  );
-}
+              },
+              child: const Text('Hapus'),
+            ),
+          ],
+        );
+      },
+    );
+  }
 
-Future<String?> _getPasswordFromUser(BuildContext context) async {
-  TextEditingController passwordController = TextEditingController();
-  return showDialog<String>(
-    context: context,
-    builder: (BuildContext context) {
-      return AlertDialog(
-        title: const Text('Konfirmasi Password'),
-        content: TextField(
-          controller: passwordController,
-          decoration: const InputDecoration(labelText: 'Masukkan password Anda'),
-          obscureText: true,
-        ),
-        actions: [
-          TextButton(
-            onPressed: () {
-              Navigator.pop(context, null);
-            },
-            child: const Text('Batal'),
+  Future<String?> _getPasswordFromUser(BuildContext context) async {
+    TextEditingController passwordController = TextEditingController();
+    return showDialog<String>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Konfirmasi Password'),
+          content: TextField(
+            controller: passwordController,
+            decoration:
+                const InputDecoration(labelText: 'Masukkan password Anda'),
+            obscureText: true,
           ),
-          TextButton(
-            onPressed: () {
-              Navigator.pop(context, passwordController.text);
-            },
-            child: const Text('OK'),
-          ),
-        ],
-      );
-    },
-  );
-}
-
-
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context, null);
+              },
+              child: const Text('Batal'),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context, passwordController.text);
+              },
+              child: const Text('OK'),
+            ),
+          ],
+        );
+      },
+    );
+  }
 }
