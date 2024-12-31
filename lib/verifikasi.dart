@@ -4,7 +4,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:penicillisolver/MainMenu.dart';
-import 'package:penicillisolver/lupa.dart';
+import 'package:penicillisolver/email_otp.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 class Verifikasi extends StatefulWidget {
@@ -203,11 +203,23 @@ class _VerifikasiState extends State<Verifikasi> {
       onWillPop: () async {
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => const Lupa()),
+          MaterialPageRoute(builder: (context) => const EmailOTP()),
         );
         return false;
       },
       child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: Colors.white,
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back),
+            onPressed: () {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => const EmailOTP()),
+              );
+            },
+          ),
+        ),
         backgroundColor: Colors.white,
         body: SingleChildScrollView(
           child: Padding(

@@ -1,11 +1,7 @@
-// ignore_for_file: library_private_types_in_public_api, use_build_context_synchronously, unused_import, unused_element, avoid_print
-
 import 'package:flutter/material.dart';
-import 'dart:developer';
 import 'package:penicillisolver/login.dart';
 import 'package:penicillisolver/theme.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'firebase_options.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -44,7 +40,7 @@ class _LoadingPageState extends State<LoadingPage> {
           pageBuilder: (context, animation, secondaryAnimation) =>
               const Register(),
           transitionsBuilder: (context, animation, secondaryAnimation, child) {
-            const begin = Offset(1.0, 0.0); // Mulai dari kanan
+            const begin = Offset(1.0, 0.0);
             const end = Offset.zero;
             const curve = Curves.ease;
 
@@ -116,7 +112,6 @@ class _RegisterState extends State<Register> {
   }
 
   bool _validateInputs() {
-    // Memeriksa apakah semua field diisi
     if (_namaController.text.isEmpty ||
         _emailController.text.isEmpty ||
         _passwordController.text.isEmpty ||
@@ -142,7 +137,6 @@ class _RegisterState extends State<Register> {
       return false;
     }
 
-    // Memeriksa apakah kata sandi dan konfirmasi kata sandi cocok
     if (_passwordController.text != _confirmPasswordController.text) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
@@ -153,7 +147,6 @@ class _RegisterState extends State<Register> {
       return false;
     }
 
-    // Memeriksa apakah tim telah dipilih
     if (selectedTeamNotifier.value == null ||
         selectedTeamNotifier.value!.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -164,18 +157,11 @@ class _RegisterState extends State<Register> {
       );
       return false;
     }
-
-    // Validasi kata sandi
-
     return true;
   }
 
-// Fungsi untuk memvalidasi kata sandi
   bool _isPasswordValid(String password) {
-    // Memeriksa panjang kata sandi
     if (password.length < 6) return false;
-
-    // Memeriksa keberadaan huruf besar, huruf kecil, dan angka
     bool hasUppercase = password.contains(RegExp(r'[A-Z]'));
     bool hasLowercase = password.contains(RegExp(r'[a-z]'));
     bool hasDigits = password.contains(RegExp(r'[0-9]'));
@@ -315,7 +301,7 @@ class _RegisterState extends State<Register> {
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(5),
                     borderSide: const BorderSide(
-                      color: Color.fromRGBO(37, 160, 237, 1), // saat fokus
+                      color: Color.fromRGBO(37, 160, 237, 1),
                       width: 2,
                     ),
                   ),
@@ -351,7 +337,7 @@ class _RegisterState extends State<Register> {
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(5),
                     borderSide: const BorderSide(
-                      color: Color.fromRGBO(37, 160, 237, 1), // saat fokus
+                      color: Color.fromRGBO(37, 160, 237, 1),
                       width: 2,
                     ),
                   ),
@@ -525,9 +511,7 @@ class _RegisterState extends State<Register> {
                   );
                 },
               ),
-
               const SizedBox(height: 30),
-
               SizedBox(
                 width: 400,
                 height: 60,
@@ -546,9 +530,7 @@ class _RegisterState extends State<Register> {
                   ),
                 ),
               ),
-
               const SizedBox(height: 20),
-
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -579,14 +561,12 @@ class _RegisterState extends State<Register> {
                   ),
                 ],
               ),
-
               const SizedBox(height: 10),
               const Text(
                 'Atau Lanjutkan Dengan :',
                 style: TextStyle(fontSize: 15),
               ),
               const SizedBox(height: 10),
-
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [

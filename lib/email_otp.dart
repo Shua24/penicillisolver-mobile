@@ -1,62 +1,38 @@
-// ignore_for_file: library_private_types_in_public_api, deprecated_member_use, use_build_context_synchronously
-
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:penicillisolver/login.dart';
-import 'package:penicillisolver/email_otp.dart';
+import 'package:penicillisolver/lupa.dart';
+import 'package:penicillisolver/verifikasi.dart';
 
-class Lupa extends StatefulWidget {
-  const Lupa({super.key});
+class EmailOTP extends StatefulWidget {
+  const EmailOTP({super.key});
 
   @override
-  _LupaState createState() => _LupaState();
+  _EmailOTPState createState() => _EmailOTPState();
 }
 
-class _LupaState extends State<Lupa> {
+class _EmailOTPState extends State<EmailOTP> {
   final TextEditingController _emailController = TextEditingController();
 
-  @override
-  void dispose() {
-    _emailController.dispose();
-    super.dispose();
-  }
-
-  Future<void> resetPassword(String email) async {
-    try {
-      await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
-
+  Future<void> _otp() async {
+    if (_emailController.text.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text(
-              'Email reset kata sandi telah dikirim, silakan Periksa inbox Anda. 😊'),
-          backgroundColor: Colors.green,
-        ),
-      );
-
-      Future.delayed(const Duration(seconds: 3), () {
-        Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (context) => const LoginScreen()),
-        );
-      });
-    } on FirebaseAuthException catch (e) {
-      String errorMessage;
-      switch (e.code) {
-        case "auth/user-not-found":
-          errorMessage = "Email tidak ditemukan dalam sistem kami.";
-          break;
-        case "invalid-email":
-          errorMessage = "Format email tidak valid.";
-          break;
-        default:
-          errorMessage =
-              "Terjadi kesalahan. Silakan coba lagi nanti.(${e.code})";
-      }
-
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(errorMessage),
+          content: Text('Email tidak boleh kosong'),
           backgroundColor: Colors.red,
         ),
+      );
+      return;
+    } else if (!_emailController.text.contains('@')) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Format email tidak valid'),
+          backgroundColor: Colors.red,
+        ),
+      );
+      return;
+    } else {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => const Verifikasi()),
       );
     }
   }
@@ -67,7 +43,7 @@ class _LupaState extends State<Lupa> {
       onWillPop: () async {
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => const LoginScreen()),
+          MaterialPageRoute(builder: (context) => const Lupa()),
         );
         return false;
       },
@@ -80,7 +56,7 @@ class _LupaState extends State<Lupa> {
             onPressed: () {
               Navigator.pushReplacement(
                 context,
-                MaterialPageRoute(builder: (context) => const LoginScreen()),
+                MaterialPageRoute(builder: (context) => const Lupa()),
               );
             },
           ),
@@ -92,7 +68,7 @@ class _LupaState extends State<Lupa> {
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 const Text(
-                  'Verifikasi Dengan Email',
+                  'Verifikasi Dengan OTP',
                   style: TextStyle(
                     fontSize: 30,
                     fontWeight: FontWeight.bold,
@@ -148,18 +124,8 @@ class _LupaState extends State<Lupa> {
                   width: 400,
                   height: 60,
                   child: ElevatedButton(
-                    onPressed: () async {
-                      final email = _emailController.text.trim();
-                      if (email.isNotEmpty) {
-                        resetPassword(email);
-                      } else {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content: Text('Email tidak boleh kosong'),
-                            backgroundColor: Colors.red,
-                          ),
-                        );
-                      }
+                    onPressed: () {
+                      _otp();
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.blue,
@@ -179,15 +145,13 @@ class _LupaState extends State<Lupa> {
                 const SizedBox(height: 20),
                 GestureDetector(
                   onTap: () {
-                    Future.delayed(const Duration(milliseconds: 500), () {
-                      Navigator.of(context).pushReplacement(
-                        MaterialPageRoute(
-                            builder: (context) => const EmailOTP()),
-                      );
-                    });
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(builder: (context) => const Lupa()),
+                    );
                   },
                   child: const Text(
-                    'Atau Gunakan OTP',
+                    'Atau Gunakan Tautan',
                     style: TextStyle(
                       color: Color.fromRGBO(37, 160, 237, 1),
                       fontWeight: FontWeight.bold,

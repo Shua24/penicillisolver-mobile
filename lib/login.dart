@@ -1,5 +1,3 @@
-// ignore_for_file: deprecated_member_use, use_build_context_synchronously, library_private_types_in_public_api, avoid_print
-
 import 'package:flutter/material.dart';
 import 'package:penicillisolver/MainMenu.dart';
 import 'package:penicillisolver/lupa.dart';
@@ -68,7 +66,6 @@ class _LoginState extends State<LoginScreen> {
         MaterialPageRoute(builder: (context) => const MainMenu()),
       );
     } on FirebaseAuthException catch (e) {
-      // Tangani berbagai error spesifik dari Firebase
       String errorMessage;
       switch (e.code) {
         case 'invalid-credential':
@@ -217,7 +214,7 @@ class _LoginState extends State<LoginScreen> {
                   width: 400,
                   height: 60,
                   child: ElevatedButton(
-                    onPressed: _loginUser, // Pastikan fungsi ini dipanggil.
+                    onPressed: _loginUser,
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.blue,
                       foregroundColor: Colors.white,
