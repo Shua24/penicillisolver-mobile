@@ -1,5 +1,8 @@
+// ignore_for_file: library_private_types_in_public_api, use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:penicillisolver/login.dart';
+import 'package:penicillisolver/VerifikasiNewAccount.dart';
 import 'package:penicillisolver/theme.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -180,7 +183,7 @@ class _RegisterState extends State<Register> {
         email: _emailController.text.trim(),
         password: _passwordController.text.trim(),
       );
-
+      await credential.user?.sendEmailVerification();
       try {
         await FirebaseFirestore.instance
             .collection('users')
@@ -192,22 +195,25 @@ class _RegisterState extends State<Register> {
           'sip': _sipController.text.trim(),
           'role': selectedTeamNotifier.value,
           'createdAt': FieldValue.serverTimestamp(),
+          'isEmailVerified': false,
         });
-        print("Data berhasil disimpan ke Firestore.");
 
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
-                content: Text('Registrasi berhasil!'),
-                backgroundColor: Colors.green),
+              content: Text(
+                'Registrasi berhasil! Periksa email untuk memverifikasi akun Anda.',
+              ),
+              backgroundColor: Colors.green,
+            ),
           );
           Navigator.pushReplacement(
             context,
-            MaterialPageRoute(builder: (context) => const LoginScreen()),
+            MaterialPageRoute(
+                builder: (context) => const VerifikasiNewAccount()),
           );
         }
       } catch (firestoreError) {
-        print("Error saat menyimpan ke Firestore: $firestoreError");
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content:
@@ -216,16 +222,14 @@ class _RegisterState extends State<Register> {
           ),
         );
       }
-    } on FirebaseAuthException catch (e) {
-      print("FirebaseAuthException: ${e.message}");
+    } on FirebaseAuthException {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Error: ${e.message}'),
+        const SnackBar(
+          content: Text('Akun Ini Sudah Terdaftar.'),
           backgroundColor: Colors.red,
         ),
       );
     } catch (e) {
-      print("General Exception: $e");
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('Terjadi kesalahan. Coba lagi.'),

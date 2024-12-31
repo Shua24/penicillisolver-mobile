@@ -1,9 +1,8 @@
-// ignore_for_file: library_private_types_in_public_api, deprecated_member_use, use_build_context_synchronously
+// ignore_for_file: library_private_types_in_public_api, use_build_context_synchronously, deprecated_member_use
 
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:penicillisolver/login.dart';
-import 'package:penicillisolver/email_otp.dart';
 
 class Lupa extends StatefulWidget {
   const Lupa({super.key});
@@ -73,43 +72,49 @@ class _LupaState extends State<Lupa> {
       },
       child: Scaffold(
         backgroundColor: Colors.white,
-        appBar: AppBar(
-          backgroundColor: Colors.white,
-          leading: IconButton(
-            icon: const Icon(Icons.arrow_back),
-            onPressed: () {
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(builder: (context) => const LoginScreen()),
-              );
-            },
-          ),
-        ),
         body: SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.all(20.0),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                const Text(
-                  'Verifikasi Dengan Email',
-                  style: TextStyle(
-                    fontSize: 30,
-                    fontWeight: FontWeight.bold,
+                const SizedBox(
+                  height: 50,
+                  child: DecoratedBox(
+                    decoration: BoxDecoration(color: Colors.white),
                   ),
                 ),
-                const SizedBox(height: 10),
-                Transform.translate(
-                  offset: const Offset(90, 10),
-                  child: SizedBox(
-                    width: 700,
-                    height: 250,
-                    child: Image.asset(
-                      'assets/lupa2.gif',
+                Row(
+                  children: [
+                    IconButton(
+                      icon: const Icon(Icons.arrow_back),
+                      onPressed: () {
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const LoginScreen()),
+                        );
+                      },
                     ),
+                    const SizedBox(width: 10),
+                    const Text(
+                      'Verifikasi Dengan Tautan',
+                      style: TextStyle(
+                        fontSize: 25,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 20),
+                SizedBox(
+                  width: 300,
+                  height: 250,
+                  child: Image.asset(
+                    'assets/lupa2.gif',
                   ),
                 ),
-                const SizedBox(height: 35),
+                const SizedBox(height: 50),
                 const Align(
                   alignment: Alignment.centerLeft,
                   child: Text(
@@ -173,25 +178,6 @@ class _LupaState extends State<Lupa> {
                         fontWeight: FontWeight.bold,
                         fontSize: 17,
                       ),
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 20),
-                GestureDetector(
-                  onTap: () {
-                    Future.delayed(const Duration(milliseconds: 500), () {
-                      Navigator.of(context).pushReplacement(
-                        MaterialPageRoute(
-                            builder: (context) => const EmailOTP()),
-                      );
-                    });
-                  },
-                  child: const Text(
-                    'Atau Gunakan OTP',
-                    style: TextStyle(
-                      color: Color.fromRGBO(37, 160, 237, 1),
-                      fontWeight: FontWeight.bold,
-                      fontSize: 17,
                     ),
                   ),
                 ),

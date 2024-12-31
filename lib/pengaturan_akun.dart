@@ -2,7 +2,6 @@ import 'dart:io';
 import 'dart:convert';
 import 'dart:typed_data';
 
-
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:penicillisolver/camera_page.dart';
@@ -11,7 +10,6 @@ import 'package:penicillisolver/theme.dart';
 import 'database_helper.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-
 
 File? selectedImage;
 String? base64Image;
@@ -188,7 +186,7 @@ class EditProfilPageState extends State<EditProfilPage> {
         'nama': _nameController.text,
         'gender': _gender,
         'birthdate': _selectedDate.toIso8601String(),
-        'profilePicture': selectedImage != null ? selectedImage!.path : null,
+        'profilePicture': selectedImage?.path,
       };
 
       await FirebaseFirestore.instance.collection('users').doc(userId).set(

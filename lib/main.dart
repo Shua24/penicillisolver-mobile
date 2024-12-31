@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:penicillisolver/VerifikasiNewAccount.dart';
 import 'package:penicillisolver/pengaturan_akun.dart';
-import 'package:penicillisolver/verifikasi.dart';
 import 'package:penicillisolver/lupa.dart';
 import 'package:penicillisolver/theme.dart';
 import 'package:penicillisolver/register.dart';
 import 'package:penicillisolver/login.dart';
-import 'package:penicillisolver/email_otp.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart'; // Import file konfigurasi Firebase
 
@@ -31,9 +30,8 @@ class MyApp extends StatelessWidget {
         '/': (context) => const Landing(),
         '/login': (context) => const LoginScreen(),
         '/register': (context) => const Register(),
+        '/VerifikasiNewAccount': (context) => const VerifikasiNewAccount(),
         '/lupa': (context) => const Lupa(),
-        '/email_otp': (context) => const EmailOTP(),
-        '/verifikasi': (context) => const Verifikasi(),
         '/pengaturan_akun': (context) => const AccountSettingsPage(),
       },
       onUnknownRoute: (settings) {
