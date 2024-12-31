@@ -134,7 +134,7 @@ class EditProfilPageState extends State<EditProfilPage> {
     _loadProfilePicture();
   }
 
-   Future<void> _loadProfilePicture() async {
+  Future<void> _loadProfilePicture() async {
     final dbHelper = DatabaseHelper();
     final photoPath = await dbHelper.getProfilePicture();
     if (!mounted) return;
