@@ -98,7 +98,7 @@ class _LupaState extends State<Lupa> {
                     ),
                     const SizedBox(width: 10),
                     const Text(
-                      'Verifikasi Dengan Tautan',
+                      'Verifikasi Dengan Email',
                       style: TextStyle(
                         fontSize: 25,
                         fontWeight: FontWeight.bold,

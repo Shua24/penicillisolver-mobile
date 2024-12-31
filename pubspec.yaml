@@ -52,8 +52,6 @@ flutter:
     - assets/logo2.png
     - assets/x.png
     - assets/josh.png
-    - assets/lupa.png
-    - assets/notif.png
     - assets/berhasil.png
     - assets/profile.png
     - assets/bakteri.png
@@ -61,7 +59,6 @@ flutter:
     - assets/pola.png
     - assets/lupa2.gif
     - assets/user1.png
-    - assets/notif.gif
     - assets/polakuman.png
     - assets/jawinpp.png
     - assets/email.gif
