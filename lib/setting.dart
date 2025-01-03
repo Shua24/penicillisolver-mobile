@@ -1,11 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart'; // Tambahkan import Firebase
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:penicillisolver/MainMenu.dart';
 import 'package:penicillisolver/pengaturan_akun.dart';
 import 'package:penicillisolver/login.dart';
 import 'package:penicillisolver/lookup.dart';
 import 'package:penicillisolver/theme.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -32,10 +33,24 @@ class _PengaturanPageState extends State<PengaturanPage> {
   String? namaPengguna;
   bool isLoading = true;
 
+  final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+      FlutterLocalNotificationsPlugin();
+
   @override
   void initState() {
     super.initState();
+    _initializeNotifications();
     _ambilNamaPengguna();
+  }
+
+  void _initializeNotifications() {
+    const AndroidInitializationSettings initializationSettingsAndroid =
+        AndroidInitializationSettings('@mipmap/ic_launcher');
+
+    const InitializationSettings initializationSettings =
+        InitializationSettings(android: initializationSettingsAndroid);
+
+    flutterLocalNotificationsPlugin.initialize(initializationSettings);
   }
 
   Future<void> _ambilNamaPengguna() async {
@@ -111,16 +126,15 @@ class _PengaturanPageState extends State<PengaturanPage> {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 25.0),
               child: Center(
-                child: isLoading
-                ? const CircularProgressIndicator()
-                : Text(
-                  namaPengguna ?? 'Nama tidak ditemukan',
-                  style: const TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                  ),
-                )
-              ),
+                  child: isLoading
+                      ? const CircularProgressIndicator()
+                      : Text(
+                          namaPengguna ?? 'Nama tidak ditemukan',
+                          style: const TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        )),
             ),
             const SizedBox(height: 20),
             Expanded(
@@ -325,22 +339,20 @@ class _PengaturanPageState extends State<PengaturanPage> {
             TextButton(
               onPressed: () async {
                 try {
-                  
                   User? user = FirebaseAuth.instance.currentUser;
 
                   if (user != null) {
                     String uid = user.uid;
 
-                    
                     await FirebaseFirestore.instance
                         .collection('users')
                         .doc(uid)
                         .delete();
 
-                    
                     await user.delete();
 
-                    
+                    _showSuccessNotification(namaPengguna);
+
                     Navigator.of(context).pushReplacement(
                       MaterialPageRoute(
                           builder: (context) => const LoginScreen()),
@@ -366,6 +378,29 @@ class _PengaturanPageState extends State<PengaturanPage> {
           ],
         );
       },
+    );
+  }
+
+  void _showSuccessNotification(String? nama) async {
+    final String username = nama ?? 'Pengguna';
+
+    const AndroidNotificationDetails androidPlatformChannelSpecifics =
+        AndroidNotificationDetails(
+      'delete_account_channel',
+      'Delete Account',
+      channelDescription: 'Notification when account is deleted',
+      importance: Importance.high,
+      priority: Priority.high,
+      showWhen: false,
+    );
+    const NotificationDetails platformChannelSpecifics =
+        NotificationDetails(android: androidPlatformChannelSpecifics);
+
+    await flutterLocalNotificationsPlugin.show(
+      0,
+      'Peringatan !',
+      'Akun $username telah dihapus.',
+      platformChannelSpecifics,
     );
   }
 
